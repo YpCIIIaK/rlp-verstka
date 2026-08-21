@@ -158,6 +158,9 @@
   backdrop-filter: blur(calc(24 * var(--wm)));
 }
 .nav__drop-inner a {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
   padding: calc(8 * var(--wm));
   border-radius: calc(200 * var(--wm));
   color: var(--color-black);
@@ -165,6 +168,13 @@
   font-weight: var(--weight-medium);
   line-height: 1.5;
   transition: background-color var(--duration-base) var(--ease-out);
+}
+.header__lang-flag-img {
+  flex: none;
+  width: calc(20 * var(--wm));
+  height: calc(20 * var(--wm));
+  border-radius: 50%;
+  object-fit: cover;
 }
 .nav__drop-inner a:hover { background: var(--color-black-03); }
 .nav__drop-inner a.is-current { background: var(--color-black-03); }

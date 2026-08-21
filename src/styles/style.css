@@ -459,9 +459,19 @@
   .stat-card__img { height: calc(100% - 128 * var(--wm)); }
   .stat-card:nth-child(2),
   .stat-card:nth-child(3) { margin-bottom: 0; }
-  .about__cards--wide { height: auto; }
-  .about__cards--wide .stat-card { height: auto; }
-  .about__cards--wide .stat-card:first-child { flex: 1 1 100%; }
+  .about__cards--wide {
+    height: auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+  .about__cards--wide .stat-card,
+  .about__cards--wide .stat-card:first-child {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: none;
+    height: auto;
+  }
   .about__cards--wide .stats-description { white-space: normal; }
 }
 
@@ -686,12 +696,34 @@
 }
 
 @media (max-width: 767px) {
-  .crops { padding: calc(24 * var(--wm)) calc(16 * var(--wm)); }
-  .crop-card { flex: 1 1 calc(50% - 6 * var(--wm)); }
-  .crop-card__img { height: calc(150 * var(--wm)); }
+  .crops { padding: calc(24 * var(--wm)) calc(16 * var(--wm)); overflow: hidden; }
+  .crops__list { width: 100%; }
+  .crop-card {
+    flex: 1 1 calc(50% - 6 * var(--wm));
+    max-width: calc(50% - 6 * var(--wm));
+    min-width: 0;
+    overflow: hidden;
+  }
+  /* пять карточек: последняя на всю ширину, иначе длинное
+     название («Чечевица красная») не сжимается и вылезает   */
+  .crop-card:last-child {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .crop-card .card-heading-s {
+    width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .crop-card__img {
+    height: calc(150 * var(--wm));
+    overflow: hidden;
+  }
   /* предел 189 из макета выше самого бокса — картинка вылезала
      за него и накрывала подпись под ней                       */
-  .crop-card__img img { max-height: 100%; }
+  .crop-card__img img {
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1183,10 +1215,39 @@
   width: auto;
   margin-inline: calc(-1 * var(--page-pad));
   padding-inline: var(--page-pad);
-  overflow-x: auto;
+  overflow: hidden;
   scrollbar-width: none;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 calc(32 * var(--wm)),
+    #000 calc(100% - 32 * var(--wm)),
+    transparent
+  );
 }
 .partners__row::-webkit-scrollbar { display: none; }
+
+.partners__track {
+  display: flex;
+  width: max-content;
+  animation: partners-marquee 40s linear infinite;
+}
+.partners__row:hover .partners__track,
+.partners__row:focus-within .partners__track {
+  animation-play-state: paused;
+}
+.partners__set {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--wm));
+  padding-inline-end: calc(12 * var(--wm));
+}
+@keyframes partners-marquee {
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .partners__track { animation: none; }
+}
 
 /* плитка строго 260 × 260, логотип вписан по центру.
    Прозрачность — по доле видимости, как у карточек команды */
@@ -2017,12 +2078,25 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(243 * var(--wm));
 }
 
+/* Отступ кривой от левого края карточки. В макете он 39 — столько
+   нужно первой подписи, она центрируется над своей точкой и краем
+   уходит левее начала линии. Ставим 10: щели почти нет, а подпись
+   ещё помещается. Цифры сдвигаются на ту же величину, поэтому
+   менять достаточно здесь — они не разъедутся с кривой.        */
+.chart-card__plot { --plot-x: calc(10 * var(--wm)); }
+
 .chart-card__line {
   position: absolute;
-  left: calc(39 * var(--wm));
+  left: var(--plot-x);
   top: 0;
   width: calc(553 * var(--wm));
   height: calc(205 * var(--wm));
+}
+
+/* сдвиг цифр = насколько линия отъехала от исходных 39 */
+.chart-card__dot,
+.chart-dot {
+  translate: calc(var(--plot-x) - 39 * var(--wm)) 0;
 }
 
 .chart-card__axis {
@@ -2385,8 +2459,40 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .chart-wide__dot--h { left: calc(1211 * var(--wm)); bottom: calc(239 * var(--wm)); }
 
 @media (max-width: 767px) {
-  .chart-wide { height: calc(360 * var(--wm)); }
-  .chart-wide__dot { font-size: calc(13 * var(--wm)); }
+  /* Как у графиков на agriculture: линия вписывается в карточку,
+     точки считаются долей ширины кривой и центрируются на ней. */
+  .chart-wide {
+    height: calc(470 * var(--wm));
+    --plot-x: calc(20 * var(--wm));
+    --plot-w: calc(100% - 40 * var(--wm));
+  }
+  .chart-wide__head {
+    padding: calc(16 * var(--wm));
+    gap: calc(10 * var(--wm));
+  }
+  .chart-wide__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(4 * var(--wm));
+  }
+  .chart-wide__line {
+    left: var(--plot-x);
+    width: var(--plot-w);
+  }
+  .chart-wide__dot {
+    font-size: calc(12 * var(--wm));
+    translate: -50% 0;
+  }
+  .chart-wide__dot--a,
+  .chart-wide__dot--b { left: calc(var(--plot-x) + 0.0002 * var(--plot-w)); }
+  .chart-wide__dot--c { left: calc(var(--plot-x) + 0.3331 * var(--plot-w)); }
+  .chart-wide__dot--d { left: calc(var(--plot-x) + 0.3367 * var(--plot-w)); }
+  .chart-wide__dot--e,
+  .chart-wide__dot--f { left: calc(var(--plot-x) + 0.6650 * var(--plot-w)); }
+  .chart-wide__dot--g,
+  .chart-wide__dot--h { left: calc(var(--plot-x) + 0.9990 * var(--plot-w)); }
+  .chart-wide__guide--a { left: calc(var(--plot-x) + 0.3331 * var(--plot-w)); }
+  .chart-wide__guide--b { left: calc(var(--plot-x) + 0.6650 * var(--plot-w)); }
 }
 
 /* ── Галерея ─────────────────────────────────────────────── */
@@ -2413,7 +2519,10 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .gallery__row {
   width: 100%;
   height: calc(420 * var(--wm));
+  touch-action: pan-y;
+  cursor: grab;
 }
+.gallery__row.is-swiping { cursor: grabbing; }
 
 /* Сдвиг ленты считает JS по замеренным в покое ширинам и кладёт в --g-shift.
    Трансформ и рост кадра идут одним transition, поэтому центр активного
@@ -2424,10 +2533,11 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: 100%;
   gap: calc(12 * var(--wm));
   width: max-content;
-  transform: translate3d(var(--g-shift, 0px), 0, 0);
+  transform: translate3d(calc(var(--g-shift, 0px) + var(--g-drag, 0px)), 0, 0);
   transition: transform var(--g-time) var(--g-ease);
   will-change: transform;
 }
+.gallery__row.is-swiping .gallery__track { transition: none; }
 
 /* боковые кадры 380 × 380, центральный — 640 × 420 */
 .gallery__track img {
@@ -2521,20 +2631,38 @@ a.contacts__item:hover { background: var(--color-white-15); }
     width: auto;
   }
 
-  /* ── Урожайность: цифры над точками ───────────────────────
-     left — по горизонтали от левого края области графика,
-     bottom — по вертикали от её низа. Больше bottom — цифра
-     выше, меньше — ниже.                                    */
-  .chart-card__dot--a { left: calc(8 * var(--wm));   bottom: calc(143 * var(--wm)); }
-  .chart-card__dot--b { left: calc(96 * var(--wm));  bottom: calc(92 * var(--wm)); }
-  .chart-card__dot--c { left: calc(186 * var(--wm)); bottom: calc(235 * var(--wm)); }
-  .chart-card__dot--d { left: calc(272 * var(--wm)); bottom: calc(179 * var(--wm)); }
+  /* ── Цифры на графиках ────────────────────────────────────
+     Линия шириной 553 из макета в карточку телефона не влезает
+     и уходит за правый край, поэтому здесь она вписывается в её
+     ширину с полями 20. Положение цифр считается от самих точек
+     кривой: доля × ширина линии. Доли взяты из пути — это места,
+     где кривая меняет направление.
 
-  /* ── Валовый сбор: те же правила ────────────────────────── */
-  .chart-dot--a { left: calc(4 * var(--wm));   bottom: calc(145 * var(--wm)); }
-  .chart-dot--b { left: calc(94 * var(--wm));  bottom: calc(92 * var(--wm)); }
-  .chart-dot--c { left: calc(182 * var(--wm)); bottom: calc(198 * var(--wm)); }
-  .chart-dot--d { left: calc(268 * var(--wm)); bottom: calc(177 * var(--wm)); }
+     Цифра центрируется на своей точке (translate -50%), так что
+     двигать её вручную нужно правкой доли, а не пикселей.
+
+     Высоту (bottom) задают общие правила выше — по вертикали
+     пропорции те же, что на десктопе.                        */
+  .chart-card__plot {
+    --plot-x: calc(20 * var(--wm));
+    --plot-w: calc(100% - 40 * var(--wm));
+  }
+  .chart-card__line { width: var(--plot-w); }
+
+  .chart-card__dot,
+  .chart-dot { translate: -50% 0; }
+
+  /* Урожайность */
+  .chart-card__dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w)); }
+  .chart-card__dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); }
+  .chart-card__dot--c { left: calc(var(--plot-x) + 0.6486 * var(--plot-w)); }
+  .chart-card__dot--d { left: calc(var(--plot-x) + 0.9982 * var(--plot-w)); }
+
+  /* Валовый сбор — третья точка у этой кривой правее */
+  .chart-dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w)); }
+  .chart-dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); }
+  .chart-dot--c { left: calc(var(--plot-x) + 0.6685 * var(--plot-w)); }
+  .chart-dot--d { left: calc(var(--plot-x) + 0.9982 * var(--plot-w)); }
 }
 
 @media (max-width: 767px) {

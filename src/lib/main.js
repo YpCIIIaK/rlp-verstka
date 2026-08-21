@@ -424,8 +424,9 @@
     const items = track ? [...track.querySelectorAll("img")] : [];
     if (!items.length) return;
 
-    const prev = document.querySelector("[data-gallery-prev]");
-    const next = document.querySelector("[data-gallery-next]");
+    const root = row.closest(".gallery") || row.parentElement;
+    const prev = root.querySelector("[data-gallery-prev]");
+    const next = root.querySelector("[data-gallery-next]");
 
     let index = items.findIndex((el) => el.classList.contains("is-active"));
     if (index < 0) index = Math.floor(items.length / 2);
@@ -461,8 +462,66 @@
     prev?.addEventListener("click", () => show(index - 1));
     next?.addEventListener("click", () => show(index + 1));
 
+    /* Свайп / перетаскивание: лента едет за пальцем, по порогу
+       переключает кадр, иначе возвращается. Вертикаль отдаём
+       странице — иначе нельзя проскроллить, начав жест на фото. */
+    let dragging = false;
+    let locked = "";
+    let startX = 0;
+    let startY = 0;
+    let dragX = 0;
+    let swiped = false;
+
     // клик по боковому кадру тоже делает его центральным
-    items.forEach((el, n) => el.addEventListener("click", () => show(n)));
+    items.forEach((el, n) => el.addEventListener("click", (e) => {
+      if (swiped) { e.preventDefault(); e.stopPropagation(); return; }
+      show(n);
+    }));
+
+    const setDrag = (x) => row.style.setProperty("--g-drag", x + "px");
+
+    const finish = () => {
+      if (!dragging) return;
+      dragging = false;
+      locked = "";
+      row.classList.remove("is-swiping");
+      const threshold = Math.min(80, row.clientWidth * 0.18);
+      swiped = Math.abs(dragX) > 8;
+      const nextIndex = dragX < -threshold ? index + 1
+        : dragX > threshold ? index - 1
+        : index;
+      setDrag(0);
+      show(nextIndex);
+      window.setTimeout(() => { swiped = false; }, 0);
+    };
+
+    row.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      dragging = true;
+      locked = "";
+      startX = e.clientX;
+      startY = e.clientY;
+      dragX = 0;
+    });
+
+    row.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!locked) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        if (locked !== "x") return;
+        row.classList.add("is-swiping");
+        row.setPointerCapture(e.pointerId);
+      }
+      if (locked !== "x") return;
+      dragX = dx;
+      setDrag(dx);
+    });
+
+    row.addEventListener("pointerup", finish);
+    row.addEventListener("pointercancel", finish);
 
     measure();
     place();
@@ -526,9 +585,35 @@
     play();
   });
 
-  /* ── Ленты команды и партнёров: элемент проявляется, входя в кадр ── */
+  /* ── Партнёры: бегущая строка из двух одинаковых наборов ── */
 
-  document.querySelectorAll(".team__row, .partners__row").forEach((row) => {
+  document.querySelectorAll(".partners__row").forEach((row) => {
+    const items = [...row.children].filter((el) => el.classList.contains("partners__item"));
+    if (items.length < 2) return;
+
+    const track = document.createElement("div");
+    track.className = "partners__track";
+    const set = document.createElement("div");
+    set.className = "partners__set";
+    items.forEach((el) => set.append(el));
+    track.append(set, set.cloneNode(true));
+    row.append(track);
+    row.removeAttribute("data-drag-scroll");
+
+    if (prefersReduced) return;
+
+    const pause = () => { track.style.animationPlayState = "paused"; };
+    const play = () => { track.style.animationPlayState = ""; };
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) pause();
+      else play();
+    });
+  });
+
+  /* ── Команда: карточка проявляется, входя в кадр ленты ── */
+
+  document.querySelectorAll(".team__row").forEach((row) => {
     const cards = [...row.children];
     if (!cards.length) return;
 
