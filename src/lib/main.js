@@ -964,6 +964,22 @@
     window.scrollTo(scrollLock.x, scrollLock.y);
   };
 
+  /* ── Fancybox: просмотр лицензий ────────────────────────── */
+
+  (() => {
+    const Fancybox = window.Fancybox;
+    if (!Fancybox?.bind || !document.querySelector("[data-fancybox]")) return;
+
+    Fancybox.bind("[data-fancybox]", {
+      groupAll: false,
+      compact: false,
+      on: {
+        init: lockScroll,
+        close: unlockScroll
+      }
+    });
+  })();
+
   /* ── Модальные окна (<dialog>) ──────────────────────────── */
 
   const modalAnimMs = prefersReduced ? 0 : 280;

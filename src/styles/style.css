@@ -494,6 +494,7 @@
 }
 
 .dir-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: calc(16 * var(--wm));
@@ -581,6 +582,12 @@
   gap: calc(6 * var(--wm));
   white-space: nowrap;
   transition: color var(--duration-base) var(--ease-out);
+}
+/* кликабельны обложка и название: ссылка «Подробнее» накрывает карточку */
+.dir-card__action::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 /* Иконка вращается, поэтому её бокс округляем до целых пикселей:
    при дробном размере центр поворота попадает на полпикселя и
