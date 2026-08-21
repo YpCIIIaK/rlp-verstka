@@ -206,7 +206,7 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: url("../../assets/images/bigHeroImage.png") center / cover no-repeat;
+  background: url("../../assets/images/bigHeroImage.webp") center / cover no-repeat;
   opacity: 0;
   transition: opacity var(--duration-intro) var(--ease-out-expo);
 }
@@ -575,14 +575,13 @@
 /* Иконка вращается, поэтому её бокс округляем до целых пикселей:
    при дробном размере центр поворота попадает на полпикселя и
    вектор перерастрируется каждый кадр — отсюда дрожание.       */
+/* Один в один как стрелки в контактах: там поворот идёт ровно.
+   Округление размера, backface-visibility и will-change отсюда
+   убраны — именно они и давали дрожание.                     */
 .dir-card__action svg {
   width: calc(24 * var(--wm));
   height: calc(24 * var(--wm));
-  width: round(calc(24 * var(--wm)), 1px);
-  height: round(calc(24 * var(--wm)), 1px);
   transform-origin: 50% 50%;
-  backface-visibility: hidden;
-  will-change: transform;
   transition: transform var(--duration-base) var(--ease-out);
 }
 
@@ -2476,6 +2475,66 @@ a.contacts__item:hover { background: var(--color-white-15); }
 
 @media (max-width: 1024px) {
   .charts__row { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ГРАФИКИ НА МОБИЛЬНОЙ — здесь меняются положения цифр
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+
+  /* Шапка карточки в поток и по центру: в строку 24 из макета
+     заголовок на узком экране не помещался. display: contents
+     убирает саму обёртку, и заголовок, подпись и значение
+     становятся детьми карточки — только так подпись встаёт
+     между заголовком и цифрой, она лежит в другом узле.     */
+  .chart-card {
+    height: calc(470 * var(--wm));
+    padding: calc(20 * var(--wm)) calc(12 * var(--wm)) 0;
+    align-items: center;
+  }
+  .chart-card__head {
+    display: contents;
+  }
+  .chart-card__title {
+    order: 1;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+  }
+  .chart-card__note {
+    position: static;
+    order: 2;
+    margin-top: calc(6 * var(--wm));
+    text-align: center;
+  }
+  .chart-card__value {
+    order: 3;
+    justify-content: center;
+    margin-top: calc(10 * var(--wm));
+  }
+  /* подсказка от края экрана, а не от заголовка */
+  .chart-card__hint::after {
+    left: calc(12 * var(--wm));
+    right: calc(12 * var(--wm));
+    top: calc(90 * var(--wm));
+    width: auto;
+  }
+
+  /* ── Урожайность: цифры над точками ───────────────────────
+     left — по горизонтали от левого края области графика,
+     bottom — по вертикали от её низа. Больше bottom — цифра
+     выше, меньше — ниже.                                    */
+  .chart-card__dot--a { left: calc(8 * var(--wm));   bottom: calc(143 * var(--wm)); }
+  .chart-card__dot--b { left: calc(96 * var(--wm));  bottom: calc(92 * var(--wm)); }
+  .chart-card__dot--c { left: calc(186 * var(--wm)); bottom: calc(235 * var(--wm)); }
+  .chart-card__dot--d { left: calc(272 * var(--wm)); bottom: calc(179 * var(--wm)); }
+
+  /* ── Валовый сбор: те же правила ────────────────────────── */
+  .chart-dot--a { left: calc(4 * var(--wm));   bottom: calc(145 * var(--wm)); }
+  .chart-dot--b { left: calc(94 * var(--wm));  bottom: calc(92 * var(--wm)); }
+  .chart-dot--c { left: calc(182 * var(--wm)); bottom: calc(198 * var(--wm)); }
+  .chart-dot--d { left: calc(268 * var(--wm)); bottom: calc(177 * var(--wm)); }
 }
 
 @media (max-width: 767px) {

@@ -11,3 +11,8 @@ desktop.ini
 # временные файлы
 *.log
 *.tmp
+
+# исходные PNG: в вёрстке используются .webp,
+# оригиналы держим только локально
+assets/images/*.png
+assets/logo/*.png
