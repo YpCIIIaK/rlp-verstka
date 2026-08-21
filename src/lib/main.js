@@ -687,10 +687,148 @@
     const set = (index) => {
       box.classList.toggle("is-second", index === 1);
       buttons.forEach((b, i) => b.setAttribute("aria-pressed", String(i === index)));
+      box.dispatchEvent(new CustomEvent("switch-change", { detail: { index } }));
     };
 
     buttons.forEach((b, i) => b.addEventListener("click", () => set(i)));
   });
+
+  /* ── Глобус в блоке поставок (globe.gl) ───────────────────
+     Вид настраивается: текстура Земли, цвет атмосферы, дуги
+     экспорта, точки присутствия. Библиотека
+     подгружается только если на странице есть [data-globe]. */
+
+  (() => {
+    const el = document.querySelector("[data-globe]");
+    if (!el) return;
+
+    const map = el.closest(".geo__map");
+    const sw = map?.querySelector("[data-switch]");
+    const GLOBE_SRC = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.1";
+    const TEX = "https://unpkg.com/three-globe/example/img";
+
+    const ORIGIN = { lat: 53.15, lng: 66.77, name: "Казахстан" };
+    const MARKETS = [
+      { lat: 35.0, lng: 103.0, name: "Китай" },
+      { lat: 32.4, lng: 53.7, name: "Иран" },
+      { lat: 41.3, lng: 64.6, name: "Центральная Азия" },
+      { lat: 39.0, lng: 35.2, name: "Турция" },
+      { lat: 50.1, lng: 10.0, name: "Европа" }
+    ];
+    const ARCS = MARKETS.map((to) => ({
+      startLat: ORIGIN.lat,
+      startLng: ORIGIN.lng,
+      endLat: to.lat,
+      endLng: to.lng,
+      name: `Казахстан → ${to.name}`
+    }));
+    const PLACES = [ORIGIN, ...MARKETS];
+    const VIEW = {
+      lat: (ORIGIN.lat + MARKETS.reduce((s, m) => s + m.lat, 0)) / PLACES.length,
+      lng: (ORIGIN.lng + MARKETS.reduce((s, m) => s + m.lng, 0)) / PLACES.length,
+      altitude: 2.15
+    };
+    const GREEN = "#5ebf66";
+    const ORANGE = "#e1a623";
+
+    const loadScript = (src) => new Promise((resolve, reject) => {
+      if (window.Globe) { resolve(); return; }
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+
+    const boot = async () => {
+      try { await loadScript(GLOBE_SRC); }
+      catch { return; }
+      if (!window.Globe) return;
+
+      const makeLabel = (d) => {
+        const node = document.createElement("div");
+        node.className = "geo__label";
+        node.textContent = d.name;
+        return node;
+      };
+
+      const globe = new window.Globe(el, { animateIn: !prefersReduced, waitForGlobeReady: true })
+        .globeImageUrl(`${TEX}/earth-blue-marble.jpg`)
+        .bumpImageUrl(`${TEX}/earth-topology.png`)
+        .backgroundColor("#ffffff")
+        .showAtmosphere(true)
+        .atmosphereColor("#8ecae6")
+        .atmosphereAltitude(0.15)
+        .showGraticules(false)
+        .arcColor(() => [GREEN, ORANGE])
+        .arcStroke(0.6)
+        .arcDashLength(0.4)
+        .arcDashGap(0.15)
+        .arcDashAnimateTime(prefersReduced ? 0 : 2200)
+        .arcAltitudeAutoScale(0.35)
+        .arcLabel("name")
+        .pointColor((d) => (d.name === ORIGIN.name ? GREEN : ORANGE))
+        .pointAltitude(0.03)
+        .pointRadius(0.45)
+        .pointLabel("name")
+        .htmlLat("lat")
+        .htmlLng("lng")
+        .htmlAltitude(0.02)
+        .htmlElement(makeLabel)
+        .ringColor(() => GREEN)
+        .ringMaxRadius(2.4)
+        .ringPropagationSpeed(1.8)
+        .ringRepeatPeriod(prefersReduced ? 0 : 1400);
+
+      const apply = (index) => {
+        const exportMode = index !== 1;
+        globe
+          .arcsData(exportMode ? ARCS : [])
+          .pointsData(PLACES)
+          .htmlElementsData(PLACES)
+          .ringsData([ORIGIN]);
+      };
+
+      apply(sw?.classList.contains("is-second") ? 1 : 0);
+      sw?.addEventListener("switch-change", (e) => apply(e.detail.index));
+
+      const size = () => globe.width(el.clientWidth).height(el.clientHeight);
+      size();
+      globe.pointOfView(VIEW, prefersReduced ? 0 : 800);
+
+      const controls = globe.controls();
+      controls.autoRotate = false;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.enableRotate = true;
+
+      globe.onGlobeReady(() => map?.classList.add("is-globe"));
+
+      window.addEventListener("resize", size);
+
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) globe.resumeAnimation();
+            else globe.pauseAnimation();
+          });
+        }, { threshold: 0.05 });
+        io.observe(map || el);
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries.some((en) => en.isIntersecting)) return;
+        io.disconnect();
+        boot();
+      }, { rootMargin: "200px" });
+      io.observe(map || el);
+    } else {
+      boot();
+    }
+  })();
 
   /* ── Мобильное меню ─────────────────────────────────────── */
 

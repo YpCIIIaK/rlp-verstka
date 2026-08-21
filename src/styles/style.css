@@ -862,19 +862,51 @@
   min-height: calc(810 * var(--wm));
   border: 1px solid var(--color-black-05);
   border-radius: calc(12 * var(--wm));
-  background: var(--surface-card);
+  background: var(--color-white);
   overflow: hidden;
 }
-.geo__map > img {
+.geo__globe {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.geo__globe canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.geo__fallback {
+  position: relative;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.geo__map.is-globe .geo__fallback {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.geo__label {
+  padding: calc(4 * var(--wm)) calc(8 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-gray-dark);
+  font-size: calc(13 * var(--wm));
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
 }
 
 .geo__switch {
   position: absolute;
   left: 50%;
   top: calc(24 * var(--wm));
+  z-index: 2;
   translate: -50% 0;
   display: flex;
   align-items: center;
