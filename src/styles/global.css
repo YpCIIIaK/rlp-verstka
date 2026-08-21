@@ -1,0 +1,290 @@
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-body);
+  background: var(--color-bg);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+body > main { flex: 1 0 auto; }
+
+img, picture, svg, video { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+ul, ol { list-style: none; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: calc(3 * var(--wm));
+  border-radius: 2px;
+}
+
+/* ── Типографика ────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 { color: var(--color-heading); }
+
+h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-h1);
+  line-height: var(--leading-h1);
+  text-transform: uppercase;
+}
+h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-h2);
+  line-height: var(--leading-h2);
+  text-transform: uppercase;
+}
+h3 { font-size: var(--text-h3); line-height: var(--leading-h3); font-weight: var(--weight-h3); }
+h4 { font-size: var(--text-h4); line-height: var(--leading-h4); font-weight: var(--weight-h4); }
+h5 { font-size: var(--text-h5); line-height: var(--leading-h5); font-weight: var(--weight-h5); }
+
+p { line-height: var(--leading-normal); }
+
+.text-s   { font-size: var(--text-s);   line-height: var(--leading-s);   font-weight: var(--weight-s); }
+.text-s-2 { font-size: var(--text-s-2); line-height: var(--leading-s-2); font-weight: var(--weight-s-2); }
+.text-m   { font-size: var(--text-m);   line-height: var(--leading-m);   font-weight: var(--weight-m); }
+.text-l   { font-size: var(--text-l);   line-height: var(--leading-l);   font-weight: var(--weight-l); }
+
+.menu { font-size: var(--text-menu); line-height: var(--leading-menu); font-weight: var(--weight-menu); }
+
+.descriptor {
+  font-size: var(--text-descriptor);
+  font-weight: var(--weight-descriptor);
+  line-height: var(--leading-descriptor);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.numbers-l {
+  font-family: var(--font-display);
+  font-size: var(--text-numbers-l);
+  font-weight: var(--weight-numbers-l);
+  line-height: var(--leading-numbers-l);
+}
+
+/* ── Классы типографики из Figma ────────────────────────────
+   Именование = слои макета: Hero/Heading → .hero-heading и т.д. */
+
+.hero-heading {
+  font-size: var(--text-hero);
+  line-height: var(--leading-hero);
+  font-weight: var(--weight-hero);
+  text-transform: uppercase;
+}
+
+.section-heading {
+  font-size: var(--text-section-h);
+  line-height: var(--leading-section-h);
+  font-weight: var(--weight-section-h);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.section-description {
+  font-size: var(--text-section-desc);
+  line-height: var(--leading-section-desc);
+  font-weight: var(--weight-section-desc);
+}
+
+.section-label {
+  font-size: var(--text-section-label);
+  line-height: var(--leading-section-label);
+  font-weight: var(--weight-section-label);
+}
+
+.stats-value {
+  font-size: var(--text-stats-value);
+  line-height: var(--leading-stats-value);
+  font-weight: var(--weight-stats-value);
+  text-transform: uppercase;
+}
+
+.stats-prefix {
+  font-size: var(--text-stats-prefix);
+  line-height: var(--leading-stats-prefix);
+  font-weight: var(--weight-stats-prefix);
+  text-align: center;
+}
+
+.stats-unit {
+  font-size: var(--text-stats-unit);
+  line-height: var(--leading-stats-unit);
+  font-weight: var(--weight-stats-unit);
+}
+
+.stats-description {
+  font-size: var(--text-stats-desc);
+  line-height: var(--leading-stats-desc);
+  font-weight: var(--weight-stats-desc);
+}
+
+.card-label {
+  font-size: var(--text-card-label);
+  line-height: var(--leading-card-label);
+  font-weight: var(--weight-card-label);
+}
+
+.card-heading-l {
+  font-size: var(--text-card-h-l);
+  line-height: var(--leading-card-h-l);
+  font-weight: var(--weight-card-h-l);
+}
+
+.card-heading-m {
+  font-size: var(--text-card-h-m);
+  line-height: var(--leading-card-h-m);
+  font-weight: var(--weight-card-h-m);
+}
+
+.card-heading-s {
+  font-size: var(--text-card-h-s);
+  line-height: var(--leading-card-h-s);
+  font-weight: var(--weight-card-h-s);
+  text-align: center;
+}
+
+.card-description {
+  font-size: var(--text-card-desc);
+  line-height: var(--leading-card-desc);
+  font-weight: var(--weight-card-desc);
+}
+
+.card-meta {
+  font-size: var(--text-card-meta);
+  line-height: var(--leading-card-meta);
+  font-weight: var(--weight-card-meta);
+}
+
+.card-action {
+  font-size: var(--text-card-action);
+  line-height: var(--leading-card-action);
+  font-weight: var(--weight-card-action);
+}
+
+/* ── Раскладка ──────────────────────────────────────────────── */
+
+.container { width: 100%; padding-inline: var(--container-pad); }
+
+.section { padding-block: calc(var(--space-section) / 2); }
+.section--surface { background: var(--color-surface); }
+.section--dark { background: var(--color-surface-dark); color: rgba(255, 255, 255, 0.82); }
+.section--dark h1, .section--dark h2, .section--dark h3 { color: var(--color-white); }
+
+.section__head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--wm));
+  margin-bottom: calc(40 * var(--wm));
+}
+
+@media (max-width: 767px) {
+  .section__head { margin-bottom: calc(24 * var(--wm)); }
+}
+
+/* ── Утилиты ────────────────────────────────────────────────── */
+
+.text-accent, .u-accent { color: var(--color-accent); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.u-br-d { display: inline; }
+.u-br-m { display: none; }
+@media (max-width: 600px) {
+  .u-br-d { display: none; }
+  .u-br-m { display: inline; }
+}
+
+/* ── Появление секций при скролле ───────────────────────────── */
+
+/* Стили приходят цепочкой @import, то есть уже после разметки.
+   Пока они не применены, размеры дефолтные, и объявленные на hero
+   переходы проигрывают этот скачок — картинка заметно дёргается
+   при первом появлении. До метки is-ready переходы выключены.  */
+html:not(.is-ready) .hero,
+html:not(.is-ready) .hero::after,
+html:not(.is-ready) .hero__panel,
+html:not(.is-ready) .hero__content,
+html:not(.is-ready) .hero__dots,
+html:not(.is-ready) .hero-dir,
+html:not(.is-ready) .hero-dir__panel,
+html:not(.is-ready) .hero-dir__crumbs,
+html:not(.is-ready) .hero-dir__content {
+  transition: none;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.reveal,
+main > section:not(.hero):not(.hero-dir):not(.hero-about-track),
+main > article.article,
+.footer {
+  opacity: 0;
+  transform: translateY(calc(20 * var(--wm)));
+  transition: opacity 900ms var(--ease-out-expo),
+              transform 900ms var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible,
+main > section:not(.hero):not(.hero-dir):not(.hero-about-track).is-visible,
+main > article.article.is-visible,
+.footer.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .header, .reveal, main > section, main > article.article, .footer {
+    opacity: 1; transform: none;
+  }
+  .hero__panel, .hero-dir__panel { animation: none; }
+}
+
+@media print {
+  .header, .reveal, main > section, main > article.article, .footer {
+    opacity: 1; transform: none;
+  }
+}
+
+/* Блокировка скролла при открытой модалке */
+html.is-locked, html.is-locked body { overflow: hidden; }

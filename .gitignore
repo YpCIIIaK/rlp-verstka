@@ -1,0 +1,13 @@
+# системный мусор
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# редакторы
+.vscode/
+.idea/
+*.swp
+
+# временные файлы
+*.log
+*.tmp

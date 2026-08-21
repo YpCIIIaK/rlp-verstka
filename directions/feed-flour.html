@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<!-- has-hero-intro стоит уже в разметке: если вешать её скриптом,
+     шапка успевает отрисоваться и заметно мигает. Снимает класс
+     тот же код, что сворачивает hero. -->
+<html lang="ru" class="has-hero-intro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Производство кормовой муки — RLP</title>
+  <meta name="description" content="" />
+  <link rel="icon" href="../assets/favicon/favicon.svg" type="image/svg+xml" />
+
+
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-400-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-500-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-700-cyrillic.woff2" crossorigin />
+
+  <link rel="stylesheet" href="../src/styles/main.css?v=111" />
+
+  <noscript>
+    <style>
+      .has-hero-intro .header { opacity: 1; pointer-events: auto; }
+      .hero-dir.is-intro { padding: calc(16 * var(--wm)); }
+      .hero-dir.is-intro .hero-dir__panel { border-radius: calc(20 * var(--wm)); }
+      .hero-dir.is-intro .hero-dir__crumbs,
+      .hero-dir.is-intro .hero-dir__content { opacity: 1; pointer-events: auto; }
+    </style>
+  </noscript>
+</head>
+<body class="page-direction">
+  <header class="header" data-header>
+    <div class="header__bar">
+
+      <a class="header__logo" href="../index.html" aria-label="RLP — на главную">
+        <img class="header__logo-light" src="../assets/logo/rlpLogoHeader2.png" alt="RLP" width="67" height="63" />
+        <img class="header__logo-dark" src="../assets/logo/newLogoHeaderBack.png" alt="" aria-hidden="true" width="67" height="63" />
+      </a>
+
+      <div class="header__right" data-nav>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="../about.html">О компании</a>
+
+          <div class="nav__item" data-nav-drop>
+            <a class="nav__link" href="../directions.html" aria-haspopup="true" aria-expanded="false">
+              Направления
+              <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+
+            <div class="nav__drop">
+              <div class="nav__drop-inner">
+                <a href="../directions/agriculture.html">Сельское хозяйство</a>
+                <a href="../directions/feed-flour.html">Кормовая мука</a>
+                <a href="../directions/storage.html">Хранение</a>
+                <a href="../directions/export.html">Экспорт и трейдинг</a>
+              </div>
+            </div>
+          </div>
+
+          <a class="nav__link" href="../news.html">Новости</a>
+          <a class="nav__link" href="../contacts.html">Контакты</a>
+        </nav>
+
+        <div class="nav__item" data-nav-drop>
+          <button class="header__lang" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Выбрать язык">
+            <span class="header__lang-flag" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <mask id="flag-ru" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                  <circle cx="10" cy="10" r="10" fill="#fff" />
+                </mask>
+                <g mask="url(#flag-ru)">
+                  <rect y="0" width="20" height="6.73" fill="#f5f5f5" />
+                  <rect y="6.73" width="20" height="6.73" fill="#41479b" />
+                  <rect y="13.46" width="20" height="6.73" fill="#ff4b55" />
+                </g>
+              </svg>
+            </span>
+            <span>Русский</span>
+            <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav__drop nav__drop--right">
+            <div class="nav__drop-inner">
+              <a class="is-current" href="#">Русский</a>
+              <a href="#">Қазақша</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu-toggle>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="page">
+
+    <!-- ── Hero направления ──────────────────────────────────── -->
+    <section class="hero-dir is-intro" data-hero>
+      <div class="hero-dir__panel">
+        <img class="hero-dir__img" fetchpriority="high" decoding="async" src="../assets/images/proizvodstvoKormovoiMukiHero.png" alt="" width="1408" height="776" />
+
+        <nav class="hero-dir__crumbs card-meta" aria-label="Хлебные крошки">
+          <a href="../index.html">Главная</a>
+          <span aria-hidden="true">/</span>
+          <a href="../directions.html">Направления</a>
+          <span aria-hidden="true">/</span>
+          <span class="is-current">Производство кормовой муки</span>
+        </nav>
+
+        <div class="hero-dir__content">
+          <h1 class="section-heading">Производство кормовой муки полного цикла</h1>
+          <p class="section-description">RLP Forage производит кормовую муку на двух площадках в Северном Казахстане общей проектной мощностью до 850 тонн в сутки.</p>
+          <a class="btn" href="../contacts.html">Запросить коммерческое предложение</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Кратко о направлении ──────────────────────────────── -->
+    <section class="shell feed">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Кратко о направлении</p>
+        <h2 class="section-heading">От зерна до готовой продукции</h2>
+      </div>
+
+      <div class="feed__main">
+        <div class="feed__text">
+          <h3 class="card-heading-l">RLP Forage — производственное направление холдинга RLP, специализирующееся на выпуске кормовой муки на основе пшеницы и ячменя.</h3>
+          <p class="section-description">Производство расположено на двух площадках — в Новоишимском и Тайынше. Производственные возможности компании развиваются за счёт собственной сырьевой базы, расширяющейся сети партнёрских хозяйств и логистических решений.</p>
+        </div>
+
+        <img class="feed__photo feed__photo--tall" src="../assets/images/kratkoProizvodstvoKormovoi.png" alt="" width="640" height="371" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- ── Мощности RLP Forage ───────────────────────────────── -->
+    <section class="shell about">
+
+      <div class="section-head">
+        <p class="section-label">Мощности RLP Forage</p>
+        <h2 class="section-heading">Производство, готовое к большим объёмам</h2>
+        <p class="section-description">Две производственные площадки RLP Forage обеспечивают текущую среднесуточную выработку 550 тонн кормовой муки при проектной мощности до 850 тонн в сутки.</p>
+      </div>
+
+      <div class="about__stack">
+
+        <div class="about__cards">
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">550</span>
+                <span class="stats-unit">тонн/сутки</span>
+              </p>
+              <p class="stats-description">Текущая среднесуточная выработка</p>
+            </div>
+            <img class="stat-card__img" src="../assets/images/moshnosti1ProizvodstvoKormovoi.png" alt="" width="302" height="260" loading="lazy" />
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">200</span>
+                <span class="stats-unit">тонн/сутки</span>
+              </p>
+              <p class="stats-description">Площадка в Новоишимском</p>
+            </div>
+            <img class="stat-card__img" src="../assets/images/moshnosti2ProizvodstvoKormovoi.png" alt="" width="302" height="260" loading="lazy" />
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">350</span>
+                <span class="stats-unit">тыс. тонн</span>
+              </p>
+              <p class="stats-description">Площадка в Тайынше</p>
+            </div>
+            <img class="stat-card__img" src="../assets/images/moshnosti3ProizvodstvoKormovoi.png" alt="" width="302" height="260" loading="lazy" />
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-prefix stats-unit">до</span>
+                <span class="stats-value">20</span>
+                <span class="stats-unit">тыс. тонн</span>
+              </p>
+              <p class="stats-description">Единовременное хранение</p>
+            </div>
+            <img class="stat-card__img" src="../assets/images/moshnosti4ProizvodstvoKormovoi.png" alt="" width="302" height="260" loading="lazy" />
+          </article>
+        </div>
+
+        <div class="about__cards about__cards--wide">
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">2024</span>
+                <span class="stats-unit">год</span>
+              </p>
+              <p class="stats-description">Запуск производства</p>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">150 000</span>
+                <span class="stats-unit">тонн/год</span>
+              </p>
+              <p class="stats-description">Плановый объём экспорта на 2026–2027 годы</p>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card__area">
+              <p class="stat-card__value">
+                <span class="stats-value">1 643 → 32 000</span>
+                <span class="stats-unit">тонн</span>
+              </p>
+              <p class="stats-description">Рост объёма выпуска и экспорта с 2024 по 2025 год</p>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Продукция ─────────────────────────────────────────── -->
+    <section class="shell feed">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Продукция RLP</p>
+        <h2 class="section-heading">Кормовая мука из<br />пшеницы и ячменя</h2>
+      </div>
+
+      <div class="feed__main feed__main--soft">
+        <div class="feed__text">
+          <h3 class="card-heading-l">Основной продукт RLP Forage для оптовых и экспортных поставок.</h3>
+
+          <div class="feed__mix">
+            <div class="raw-card">
+              <p class="card-heading-m">Пшеница и ячмень</p>
+              <p class="card-description">100% зерновое сырьё</p>
+            </div>
+
+            <ul class="specs-list">
+              <li><span class="card-description">Формат поставки</span><span class="card-description">Оптовые и экспортные партии</span></li>
+              <li><span class="card-description">Основной рынок</span><span class="card-description">Китай</span></li>
+              <li><span class="card-description">Экспорт</span><span class="card-description">100% продукции</span></li>
+              <li><span class="card-description">Производство</span><span class="card-description">Новоишимское, Тайынша</span></li>
+            </ul>
+          </div>
+
+          <a class="btn btn--green btn--block" href="../contacts.html">Запросить условия поставки</a>
+        </div>
+
+        <video class="feed__photo feed__photo--product" autoplay muted loop playsinline preload="metadata"
+               poster="../assets/images/produkciyaProizvodstvoKormovoi.png" width="640" height="470" aria-label="Кормовая мука RLP">
+          <source src="../assets/video/goat.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </section>
+
+    <!-- ── Галерея ───────────────────────────────────────────── -->
+    <section class="shell gallery">
+      <div class="gallery__row" data-gallery>
+        <div class="gallery__track" data-gallery-track>
+          <img src="../assets/images/prod2.png" alt="" width="380" height="380" />
+          <img src="../assets/images/prod3.png" alt="" width="380" height="380" />
+          <img class="is-active" src="../assets/images/prod4.png" alt="" width="380" height="380" />
+          <img src="../assets/images/prod5.png" alt="" width="380" height="380" />
+          <img src="../assets/images/mashtab.png" alt="" width="380" height="380" />
+        </div>
+      </div>
+
+      <div class="gallery__nav">
+        <button class="gallery__arrow" type="button" data-gallery-prev aria-label="Назад">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M18.6667 22.6668L12 16.0002L18.6667 9.3335V22.6668Z" fill="currentColor" />
+          </svg>
+        </button>
+        <button class="gallery__arrow" type="button" data-gallery-next aria-label="Вперёд">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M13.3333 22.6668L20 16.0002L13.3333 9.3335V22.6668Z" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Сотрудничество ────────────────────────────────────── -->
+    <section class="shell" id="partner">
+      <div class="partner">
+        <div class="partner__text">
+          <p class="section-label">Сотрудничество</p>
+          <h2 class="section-heading">Развиваем агробизнес вместе</h2>
+          <p class="section-description">Открыты к партнёрству с производителями, поставщиками и покупателями сельскохозяйственной продукции</p>
+          <a class="btn btn--green" href="../contacts.html">Стать партнером</a>
+        </div>
+        <img class="partner__photo" src="../assets/images/sotrudnichestvo.png" alt="" width="640" height="324" loading="lazy" />
+      </div>
+    </section>
+
+  </main>
+  <footer class="footer">
+
+    <div class="footer__main">
+
+      <a class="footer__logo" href="../index.html" aria-label="RLP Holding — на главную">
+        <img src="../assets/logo/logoFooter.png" alt="RLP Holding" width="129" height="120" loading="lazy" />
+      </a>
+
+      <div class="footer__cols">
+
+        <div class="footer__col">
+          <p class="footer__col-title">Навигация</p>
+          <nav class="footer__list" aria-label="Навигация в футере">
+            <a class="footer__link" href="../about.html">О холдинге</a>
+            <a class="footer__link" href="../news.html">Новости</a>
+            <a class="footer__link" href="../contacts.html">Контакты</a>
+            <a class="footer__link footer__link--accent" href="../vacancies.html">Вакансии</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Направления</p>
+          <nav class="footer__list" aria-label="Направления">
+            <a class="footer__link" href="../directions/agriculture.html">Сельское хозяйство</a>
+            <a class="footer__link" href="../directions/feed-flour.html">Кормовая мука</a>
+            <a class="footer__link" href="../directions/storage.html">Хранение</a>
+            <a class="footer__link" href="../directions/export.html">Экспорт и трейдинг</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Связаться с нами</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="mailto:rlp@gmail.com">rlp@gmail.com</a>
+            <a class="footer__link footer__link--medium" href="tel:+77017326006">+7 701 732 6006</a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Социальные сети</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="#" target="_blank" rel="noopener">Instagram</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">Facebook</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2026 RLP Holding</p>
+      <a href="../policy.html">Политика конфиденциальности</a>
+      <p>Сделано в <a href="https://factum.agency/" target="_blank" rel="noopener"><b>factum.</b></a></p>
+    </div>
+
+  </footer>
+
+  <script src="../assets/vendor/lenis.min.js"></script>
+  <script src="../src/lib/main.js?v=111"></script>
+</body>
+</html>

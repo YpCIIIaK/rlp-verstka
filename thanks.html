@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Спасибо — RLP</title>
+  <meta name="description" content="" />
+  <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+
+  <link rel="preload" as="image" href="assets/images/bigHeroImage.png" fetchpriority="high" />
+
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-400-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-500-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-700-cyrillic.woff2" crossorigin />
+
+  <link rel="stylesheet" href="src/styles/main.css?v=111" />
+</head>
+<body class="page-home">
+  <header class="header" data-header data-header-transparent>
+    <div class="header__bar">
+
+      <a class="header__logo" href="index.html" aria-label="RLP — на главную">
+        <img class="header__logo-light" src="assets/logo/rlpLogoHeader2.png" alt="RLP" width="67" height="63" />
+        <img class="header__logo-dark" src="assets/logo/newLogoHeaderBack.png" alt="" aria-hidden="true" width="67" height="63" />
+      </a>
+
+      <div class="header__right" data-nav>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="about.html">О компании</a>
+
+          <div class="nav__item" data-nav-drop>
+            <a class="nav__link" href="directions.html" aria-haspopup="true" aria-expanded="false">
+              Направления
+              <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+
+            <div class="nav__drop">
+              <div class="nav__drop-inner">
+                <a href="directions/agriculture.html">Сельское хозяйство</a>
+                <a href="directions/feed-flour.html">Кормовая мука</a>
+                <a href="directions/storage.html">Хранение</a>
+                <a href="directions/export.html">Экспорт и трейдинг</a>
+              </div>
+            </div>
+          </div>
+
+          <a class="nav__link" href="news.html">Новости</a>
+          <a class="nav__link" href="contacts.html">Контакты</a>
+        </nav>
+
+        <div class="nav__item" data-nav-drop>
+          <button class="header__lang" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Выбрать язык">
+            <span class="header__lang-flag" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <mask id="flag-ru" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                  <circle cx="10" cy="10" r="10" fill="#fff" />
+                </mask>
+                <g mask="url(#flag-ru)">
+                  <rect y="0" width="20" height="6.73" fill="#f5f5f5" />
+                  <rect y="6.73" width="20" height="6.73" fill="#41479b" />
+                  <rect y="13.46" width="20" height="6.73" fill="#ff4b55" />
+                </g>
+              </svg>
+            </span>
+            <span>Русский</span>
+            <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav__drop nav__drop--right">
+            <div class="nav__drop-inner">
+              <a class="is-current" href="#">Русский</a>
+              <a href="#">Қазақша</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu-toggle>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="page page--flush">
+
+    <section class="hero-dir">
+      <div class="hero-dir__panel">
+        <img class="hero-dir__img" src="assets/images/thanksImg.png" alt="" width="1408" height="776" />
+
+        <div class="hero-dir__content hero-dir__content--center">
+          <h1 class="section-heading">Спасибо!<br />Мы получили вашу заявку</h1>
+          <p class="section-description">Наш специалист свяжется с вами в ближайшее время, чтобы уточнить детали и ответить на вопросы.</p>
+          <a class="btn" href="index.html">Вернуться на главную</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="src/lib/main.js?v=111"></script>
+</body>
+</html>

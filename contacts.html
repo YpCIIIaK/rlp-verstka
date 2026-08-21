@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Контакты — RLP</title>
+  <meta name="description" content="" />
+  <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+
+
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-400-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-500-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-700-cyrillic.woff2" crossorigin />
+
+  <link rel="stylesheet" href="src/styles/main.css?v=111" />
+</head>
+<body class="page-contacts">
+  <header class="header" data-header data-header-transparent>
+    <div class="header__bar">
+
+      <a class="header__logo" href="index.html" aria-label="RLP — на главную">
+        <img class="header__logo-light" src="assets/logo/rlpLogoHeader2.png" alt="RLP" width="67" height="63" />
+        <img class="header__logo-dark" src="assets/logo/newLogoHeaderBack.png" alt="" aria-hidden="true" width="67" height="63" />
+      </a>
+
+      <div class="header__right" data-nav>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="about.html">О компании</a>
+
+          <div class="nav__item" data-nav-drop>
+            <a class="nav__link" href="directions.html" aria-haspopup="true" aria-expanded="false">
+              Направления
+              <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+
+            <div class="nav__drop">
+              <div class="nav__drop-inner">
+                <a href="directions/agriculture.html">Сельское хозяйство</a>
+                <a href="directions/feed-flour.html">Кормовая мука</a>
+                <a href="directions/storage.html">Хранение</a>
+                <a href="directions/export.html">Экспорт и трейдинг</a>
+              </div>
+            </div>
+          </div>
+
+          <a class="nav__link" href="news.html">Новости</a>
+          <a class="nav__link" href="contacts.html">Контакты</a>
+        </nav>
+
+        <div class="nav__item" data-nav-drop>
+          <button class="header__lang" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Выбрать язык">
+            <span class="header__lang-flag" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <mask id="flag-ru" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                  <circle cx="10" cy="10" r="10" fill="#fff" />
+                </mask>
+                <g mask="url(#flag-ru)">
+                  <rect y="0" width="20" height="6.73" fill="#f5f5f5" />
+                  <rect y="6.73" width="20" height="6.73" fill="#41479b" />
+                  <rect y="13.46" width="20" height="6.73" fill="#ff4b55" />
+                </g>
+              </svg>
+            </span>
+            <span>Русский</span>
+            <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav__drop nav__drop--right">
+            <div class="nav__drop-inner">
+              <a class="is-current" href="#">Русский</a>
+              <a href="#">Қазақша</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu-toggle>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="page page--contacts">
+
+    <section class="contacts">
+
+      <div class="contacts__grid">
+
+        <!-- левая колонка -->
+        <div class="contacts__col">
+
+          <div class="contacts__card contacts__intro">
+            <div class="contacts__head">
+              <p class="section-label">Контакты</p>
+              <h1 class="section-heading">Открыты к сотрудничеству и новым возможностям</h1>
+            </div>
+
+            <div class="contacts__list">
+              <div class="contacts__row">
+                <a class="contacts__item" href="mailto:rlpforage@gmail.com">
+                  <span class="section-label">Почта</span>
+                  <span class="section-description">rlpforage@gmail.com</span>
+                </a>
+                <a class="contacts__item" href="tel:+77019772828">
+                  <span class="section-label">Телефон</span>
+                  <span class="section-description">+7 (701) 977-28-28</span>
+                </a>
+              </div>
+              <div class="contacts__item">
+                <span class="section-label">Адрес</span>
+                <span class="section-description">СКО, с. Новоишимское, ул. Локомотивная, 48В</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contacts__card contacts__maps">
+            <div class="contacts__maps-head">
+              <h2 class="section-heading">Мы на карте</h2>
+              <p class="section-label">Выберите удобный способ навигации</p>
+            </div>
+
+            <div class="contacts__maps-row">
+              <a class="map-link" href="#" target="_blank" rel="noopener">
+                <span class="map-link__icon">
+                  <img src="assets/images/yandexKarty.png" alt="" width="34" height="34" loading="lazy" />
+                </span>
+                <span class="map-link__text">
+                  <span class="card-heading-m">Яндекс Карты</span>
+                  <span class="map-link__action card-action">
+                    Проложить маршрут
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+
+              <a class="map-link" href="#" target="_blank" rel="noopener">
+                <span class="map-link__icon">
+                  <img src="assets/images/2gisKarty.png" alt="" width="54" height="54" loading="lazy" />
+                </span>
+                <span class="map-link__text">
+                  <span class="card-heading-m">2ГИС</span>
+                  <span class="map-link__action card-action">
+                    Проложить маршрут
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- правая колонка: фото с формой -->
+        <div class="contacts__photo">
+          <img src="assets/images/contacts1.png" alt="" width="698" height="767" loading="lazy" />
+
+          <form class="lead" action="#" method="post">
+            <h2 class="section-heading lead__title">Оставить заявку</h2>
+            <p class="card-description">Расскажите, чем мы можем быть вам полезны. Свяжемся с вами и ответим на вопросы</p>
+
+            <label class="lead__field">
+              <span class="section-label">Имя</span>
+              <input type="text" name="name" required />
+            </label>
+
+            <label class="lead__field">
+              <span class="section-label">Телефон</span>
+              <input type="tel" name="phone" required />
+            </label>
+
+            <label class="lead__field">
+              <span class="section-label">Эл.почта</span>
+              <input type="email" name="email" />
+            </label>
+
+            <button class="btn btn--green btn--block" type="submit">Отправить</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  <footer class="footer">
+
+    <div class="footer__main">
+
+      <a class="footer__logo" href="index.html" aria-label="RLP Holding — на главную">
+        <img src="assets/logo/logoFooter.png" alt="RLP Holding" width="129" height="120" loading="lazy" />
+      </a>
+
+      <div class="footer__cols">
+
+        <div class="footer__col">
+          <p class="footer__col-title">Навигация</p>
+          <nav class="footer__list" aria-label="Навигация в футере">
+            <a class="footer__link" href="about.html">О холдинге</a>
+            <a class="footer__link" href="news.html">Новости</a>
+            <a class="footer__link" href="contacts.html">Контакты</a>
+            <a class="footer__link footer__link--accent" href="vacancies.html">Вакансии</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Направления</p>
+          <nav class="footer__list" aria-label="Направления">
+            <a class="footer__link" href="directions/agriculture.html">Сельское хозяйство</a>
+            <a class="footer__link" href="directions/feed-flour.html">Кормовая мука</a>
+            <a class="footer__link" href="directions/storage.html">Хранение</a>
+            <a class="footer__link" href="directions/export.html">Экспорт и трейдинг</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Связаться с нами</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="mailto:rlp@gmail.com">rlp@gmail.com</a>
+            <a class="footer__link footer__link--medium" href="tel:+77017326006">+7 701 732 6006</a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Социальные сети</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="#" target="_blank" rel="noopener">Instagram</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">Facebook</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2026 RLP Holding</p>
+      <a href="policy.html">Политика конфиденциальности</a>
+      <p>Сделано в <a href="https://factum.agency/" target="_blank" rel="noopener"><b>factum.</b></a></p>
+    </div>
+
+  </footer>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="src/lib/main.js?v=111"></script>
+</body>
+</html>

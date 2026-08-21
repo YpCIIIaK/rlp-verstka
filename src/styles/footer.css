@@ -1,0 +1,128 @@
+
+
+.footer { margin-top: auto; }
+
+/* ── Основная часть: градиент + колонки ─────────────────────── */
+
+.footer__main {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  gap: calc(175 * var(--wm));
+  min-height: calc(252 * var(--wm));
+  padding: calc(24 * var(--wm)) var(--container-pad) calc(68 * var(--wm));
+  border-bottom: 1px solid var(--color-green-700);
+  /* картинка нарисована ровно под этот прямоугольник (4320 × 756 —
+     это 1440 × 252 в три раза), поэтому cover её не подрезает      */
+  background: url("../../assets/images/footerGrad.png") center / cover no-repeat,
+              var(--grad-dark-to);
+  overflow: hidden;
+}
+
+.footer__logo { flex: none; }
+.footer__logo img {
+  width: calc(129 * var(--wm));
+  height: calc(120 * var(--wm));
+  object-fit: contain;
+}
+
+.footer__cols {
+  display: flex;
+  gap: calc(120 * var(--wm));
+  align-items: flex-start;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+  flex: none;
+}
+
+.footer__col-title {
+  font-size: calc(16 * var(--wm));
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+  color: var(--color-white);
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+}
+
+.footer__link {
+  font-size: calc(16 * var(--wm));
+  font-weight: var(--weight-regular);
+  line-height: 1.5;
+  color: var(--color-white);
+  white-space: nowrap;
+  transition: color var(--duration-base) var(--ease-out);
+}
+.footer__link:hover { color: var(--color-green-500); }
+
+/* контакты и первая соцсеть в макете идут Medium */
+.footer__link--medium { font-weight: var(--weight-medium); }
+
+/* акцентный пункт (Вакансии) и текущая страница — один вид */
+.footer__link.is-current,
+.footer__link--accent {
+  color: var(--color-green-500);
+  text-decoration: underline;
+}
+.footer__link.is-current:hover,
+.footer__link--accent:hover { color: var(--color-white); }
+
+/* ── Нижняя плашка ──────────────────────────────────────────── */
+
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(10 * var(--wm));
+  min-height: calc(56 * var(--wm));
+  padding: calc(16 * var(--wm)) var(--container-pad);
+  background: var(--color-gray-dark);
+}
+
+.footer__bottom p,
+.footer__bottom a {
+  font-size: calc(14 * var(--wm));
+  font-weight: var(--weight-regular);
+  line-height: 1.7143;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+.footer__bottom a { transition: color var(--duration-base) var(--ease-out); }
+.footer__bottom a:hover { color: var(--color-green-500); }
+
+@media (max-width: 1024px) {
+  .footer__main { gap: calc(60 * var(--wm)); }
+  .footer__cols { gap: calc(48 * var(--wm)); flex-wrap: wrap; }
+}
+
+@media (max-width: 767px) {
+  .footer__main {
+    flex-direction: column;
+    gap: calc(32 * var(--wm));
+    padding-bottom: calc(40 * var(--wm));
+  }
+
+  .footer__cols {
+    gap: calc(28 * var(--wm)) calc(32 * var(--wm));
+    width: 100%;
+  }
+  .footer__col { flex: 1 1 calc(45% - 16 * var(--wm)); }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(8 * var(--wm));
+  }
+  .footer__bottom p,
+  .footer__bottom a { white-space: normal; }
+}

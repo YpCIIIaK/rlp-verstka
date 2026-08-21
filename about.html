@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О компании — RLP</title>
+  <meta name="description" content="" />
+  <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+
+
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-400-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-500-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter-700-cyrillic.woff2" crossorigin />
+
+  <link rel="stylesheet" href="src/styles/main.css?v=111" />
+</head>
+<body class="page-about">
+  <header class="header" data-header>
+    <div class="header__bar">
+
+      <a class="header__logo" href="index.html" aria-label="RLP — на главную">
+        <img class="header__logo-light" src="assets/logo/rlpLogoHeader2.png" alt="RLP" width="67" height="63" />
+        <img class="header__logo-dark" src="assets/logo/newLogoHeaderBack.png" alt="" aria-hidden="true" width="67" height="63" />
+      </a>
+
+      <div class="header__right" data-nav>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="about.html">О компании</a>
+
+          <div class="nav__item" data-nav-drop>
+            <a class="nav__link" href="directions.html" aria-haspopup="true" aria-expanded="false">
+              Направления
+              <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+
+            <div class="nav__drop">
+              <div class="nav__drop-inner">
+                <a href="directions/agriculture.html">Сельское хозяйство</a>
+                <a href="directions/feed-flour.html">Кормовая мука</a>
+                <a href="directions/storage.html">Хранение</a>
+                <a href="directions/export.html">Экспорт и трейдинг</a>
+              </div>
+            </div>
+          </div>
+
+          <a class="nav__link" href="news.html">Новости</a>
+          <a class="nav__link" href="contacts.html">Контакты</a>
+        </nav>
+
+        <div class="nav__item" data-nav-drop>
+          <button class="header__lang" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Выбрать язык">
+            <span class="header__lang-flag" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <mask id="flag-ru" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                  <circle cx="10" cy="10" r="10" fill="#fff" />
+                </mask>
+                <g mask="url(#flag-ru)">
+                  <rect y="0" width="20" height="6.73" fill="#f5f5f5" />
+                  <rect y="6.73" width="20" height="6.73" fill="#41479b" />
+                  <rect y="13.46" width="20" height="6.73" fill="#ff4b55" />
+                </g>
+              </svg>
+            </span>
+            <span>Русский</span>
+            <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav__drop nav__drop--right">
+            <div class="nav__drop-inner">
+              <a class="is-current" href="#">Русский</a>
+              <a href="#">Қазақша</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu-toggle>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="page">
+    <!-- ── Hero страницы «О компании» ─────────────────────────
+         Блок липнет к экрану, а прокрутка проигрывает четыре
+         состояния макета: уезжает фотография, сменяется
+         заголовок, проявляется текст. Дальше страница едет
+         дальше как обычно.                                    -->
+    <section class="hero-about-track" data-hero-scroll>
+      <div class="hero-about">
+        <div class="hero-about__panel">
+
+          <img class="hero-about__img" src="assets/images/hero2.png" alt="" width="1408" height="558" />
+
+          <nav class="hero-about__crumbs card-meta" aria-label="Хлебные крошки">
+            <a href="index.html">Главная</a>
+            <span aria-hidden="true">/</span>
+            <span class="is-current">О компании</span>
+          </nav>
+
+          <div class="hero-about__group">
+
+            <div class="hero-about__titles">
+              <div class="hero-about__titles-track">
+                <div class="hero-about__title">
+                  <p class="section-label">О холдинге</p>
+                  <h1 class="section-heading">Развиваем сельское хозяйство — от поля до международных поставок</h1>
+                </div>
+                <div class="hero-about__title">
+                  <p class="section-label">Подробнее о компании</p>
+                  <h2 class="section-heading">Объединяем ключевые этапы агропроизводства в единую систему</h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-about__text">
+              <p class="hero-about__para section-description">RLP развивает несколько взаимосвязанных направлений: растениеводство, производство кормовой муки, хранение сельскохозяйственной продукции и логистику. Это позволяет выстраивать последовательный путь продукции — от выращивания и подготовки до хранения и поставки партнёрам.</p>
+              <p class="hero-about__para section-description">Мы работаем на внутреннем и международном рынках, развивая поставки в Китай, Европу и страны Средней Азии. В основе нашей работы — стабильное качество, ответственность перед партнёрами и долгосрочный подход к развитию.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ── Направления деятельности ──────────────────────────── -->
+    <section class="shell directions" id="directions">
+
+      <div class="section-head">
+        <p class="section-label">Направления деятельности</p>
+        <h2 class="section-heading">Полный цикл — от выращивания до экспорта</h2>
+      </div>
+
+      <div class="directions__grid">
+
+        <article class="dir-card">
+          <div class="dir-card__cover">
+            <img src="assets/images/napravlenie1.png" alt="" width="634" height="260" loading="lazy" />
+            <img class="dir-card__logo" src="assets/images/napravlenieLogo1.png" alt="Астык Мол" loading="lazy" />
+          </div>
+          <div class="dir-card__body">
+            <div class="dir-card__top">
+              <p class="dir-card__labels">
+                <span class="card-label">ТОО «Астык Мол»</span>
+                <span class="card-label card-label--plain">,</span>
+                <span class="card-label">ТОО «Новый труд»</span>
+              </p>
+              <h3 class="card-heading-m">Сельское хозяйство</h3>
+              <p class="card-description">Выращивает зерновые, масличные и бобовые культуры, развивает животноводство и формирует собственную сырьевую базу холдинга.</p>
+            </div>
+            <div class="dir-card__foot">
+              <ul class="dir-card__meta">
+                <li class="card-meta">16 000 га</li>
+                <li class="card-meta">160 голов КРС</li>
+              </ul>
+              <a class="dir-card__action card-action" href="directions/agriculture.html">
+                Подробнее
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="dir-card">
+          <div class="dir-card__cover">
+            <img src="assets/images/napravlenie2.png" alt="" width="634" height="260" loading="lazy" />
+            <img class="dir-card__logo" src="assets/images/napravlenieLogo2.png" alt="RLP Forage" loading="lazy" />
+          </div>
+          <div class="dir-card__body">
+            <div class="dir-card__top">
+              <p class="dir-card__labels">
+                <span class="card-label">ТОО «RLP Forage»</span>
+              </p>
+              <h3 class="card-heading-m">Производство кормовой муки</h3>
+              <p class="card-description">Производство кормовой муки из пшеницы и ячменя на двух площадках.</p>
+            </div>
+            <div class="dir-card__foot">
+              <ul class="dir-card__meta">
+                <li class="card-meta">400 т/сутки</li>
+                <li class="card-meta">450 т/сутки</li>
+                <li class="card-meta">850 т/сутки</li>
+              </ul>
+              <a class="dir-card__action card-action" href="directions/feed-flour.html">
+                Подробнее
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="dir-card">
+          <div class="dir-card__cover">
+            <img src="assets/images/napravlenie3.png" alt="" width="634" height="260" loading="lazy" />
+            <img class="dir-card__logo" src="assets/images/napravlenoeLogo3.png" alt="RLP Forage" loading="lazy" />
+          </div>
+          <div class="dir-card__body">
+            <div class="dir-card__top">
+              <p class="dir-card__labels">
+                <span class="card-label">ТОО «RLP Forage»</span>
+              </p>
+              <h3 class="card-heading-m">Хранение</h3>
+              <p class="card-description">Приём и хранение сельскохозяйственной продукции в Новоишимском.</p>
+            </div>
+            <div class="dir-card__foot">
+              <ul class="dir-card__meta">
+                <li class="card-meta">До 20 000 тонн</li>
+                <li class="card-meta">Элеваторный комплекс</li>
+              </ul>
+              <a class="dir-card__action card-action" href="directions/storage.html">
+                Подробнее
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="dir-card">
+          <div class="dir-card__cover">
+            <img src="assets/images/napravlenie4.png" alt="" width="634" height="260" loading="lazy" />
+            <img class="dir-card__logo" src="assets/images/napravlenieLogo4.png" alt="Астык Новоишимка" loading="lazy" />
+          </div>
+          <div class="dir-card__body">
+            <div class="dir-card__top">
+              <p class="dir-card__labels">
+                <span class="card-label">ТОО «Астык Новоишимка»</span>
+              </p>
+              <h3 class="card-heading-m">Экспорт и трейдинг</h3>
+              <p class="card-description">Международные поставки зерновых, масличных и бобовых культур.</p>
+            </div>
+            <div class="dir-card__foot">
+              <ul class="dir-card__meta">
+                <li class="card-meta">Китай</li>
+                <li class="card-meta">Европа</li>
+                <li class="card-meta">Средняя Азия</li>
+              </ul>
+              <a class="dir-card__action card-action" href="directions/export.html">
+                Подробнее
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 16L16 8M16 8H9M16 8V15" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── Команда ───────────────────────────────────────────── -->
+    <section class="shell team" id="team">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Команда</p>
+        <h2 class="section-heading">Люди, которые развивают RLP</h2>
+      </div>
+
+      <div class="team__row" data-drag-scroll>
+
+        <article class="team-card">
+          <img class="team-card__img" src="assets/images/komanda1.png" alt="Айдар Садыков" width="412" height="240" loading="lazy" />
+          <div class="team-card__body">
+            <div class="team-card__top">
+              <h3 class="card-heading-m">Айдар Садыков</h3>
+              <p class="card-description">Определяет стратегию развития холдинга и координирует работу ключевых направлений.</p>
+            </div>
+            <ul class="dir-card__meta">
+              <li class="card-meta">Генеральный директор</li>
+              <li class="card-meta">15 лет в отрасли</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <img class="team-card__img" src="assets/images/komanda2.png" alt="Динара Омарова" width="412" height="240" loading="lazy" />
+          <div class="team-card__body">
+            <div class="team-card__top">
+              <h3 class="card-heading-m">Динара Омарова</h3>
+              <p class="card-description">Управляет производственными процессами и отвечает за качество продукции на всех этапах.</p>
+            </div>
+            <ul class="dir-card__meta">
+              <li class="card-meta">Директор по производству</li>
+              <li class="card-meta">12 лет в отрасли</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <img class="team-card__img" src="assets/images/komanda3.png" alt="Марат Ибраев" width="412" height="240" loading="lazy" />
+          <div class="team-card__body">
+            <div class="team-card__top">
+              <h3 class="card-heading-m">Марат Ибраев</h3>
+              <p class="card-description">Развивает логистическую систему холдинга и координирует внутренние и экспортные поставки.</p>
+            </div>
+            <ul class="dir-card__meta">
+              <li class="card-meta">Директор по логистике</li>
+              <li class="card-meta">10 лет в отрасли</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="team-card">
+          <img class="team-card__img" src="assets/images/komanda3.png" alt="Марат Ибраев" width="412" height="240" loading="lazy" />
+          <div class="team-card__body">
+            <div class="team-card__top">
+              <h3 class="card-heading-m">Марат Ибраев</h3>
+              <p class="card-description">Развивает логистическую систему холдинга и координирует внутренние и экспортные поставки.</p>
+            </div>
+            <ul class="dir-card__meta">
+              <li class="card-meta">Директор по логистике</li>
+              <li class="card-meta">10 лет в отрасли</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── Партнёры ──────────────────────────────────────────── -->
+    <section class="shell partners" id="partners">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Партнёры</p>
+        <h2 class="section-heading">Объединяем возможности для устойчивого роста</h2>
+      </div>
+
+      <div class="partners__row" data-drag-scroll>
+        <div class="partners__item">
+          <img src="assets/images/partnery1.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery2.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery3.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery1.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery2.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery3.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+        <div class="partners__item">
+          <img src="assets/images/partnery1.png" alt="Партнёр RLP" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Лицензии ──────────────────────────────────────────── -->
+    <section class="shell licenses" id="licenses">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Документы холдинга</p>
+        <h2 class="section-heading">Лицензии</h2>
+      </div>
+
+      <ul class="licenses__list">
+        <li class="license-card">
+          <div class="license-card__top">
+            <h3 class="card-heading-l">Реализация средств защиты растений</h3>
+            <p class="card-description">Разрешает деятельность в сфере реализации химических средств защиты растений на территории Республики Казахстан.</p>
+          </div>
+          <div class="license-card__foot">
+            <p class="card-meta">2023 · Республика Казахстан</p>
+            <a class="btn btn--soft btn--block" href="#">Открыть документ</a>
+          </div>
+        </li>
+
+        <li class="license-card">
+          <div class="license-card__top">
+            <h3 class="card-heading-l">Реализация средств защиты растений</h3>
+            <p class="card-description">Разрешает деятельность в сфере реализации химических средств защиты растений на территории Республики Казахстан.</p>
+          </div>
+          <div class="license-card__foot">
+            <p class="card-meta">2023 · Республика Казахстан</p>
+            <a class="btn btn--soft btn--block" href="#">Открыть документ</a>
+          </div>
+        </li>
+
+        <li class="license-card">
+          <div class="license-card__top">
+            <h3 class="card-heading-l">Реализация средств защиты растений</h3>
+            <p class="card-description">Разрешает деятельность в сфере реализации химических средств защиты растений на территории Республики Казахстан.</p>
+          </div>
+          <div class="license-card__foot">
+            <p class="card-meta">2023 · Республика Казахстан</p>
+            <a class="btn btn--soft btn--block" href="#">Открыть документ</a>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ── Сотрудничество ────────────────────────────────────── -->
+    <section class="shell" id="partner">
+      <div class="partner">
+        <div class="partner__text">
+          <p class="section-label">Сотрудничество</p>
+          <h2 class="section-heading">Развиваем агробизнес вместе</h2>
+          <p class="section-description">Открыты к партнёрству с производителями, поставщиками и покупателями сельскохозяйственной продукции</p>
+          <a class="btn btn--green" href="contacts.html">Стать партнером</a>
+        </div>
+        <img class="partner__photo" src="assets/images/sotrudnichestvo.png" alt="Сотрудничество с RLP" width="640" height="324" loading="lazy" />
+      </div>
+    </section>
+
+  </main>
+  <footer class="footer">
+
+    <div class="footer__main">
+
+      <a class="footer__logo" href="index.html" aria-label="RLP Holding — на главную">
+        <img src="assets/logo/logoFooter.png" alt="RLP Holding" width="129" height="120" loading="lazy" />
+      </a>
+
+      <div class="footer__cols">
+
+        <div class="footer__col">
+          <p class="footer__col-title">Навигация</p>
+          <nav class="footer__list" aria-label="Навигация в футере">
+            <a class="footer__link" href="about.html">О холдинге</a>
+            <a class="footer__link" href="news.html">Новости</a>
+            <a class="footer__link" href="contacts.html">Контакты</a>
+            <a class="footer__link footer__link--accent" href="vacancies.html">Вакансии</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Направления</p>
+          <nav class="footer__list" aria-label="Направления">
+            <a class="footer__link" href="directions/agriculture.html">Сельское хозяйство</a>
+            <a class="footer__link" href="directions/feed-flour.html">Кормовая мука</a>
+            <a class="footer__link" href="directions/storage.html">Хранение</a>
+            <a class="footer__link" href="directions/export.html">Экспорт и трейдинг</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Связаться с нами</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="mailto:rlp@gmail.com">rlp@gmail.com</a>
+            <a class="footer__link footer__link--medium" href="tel:+77017326006">+7 701 732 6006</a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Социальные сети</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="#" target="_blank" rel="noopener">Instagram</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">Facebook</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2026 RLP Holding</p>
+      <a href="policy.html">Политика конфиденциальности</a>
+      <p>Сделано в <a href="https://factum.agency/" target="_blank" rel="noopener"><b>factum.</b></a></p>
+    </div>
+
+  </footer>
+
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script src="src/lib/main.js?v=111"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+
+:root {
+
+  /* Масштабирование: все размеры = calc(N * var(--wm)), где N — пиксели из макета */
+  --width-base:       1440;
+  --width-current:    100vw;
+  --width-multiplier: calc(var(--width-current) / var(--width-base));
+  --wm:               var(--width-multiplier);
+
+  /* ── Палитра (Figma) ────────────────────────────────────────── */
+  --color-white:      #ffffff;
+  --color-white-2:    #fefefe;
+  --color-green-700:  #3b6145;
+  --color-green-500:  #5ebf66;
+  --color-teal-700:   #078bbe;
+  --color-gray-dark:  #142017;
+  --hero-about-bg:    #131f16;   /* подложка hero «О компании» */
+  --hero-about-panel: #45514c;
+  --color-black:      #000000;
+  --color-white-3:    #f9f9f9;
+
+  /* поверхности карточек */
+  --surface-card:  #f9f9f9;
+  --surface-soft:  #f6f6f6;
+  --surface-soft-2:#f9f8f8;
+  --surface-hint:  #f5f5f5;
+  --surface-lime:  #e5f0e2;
+  --surface-sand:  #edece4;
+
+  /* акценты из макета главной */
+  --color-green-brand: #26892e;   /* кнопки, ссылки-действия  */
+  --color-green-label: #4daf4a;   /* подписи ТОО в карточках  */
+  --color-orange:      #e1a623;   /* вторая линия на графике экспорта */
+  --color-white-70:    rgba(255, 255, 255, 0.7);
+  --color-brown:       #64533e;   /* «20% ячменя»             */
+  --color-green-05:    rgba(94, 191, 102, 0.05);
+  --color-green-15:    rgba(38, 137, 46, 0.15);
+
+  /* полупрозрачные подложки пилюль в шапке */
+  --color-white-10:   rgba(255, 255, 255, 0.10);
+  --color-white-15:   rgba(255, 255, 255, 0.15);
+  --color-white-30:   rgba(255, 255, 255, 0.30);
+  --color-white-05:   rgba(255, 255, 255, 0.05);
+  --color-white-50:   rgba(255, 255, 255, 0.50);
+  --color-black-02:   rgba(0, 0, 0, 0.02);
+  --color-black-03:   rgba(0, 0, 0, 0.03);
+  --color-black-05:   rgba(0, 0, 0, 0.05);
+  --color-black-08:   rgba(0, 0, 0, 0.08);
+  --color-black-15:   rgba(0, 0, 0, 0.15);
+  --color-black-20:   rgba(0, 0, 0, 0.20);
+  --color-black-30:   rgba(0, 0, 0, 0.30);
+  --color-black-50:   rgba(0, 0, 0, 0.50);
+
+  /* Градиент футера / тёмных секций.
+     В Figma это Diamond с центром на логотипе (~90, 18 от левого
+     верхнего угла блока) и ручкой ~290px. Ромбовидный спад в CSS
+     точно не выражается, здесь — эллиптический radial из той же
+     точки. К граням ромба вернёмся отдельно.                      */
+  --grad-dark-from: #52855e;
+  --grad-dark-to:   #131f16;
+  --grad-dark-x:    calc(90 * var(--wm));
+  --grad-dark-y:    calc(18 * var(--wm));
+  --grad-dark-w:    calc(350 * var(--wm));
+  --grad-dark-h:    calc(110 * var(--wm));
+  --gradient-dark:  radial-gradient(ellipse var(--grad-dark-w) var(--grad-dark-h)
+                      at var(--grad-dark-x) var(--grad-dark-y),
+                      var(--grad-dark-from) 0%, var(--grad-dark-to) 100%);
+
+  /* Diamond из макета с ручками в левом верхнем и правом нижнем углу.
+     У ромба линии равного значения идут по |x| + |y| = const, то есть
+     под 45°, и в видимом квадранте это в точности линейный градиент
+     под 135°: проекция правого нижнего угла даёт ровно 100%.        */
+  --gradient-diamond: linear-gradient(135deg,
+                        var(--grad-dark-from) 0%, var(--grad-dark-to) 100%);
+
+  /* TODO: светлая часть палитры — из макета */
+  --main-light:   #f4f4f4;
+  --main-dark:    var(--color-gray-dark);
+  --main-white:   var(--color-white);
+  --main-accent:  var(--color-green-500);
+  --main-muted:   #7a7a7a;
+
+  --color-bg:        var(--main-light);
+  --color-heading:   var(--main-dark);
+  --color-body:      var(--main-dark);
+  --color-muted:     var(--main-muted);
+  --color-accent:    var(--main-accent);
+  --color-on-accent: var(--color-white);
+
+  --color-surface:      var(--main-white);
+  --color-surface-dark: var(--color-gray-dark);
+  --color-line:         rgba(20, 32, 23, 0.12);
+
+  /* ── Поля форм ──────────────────────────────────────────────── */
+  --field-bg:        rgba(26, 26, 26, 0.05);
+  --field-bg-active: rgba(26, 26, 26, 0.08);
+  --field-line:      rgba(26, 26, 26, 0.2);
+
+  --field-bg-dark:        rgba(255, 255, 255, 0.1);
+  --field-bg-dark-active: rgba(255, 255, 255, 0.2);
+  --field-line-dark:      rgba(255, 255, 255, 0.3);
+
+  --field-error:   #ff6b6b;
+  --field-success: #55b51e;
+
+  /* ── Типографика (Figma) ────────────────────────────────────
+     Все размеры = px из макета × --wm.
+     line-height задан безразмерным = px_line / px_size.        */
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  /* Euclid Flex — roman 300–700, см. fonts.css */
+  --font-alt:     "Euclid Flex", var(--font-sans);
+  --font-display: var(--font-sans);
+
+  --weight-regular: 400;  --weight-medium: 500;  --weight-semibold: 600;  --weight-bold: 700;
+
+  /* Hero */
+  --text-hero: calc(54 * var(--wm));  --leading-hero: 1.1111;  --weight-hero: 700;
+
+  /* Section */
+  --text-section-h:     calc(32 * var(--wm));  --leading-section-h:     1.3125;  --weight-section-h:     500;
+  --text-section-desc:  calc(18 * var(--wm));  --leading-section-desc:  1.3333;  --weight-section-desc:  400;
+  --text-section-label: calc(14 * var(--wm));  --leading-section-label: 1.1429;  --weight-section-label: 400;
+
+  /* Stats */
+  --text-stats-value:  calc(42 * var(--wm));  --leading-stats-value:  1;       --weight-stats-value:  500;
+  --text-stats-prefix: calc(18 * var(--wm));  --leading-stats-prefix: 1.3333;  --weight-stats-prefix: 500;
+  --text-stats-unit:   calc(18 * var(--wm));  --leading-stats-unit:   1.3333;  --weight-stats-unit:   500;
+  --text-stats-desc:   calc(16 * var(--wm));  --leading-stats-desc:   1.5;     --weight-stats-desc:   500;
+
+  /* Card */
+  --text-card-label:  calc(14 * var(--wm));  --leading-card-label:  1.7143;  --weight-card-label:  500;
+  --text-card-h-l:    calc(24 * var(--wm));  --leading-card-h-l:    1.1667;  --weight-card-h-l:    400;
+  --text-card-h-m:    calc(22 * var(--wm));  --leading-card-h-m:    1.2727;  --weight-card-h-m:    500;
+  --text-card-h-s:    calc(18 * var(--wm));  --leading-card-h-s:    1.5556;  --weight-card-h-s:    500;
+  --text-card-desc:   calc(16 * var(--wm));  --leading-card-desc:   1.375;   --weight-card-desc:   400;
+  --text-card-meta:   calc(14 * var(--wm));  --leading-card-meta:   1.7143;  --weight-card-meta:   400;
+  --text-card-action: calc(14 * var(--wm));  --leading-card-action: 1.7143;  --weight-card-action: 400;
+
+  /* Button */
+  --text-btn-m:  calc(16 * var(--wm));  --leading-btn-m:  1.25;    --weight-btn-m:  500;
+  --text-btn-s:  calc(16 * var(--wm));  --leading-btn-s:  1.25;    --weight-btn-s:  500;
+  --text-btn-xs: calc(14 * var(--wm));  --leading-btn-xs: 1.1429;  --weight-btn-xs: 400;
+
+  /* Алиасы под теги и общие утилиты */
+  --text-h1: var(--text-hero);       --leading-h1: var(--leading-hero);       --weight-h1: var(--weight-hero);
+  --text-h2: var(--text-section-h);  --leading-h2: var(--leading-section-h);  --weight-h2: var(--weight-section-h);
+  --text-h3: var(--text-card-h-l);   --leading-h3: var(--leading-card-h-l);   --weight-h3: var(--weight-card-h-l);
+  --text-h4: var(--text-card-h-m);   --leading-h4: var(--leading-card-h-m);   --weight-h4: var(--weight-card-h-m);
+  --text-h5: var(--text-card-h-s);   --leading-h5: var(--leading-card-h-s);   --weight-h5: var(--weight-card-h-s);
+
+  --text-s:   var(--text-card-meta);     --leading-s:   var(--leading-card-meta);     --weight-s:   400;
+  --text-s-2: var(--text-card-label);    --leading-s-2: var(--leading-card-label);    --weight-s-2: 500;
+  --text-m:   var(--text-card-desc);     --leading-m:   var(--leading-card-desc);     --weight-m:   400;
+  --text-l:   var(--text-section-desc);  --leading-l:   var(--leading-section-desc);  --weight-l:   400;
+
+  --text-menu:       var(--text-btn-m);          --leading-menu:       var(--leading-btn-m);          --weight-menu:       500;
+  --text-descriptor: var(--text-section-label);  --leading-descriptor: var(--leading-section-label);  --weight-descriptor: 400;
+  --text-numbers-l:  var(--text-stats-value);    --leading-numbers-l:  var(--leading-stats-value);    --weight-numbers-l:  500;
+
+  --text-base:      var(--text-card-desc);
+  --leading-normal: var(--leading-card-desc);
+
+  /* ── Сетка и отступы ────────────────────────────────────────── */
+  --space-3xs: 0.25rem;  --space-2xs: 0.5rem;  --space-xs: 0.75rem;
+  --space-sm:  1rem;     --space-md:  1.5rem;  --space-lg: 2rem;
+  --space-xl:  3rem;     --space-2xl: 4rem;
+
+  --space-section: calc(120 * var(--wm));
+  --container-pad: calc(24 * var(--wm));   /* шапка и футер — по макету 24 */
+  --page-pad:      calc(80 * var(--wm));   /* контент страницы: 1440 - 80*2 = 1280 */
+  --header-top:    calc(24 * var(--wm));
+  --header-height: calc(90 * var(--wm));
+
+  /* ── Радиусы и тени ─────────────────────────────────────────── */
+  --radius-sm:   calc(8 * var(--wm));
+  --radius-md:   calc(12 * var(--wm));
+  --radius-lg:   calc(20 * var(--wm));
+  --radius-pill: calc(999 * var(--wm));
+
+  --shadow-sm: 0 calc(4 * var(--wm)) calc(14 * var(--wm)) rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 calc(12 * var(--wm)) calc(30 * var(--wm)) rgba(0, 0, 0, 0.10);
+
+  /* ── Анимации ───────────────────────────────────────────────── */
+  --duration-fast: 150ms;
+  --duration-base: 260ms;
+  --duration-slow: 600ms;
+  --duration-intro: 1100ms;   /* переход hero из вступительного вида */
+  --duration-intro-dir: 800ms; /* то же на страницах направлений */
+  --duration-draw: 1400ms;     /* построение графика при прокрутке */
+  --ease-out:      cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Слои ───────────────────────────────────────────────────── */
+  --z-header: 100;  --z-menu: 200;  --z-widget: 300;  --z-modal: 400;
+
+  /* ── Иконки в data-URI ──────────────────────────────────────── */
+  --icon-cross: url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='8'%20height='8'%20viewBox='0%200%208%208'><path%20fill='%23000'%20d='M7.14706%200.146137C7.34221-0.0487693%207.65887-0.0486554%207.85409%200.146137C8.04929%200.341324%208.04914%200.657885%207.85409%200.853168L4.70663%203.99965L7.85507%207.14809C8.04978%207.34335%208.05004%207.66002%207.85507%207.85512C7.65997%208.05007%207.34329%208.04982%207.14804%207.85512L4.00058%204.70766L0.854095%207.85512C0.658959%208.05002%200.342287%208.04988%200.147063%207.85512C-0.0481298%207.65993-0.0479783%207.34337%200.147063%207.14809L3.29355%204.00063L0.146087%200.853168C-0.0486201%200.657949-0.0487711%200.34126%200.146087%200.146137C0.341203-0.0488232%200.657867-0.0486017%200.853118%200.146137L4.00058%203.2936L7.14706%200.146137Z'/></svg>");
+  --icon-check: url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='12'%20height='8'%20viewBox='0%200%2012%208'><path%20fill='%23000'%20d='M10.6464%200.146447C10.8417-0.0488156%2011.1582-0.0488156%2011.3535%200.146447C11.5483%200.341743%2011.5486%200.65836%2011.3535%200.853478L4.35345%207.85348C4.15833%208.04854%203.8417%208.04829%203.64642%207.85348L0.14642%204.35445C-0.0488243%204.15921-0.0487892%203.84171%200.14642%203.64645C0.341683%203.45118%200.659165%203.45118%200.854428%203.64645L4.00091%206.79293L10.6464%200.146447Z'/></svg>");
+}
+
+@media (max-width: 1024px) { :root { --width-base: 768; --width-current: 100vmin; } }
+
+@media (max-width: 767px) {
+  :root {
+    --width-base: 390;
+    --width-current: 100vmin;
+  }
+
+  /* TODO: значения из мобильного макета. Пока — рабочий даунскейл;
+     переопределяем базовые токены, алиасы подтянутся сами.        */
+  body {
+    --text-hero:          calc(32 * var(--wm));
+    --text-section-h:     calc(24 * var(--wm));
+    --text-section-desc:  calc(16 * var(--wm));
+    --text-section-label: calc(13 * var(--wm));
+
+    --text-stats-value:   calc(32 * var(--wm));
+    --text-stats-prefix:  calc(16 * var(--wm));
+    --text-stats-unit:    calc(16 * var(--wm));
+    --text-stats-desc:    calc(14 * var(--wm));
+
+    --text-card-label:  calc(13 * var(--wm));
+    --text-card-h-l:    calc(20 * var(--wm));
+    --text-card-h-m:    calc(18 * var(--wm));
+    --text-card-h-s:    calc(16 * var(--wm));
+    --text-card-desc:   calc(15 * var(--wm));
+    --text-card-meta:   calc(13 * var(--wm));
+    --text-card-action: calc(13 * var(--wm));
+
+    --text-btn-m:  calc(15 * var(--wm));
+    --text-btn-s:  calc(15 * var(--wm));
+    --text-btn-xs: calc(13 * var(--wm));
+
+    --space-section: calc(64 * var(--wm));
+    --container-pad: calc(20 * var(--wm));
+    --page-pad:      calc(20 * var(--wm));
+    --header-top:    0px;
+    --header-height: calc(72 * var(--wm));
+
+    --radius-lg: calc(16 * var(--wm));
+  }
+}

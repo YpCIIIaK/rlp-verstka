@@ -1,0 +1,33 @@
+<svg viewBox="0 0 1211 267" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.4" d="M403.426 206.447C244.782 219.747 0.257812 153.586 0.257812 153.586V266.947H1210.26V0.446533C1210.26 0.446533 973.541 80.0908 805.258 95.4465C626.707 111.739 582.34 191.447 403.426 206.447Z" fill="url(#paint0_linear_162_6944)"/>
+<path opacity="0.4" d="M403.426 99.9465C244.782 113.247 0.257812 219.447 0.257812 219.447V266.947H1210.26V57.9465C1210.26 57.9465 972.541 140.091 804.258 155.447C625.707 171.739 582.34 84.9472 403.426 99.9465Z" fill="url(#paint1_linear_162_6944)"/>
+<path d="M0.257812 153.654C0.257812 153.654 244.782 219.756 403.426 206.447C582.34 191.436 626.207 112.751 804.758 96.4465C973.041 81.0794 1210.26 0.946533 1210.26 0.946533" stroke="#5EBF66" stroke-width="2"/>
+<path d="M1.75781 219.447C1.75781 219.447 249.114 113.256 407.758 99.9465C586.672 84.936 627.207 171.751 805.758 155.447C974.041 140.079 1209.76 57.4465 1209.76 57.4465" stroke="#E1A623" stroke-width="2"/>
+<defs>
+<linearGradient id="paint0_linear_162_6944" x1="581.524" y1="80.4466" x2="581.524" y2="266.947" gradientUnits="userSpaceOnUse">
+<stop stop-color="#5EBF66"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint1_linear_162_6944" x1="581.524" y1="80.4465" x2="581.524" y2="266.947" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E0E960"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+</defs>
+</svg>
+
+<svg viewBox="0 0 1 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line opacity="0.1" x1="0.5" y1="-2.18557e-08" x2="0.500003" y2="61" stroke="black" stroke-dasharray="2 2"/>
+</svg>
+
+<svg viewBox="0 0 1 173" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line opacity="0.1" x1="0.5" y1="-2.18557e-08" x2="0.500008" y2="173" stroke="black" stroke-dasharray="2 2"/>
+</svg>
+
+<svg viewBox="0 0 30 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line y1="2" x2="30" y2="2" stroke="#5EBF66" stroke-width="4"/>
+</svg>
+
+<svg viewBox="0 0 30 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line y1="2" x2="30" y2="2" stroke="#E1A623" stroke-width="4"/>
+</svg>
+

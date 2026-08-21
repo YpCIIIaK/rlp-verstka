@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<!-- has-hero-intro стоит уже в разметке: если вешать её скриптом,
+     шапка успевает отрисоваться и заметно мигает. Снимает класс
+     тот же код, что сворачивает hero. -->
+<html lang="ru" class="has-hero-intro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Экспорт и трейдинг — RLP</title>
+  <meta name="description" content="" />
+  <link rel="icon" href="../assets/favicon/favicon.svg" type="image/svg+xml" />
+
+
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-400-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-500-cyrillic.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-700-cyrillic.woff2" crossorigin />
+
+  <link rel="stylesheet" href="../src/styles/main.css?v=111" />
+
+  <noscript>
+    <style>
+      .has-hero-intro .header { opacity: 1; pointer-events: auto; }
+      .hero-dir.is-intro { padding: calc(16 * var(--wm)); }
+      .hero-dir.is-intro .hero-dir__panel { border-radius: calc(20 * var(--wm)); }
+      .hero-dir.is-intro .hero-dir__crumbs,
+      .hero-dir.is-intro .hero-dir__content { opacity: 1; pointer-events: auto; }
+    </style>
+  </noscript>
+</head>
+<body class="page-direction">
+  <header class="header" data-header>
+    <div class="header__bar">
+
+      <a class="header__logo" href="../index.html" aria-label="RLP — на главную">
+        <img class="header__logo-light" src="../assets/logo/rlpLogoHeader2.png" alt="RLP" width="67" height="63" />
+        <img class="header__logo-dark" src="../assets/logo/newLogoHeaderBack.png" alt="" aria-hidden="true" width="67" height="63" />
+      </a>
+
+      <div class="header__right" data-nav>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a class="nav__link" href="../about.html">О компании</a>
+
+          <div class="nav__item" data-nav-drop>
+            <a class="nav__link" href="../directions.html" aria-haspopup="true" aria-expanded="false">
+              Направления
+              <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+
+            <div class="nav__drop">
+              <div class="nav__drop-inner">
+                <a href="../directions/agriculture.html">Сельское хозяйство</a>
+                <a href="../directions/feed-flour.html">Кормовая мука</a>
+                <a href="../directions/storage.html">Хранение</a>
+                <a href="../directions/export.html">Экспорт и трейдинг</a>
+              </div>
+            </div>
+          </div>
+
+          <a class="nav__link" href="../news.html">Новости</a>
+          <a class="nav__link" href="../contacts.html">Контакты</a>
+        </nav>
+
+        <div class="nav__item" data-nav-drop>
+          <button class="header__lang" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Выбрать язык">
+            <span class="header__lang-flag" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <mask id="flag-ru" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                  <circle cx="10" cy="10" r="10" fill="#fff" />
+                </mask>
+                <g mask="url(#flag-ru)">
+                  <rect y="0" width="20" height="6.73" fill="#f5f5f5" />
+                  <rect y="6.73" width="20" height="6.73" fill="#41479b" />
+                  <rect y="13.46" width="20" height="6.73" fill="#ff4b55" />
+                </g>
+              </svg>
+            </span>
+            <span>Русский</span>
+            <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+
+          <div class="nav__drop nav__drop--right">
+            <div class="nav__drop-inner">
+              <a class="is-current" href="#">Русский</a>
+              <a href="#">Қазақша</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="header__burger" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu-toggle>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <main class="page">
+
+    <!-- ── Hero направления ──────────────────────────────────── -->
+    <section class="hero-dir is-intro" data-hero>
+      <div class="hero-dir__panel">
+        <img class="hero-dir__img" fetchpriority="high" decoding="async" src="../assets/images/heroExport.png" alt="" width="1408" height="776" />
+
+        <nav class="hero-dir__crumbs card-meta" aria-label="Хлебные крошки">
+          <a href="../index.html">Главная</a>
+          <span aria-hidden="true">/</span>
+          <a href="../directions.html">Направления</a>
+          <span aria-hidden="true">/</span>
+          <span class="is-current">Экспорт и трейдинг</span>
+        </nav>
+
+        <div class="hero-dir__content">
+          <h1 class="section-heading">Экспорт и трейдинг</h1>
+          <p class="section-description">ТОО «Astyk Novoishimka» осуществляет экспортно-трейдинговую деятельность внутри холдинга RLP с 2019 г.</p>
+          <a class="btn" href="../contacts.html">Запросить коммерческое предложение</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── От закупки до международной поставки ──────────────── -->
+    <section class="shell feed">
+
+      <div class="section-head section-head--narrow">
+        <p class="section-label">Экспорт и трейдинг</p>
+        <h2 class="section-heading">От закупки до международной поставки</h2>
+      </div>
+
+      <div class="feed__main">
+        <div class="feed__text">
+          <h3 class="card-heading-l">Astyk Novoishimka закупает сельскохозяйственную продукцию, формирует товарные партии и организует поставки на внешние рынки.</h3>
+          <p class="section-description">Компания работает с зерновыми, масличными и бобовыми культурами, обеспечивая торговое сопровождение и логистику экспортных поставок.</p>
+
+          <ul class="chips">
+            <li class="chip card-meta">Закупка</li>
+            <li class="chip card-meta">Формирование партий</li>
+            <li class="chip card-meta">Логистика</li>
+            <li class="chip card-meta">Экспорт</li>
+          </ul>
+        </div>
+
+        <img class="feed__photo feed__photo--tall" src="../assets/images/exportITradingExport.png" alt="" width="640" height="371" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- ── Масштаб хозяйства ─────────────────────────────────── -->
+    <section class="shell about">
+
+      <div class="section-head">
+        <p class="section-label">Масштаб хозяйства</p>
+        <h2 class="section-heading">Земельный банк и результаты</h2>
+        <p class="section-description">Astyk Mol развивает растениеводство в Северо-Казахстанской области и ежегодно анализирует структуру посевов, урожайность и качество продукции.</p>
+      </div>
+
+      <div class="about__cards">
+        <article class="stat-card">
+          <div class="stat-card__area">
+            <p class="stat-card__value">
+              <span class="stats-value">2019</span>
+              <span class="stats-unit">год</span>
+            </p>
+            <p class="stats-description">Начало деятельности внутри RLP</p>
+          </div>
+          <img class="stat-card__img" src="../assets/images/mashtabExport1.png" alt="" width="302" height="260" loading="lazy" />
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-card__area">
+            <p class="stat-card__value">
+              <span class="stats-value">34 000</span>
+              <span class="stats-unit">тонн</span>
+            </p>
+            <p class="stats-description">Закуплено в 2025</p>
+          </div>
+          <img class="stat-card__img" src="../assets/images/mashtabExport2.png" alt="" width="302" height="260" loading="lazy" />
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-card__area">
+            <p class="stat-card__value">
+              <span class="stats-value">27 783</span>
+              <span class="stats-unit">тонн</span>
+            </p>
+            <p class="stats-description">Экспортировано в 2025</p>
+          </div>
+          <img class="stat-card__img" src="../assets/images/mashtabExport3.png" alt="" width="302" height="260" loading="lazy" />
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-card__area">
+            <p class="stat-card__value">
+              <span class="stats-value">7</span>
+              <span class="stats-unit">стран</span>
+            </p>
+            <p class="stats-description">География поставок</p>
+          </div>
+          <img class="stat-card__img" src="../assets/images/mashtabExport4.png" alt="" width="302" height="260" loading="lazy" />
+        </article>
+      </div>
+    </section>
+
+    <!-- ── График: закупка и экспорт ─────────────────────────── -->
+    <section class="shell">
+      <article class="chart-wide">
+
+        <div class="chart-wide__head">
+          <div class="chart-wide__top">
+            <p class="section-description">Закупка и экспорт, тонн</p>
+            <p class="chart-wide__period section-label">Динамика 2022 — 2025</p>
+          </div>
+
+          <div class="chart-wide__legend">
+            <p class="chart-wide__key chart-wide__key--buy"><span class="section-label">Закуплено</span></p>
+            <p class="chart-wide__key chart-wide__key--export"><span class="section-label">Экспортировано</span></p>
+          </div>
+        </div>
+
+        <div class="chart-wide__plot">
+          <svg class="chart-wide__line" viewBox="0 0 1211 267" preserveAspectRatio="none"
+                 fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="chart-line__fill" d="M403.426 206.447C244.782 219.747 0.257812 153.586 0.257812 153.586V266.947H1210.26V0.446533C1210.26 0.446533 973.541 80.0908 805.258 95.4465C626.707 111.739 582.34 191.447 403.426 206.447Z" fill="url(#paint0_linear_162_6944)"/>
+              <path class="chart-line__fill" d="M403.426 99.9465C244.782 113.247 0.257812 219.447 0.257812 219.447V266.947H1210.26V57.9465C1210.26 57.9465 972.541 140.091 804.258 155.447C625.707 171.739 582.34 84.9472 403.426 99.9465Z" fill="url(#paint1_linear_162_6944)"/>
+              <path class="chart-line__stroke" d="M0.257812 153.654C0.257812 153.654 244.782 219.756 403.426 206.447C582.34 191.436 626.207 112.751 804.758 96.4465C973.041 81.0794 1210.26 0.946533 1210.26 0.946533" stroke="#5EBF66" stroke-width="2"/>
+              <path class="chart-line__stroke" d="M1.75781 219.447C1.75781 219.447 249.114 113.256 407.758 99.9465C586.672 84.936 627.207 171.751 805.758 155.447C974.041 140.079 1209.76 57.4465 1209.76 57.4465" stroke="#E1A623" stroke-width="2"/>
+              <defs>
+              <linearGradient id="paint0_linear_162_6944" x1="581.524" y1="80.4466" x2="581.524" y2="266.947" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#5EBF66"/>
+              <stop offset="1" stop-color="white"/>
+              </linearGradient>
+              <linearGradient id="paint1_linear_162_6944" x1="581.524" y1="80.4465" x2="581.524" y2="266.947" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#E0E960"/>
+              <stop offset="1" stop-color="white"/>
+              </linearGradient>
+              </defs>
+            </svg>
+
+          <div class="chart-wide__axis card-description">
+            <span>2022</span>
+            <span>2023</span>
+            <span>2024</span>
+            <span>2025</span>
+          </div>
+        </div>
+
+        <span class="chart-wide__guide chart-wide__guide--a" aria-hidden="true"></span>
+        <span class="chart-wide__guide chart-wide__guide--b" aria-hidden="true"></span>
+
+        <p class="chart-wide__dot chart-wide__dot--a card-description">8 500</p>
+        <p class="chart-wide__dot chart-wide__dot--b chart-wide__dot--export card-description">8 500</p>
+
+        <p class="chart-wide__dot chart-wide__dot--c chart-wide__dot--soft card-description">6 200</p>
+        <p class="chart-wide__dot chart-wide__dot--d chart-wide__dot--export card-description">12 438</p>
+
+        <p class="chart-wide__dot chart-wide__dot--e card-description">15 881</p>
+        <p class="chart-wide__dot chart-wide__dot--f chart-wide__dot--export card-description">13 088</p>
+
+        <p class="chart-wide__dot chart-wide__dot--g card-description">34 000</p>
+        <p class="chart-wide__dot chart-wide__dot--h chart-wide__dot--export card-description">27 783</p>
+
+      </article>
+    </section>
+
+    <!-- ── Выращиваемые культуры ─────────────────────────────── -->
+    <section class="shell">
+      <div class="crops">
+
+        <video class="bg-video" autoplay muted loop playsinline preload="metadata"
+               poster="../assets/images/napravlenie1.png" aria-hidden="true">
+          <source src="../assets/video/weed.mp4" type="video/mp4" />
+        </video>
+
+        <div class="section-head section-head--light section-head--narrow">
+          <p class="section-label">Наша продукция</p>
+          <h2 class="section-heading">Выращиваемые культуры</h2>
+          <p class="section-description">Выращиваем востребованные культуры и контролируем качество на каждом этапе — от посева до хранения.</p>
+        </div>
+
+        <ul class="crops__list">
+          <li class="crop-card">
+            <h3 class="card-heading-s">Пшеница</h3>
+            <div class="crop-card__img"><img src="../assets/images/pshenica.png" alt="" loading="lazy" /></div>
+            <p class="card-label">Зерновые культуры</p>
+          </li>
+          <li class="crop-card">
+            <h3 class="card-heading-s">Ячмень</h3>
+            <div class="crop-card__img"><img src="../assets/images/iachmen.png" alt="" loading="lazy" /></div>
+            <p class="card-label">Зерновые культуры</p>
+          </li>
+          <li class="crop-card">
+            <h3 class="card-heading-s">Подсолнечник</h3>
+            <div class="crop-card__img"><img src="../assets/images/podsolnechnik.png" alt="" loading="lazy" /></div>
+            <p class="card-label">Масличные культуры</p>
+          </li>
+          <li class="crop-card">
+            <h3 class="card-heading-s">Лён</h3>
+            <div class="crop-card__img"><img src="../assets/images/len.png" alt="" loading="lazy" /></div>
+            <p class="card-label">Масличные культуры</p>
+          </li>
+          <li class="crop-card">
+            <h3 class="card-heading-s">Чечевица красная</h3>
+            <div class="crop-card__img"><img src="../assets/images/chechevicaKrasnaya.png" alt="" loading="lazy" /></div>
+            <p class="card-label">Бобовые культуры</p>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ── Галерея ───────────────────────────────────────────── -->
+    <section class="shell gallery">
+      <div class="gallery__row" data-gallery>
+        <div class="gallery__track" data-gallery-track>
+          <img src="../assets/images/prod2.png" alt="" width="380" height="380" />
+          <img src="../assets/images/prod3.png" alt="" width="380" height="380" />
+          <img class="is-active" src="../assets/images/prod4.png" alt="" width="380" height="380" />
+          <img src="../assets/images/prod5.png" alt="" width="380" height="380" />
+          <img src="../assets/images/mashtab.png" alt="" width="380" height="380" />
+        </div>
+      </div>
+
+      <div class="gallery__nav">
+        <button class="gallery__arrow" type="button" data-gallery-prev aria-label="Назад">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M18.6667 22.6668L12 16.0002L18.6667 9.3335V22.6668Z" fill="currentColor" />
+          </svg>
+        </button>
+        <button class="gallery__arrow" type="button" data-gallery-next aria-label="Вперёд">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M13.3333 22.6668L20 16.0002L13.3333 9.3335V22.6668Z" fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Сотрудничество ────────────────────────────────────── -->
+    <section class="shell" id="partner">
+      <div class="partner">
+        <div class="partner__text">
+          <p class="section-label">Сотрудничество</p>
+          <h2 class="section-heading">Развиваем агробизнес вместе</h2>
+          <p class="section-description">Открыты к партнёрству с производителями, поставщиками и покупателями сельскохозяйственной продукции</p>
+          <a class="btn btn--green" href="../contacts.html">Стать партнером</a>
+        </div>
+        <img class="partner__photo" src="../assets/images/sotrudnichestvo.png" alt="" width="640" height="324" loading="lazy" />
+      </div>
+    </section>
+
+  </main>
+  <footer class="footer">
+
+    <div class="footer__main">
+
+      <a class="footer__logo" href="../index.html" aria-label="RLP Holding — на главную">
+        <img src="../assets/logo/logoFooter.png" alt="RLP Holding" width="129" height="120" loading="lazy" />
+      </a>
+
+      <div class="footer__cols">
+
+        <div class="footer__col">
+          <p class="footer__col-title">Навигация</p>
+          <nav class="footer__list" aria-label="Навигация в футере">
+            <a class="footer__link" href="../about.html">О холдинге</a>
+            <a class="footer__link" href="../news.html">Новости</a>
+            <a class="footer__link" href="../contacts.html">Контакты</a>
+            <a class="footer__link footer__link--accent" href="../vacancies.html">Вакансии</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Направления</p>
+          <nav class="footer__list" aria-label="Направления">
+            <a class="footer__link" href="../directions/agriculture.html">Сельское хозяйство</a>
+            <a class="footer__link" href="../directions/feed-flour.html">Кормовая мука</a>
+            <a class="footer__link" href="../directions/storage.html">Хранение</a>
+            <a class="footer__link" href="../directions/export.html">Экспорт и трейдинг</a>
+          </nav>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Связаться с нами</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="mailto:rlp@gmail.com">rlp@gmail.com</a>
+            <a class="footer__link footer__link--medium" href="tel:+77017326006">+7 701 732 6006</a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <p class="footer__col-title">Социальные сети</p>
+          <div class="footer__list">
+            <a class="footer__link footer__link--medium" href="#" target="_blank" rel="noopener">Instagram</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">Facebook</a>
+            <a class="footer__link" href="#" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2026 RLP Holding</p>
+      <a href="../policy.html">Политика конфиденциальности</a>
+      <p>Сделано в <a href="https://factum.agency/" target="_blank" rel="noopener"><b>factum.</b></a></p>
+    </div>
+
+  </footer>
+
+  <script src="../assets/vendor/lenis.min.js"></script>
+  <script src="../src/lib/main.js?v=111"></script>
+</body>
+</html>

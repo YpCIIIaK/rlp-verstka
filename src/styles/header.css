@@ -1,0 +1,306 @@
+
+
+/* Шапка: два состояния из макета — прозрачная поверх контента
+   и «проскролленная» на светлой подложке. Между ними плавный
+   переход, включая радиусы пилюль, цвет текста и подмену лого.  */
+
+.header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: var(--z-header);
+  /* прозрачное состояние: 40 сверху и по бокам */
+  padding: calc(40 * var(--wm));
+  padding-bottom: 0;
+  transition: padding var(--duration-base) var(--ease-out),
+              opacity var(--duration-intro) var(--ease-out-expo);
+}
+
+/* на подложке шапка подбирается: 24 сверху, по бокам — отступ страницы */
+.header.is-scrolled {
+  padding: calc(24 * var(--wm)) var(--page-pad) 0;
+}
+
+.header__bar {
+  --_pill-bg:     var(--color-white-15);
+  --_pill-radius: calc(8 * var(--wm));
+  --_fg:          var(--color-white);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(520 * var(--wm));
+  /* без собственных отступов: в прозрачном состоянии всё расстояние
+     до края даёт .header (40), иначе они складываются и логотип
+     уезжает на 64 вместо 40 из макета                            */
+  padding: 0;
+  border-radius: calc(200 * var(--wm));
+  background: transparent;
+  color: var(--_fg);
+  transition: padding var(--duration-base) var(--ease-out),
+              background-color var(--duration-base) var(--ease-out),
+              backdrop-filter var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+
+.header.is-scrolled .header__bar {
+  --_pill-bg:     var(--color-black-03);
+  --_pill-radius: calc(200 * var(--wm));
+  --_fg:          var(--color-black);
+
+  padding: calc(8 * var(--wm)) calc(24 * var(--wm)) calc(8 * var(--wm)) calc(12 * var(--wm));
+  background: var(--color-white-3);
+  backdrop-filter: blur(calc(24 * var(--wm)));
+}
+
+/* ── Логотип: две версии с кросс-фейдом ─────────────────────── */
+
+.header__logo {
+  position: relative;
+  flex: none;
+  width: calc(67 * var(--wm));
+  height: calc(63 * var(--wm));
+}
+.header__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.header__logo img + img {
+  position: absolute;
+  inset: 0;
+}
+.header__logo-light { opacity: 1; }
+.header__logo-dark  { opacity: 0; }
+
+.header.is-scrolled .header__logo-light { opacity: 0; }
+.header.is-scrolled .header__logo-dark  { opacity: 1; }
+
+/* ── Навигация ──────────────────────────────────────────────── */
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+  flex: none;
+}
+
+.nav {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(8 * var(--wm));
+  height: calc(40 * var(--wm));
+  flex: none;
+}
+
+.nav__item { position: relative; }
+
+.nav__link,
+.header__lang {
+  display: flex;
+  align-items: center;
+  gap: calc(4 * var(--wm));
+  padding: calc(8 * var(--wm));
+  border-radius: var(--_pill-radius);
+  background: var(--_pill-bg);
+  color: inherit;
+  font-size: calc(16 * var(--wm));
+  font-weight: var(--weight-medium);
+  line-height: 1.5;
+  white-space: nowrap;
+  transition: background-color var(--duration-base) var(--ease-out),
+              border-radius var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+
+.nav__link:hover,
+.header__lang:hover { background: var(--color-white-30); }
+.header.is-scrolled .nav__link:hover,
+.header.is-scrolled .header__lang:hover { background: var(--color-black-08); }
+
+.nav__chevron {
+  flex: none;
+  width: calc(24 * var(--wm));
+  height: calc(24 * var(--wm));
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.nav__item.is-open .nav__chevron { transform: rotate(180deg); }
+
+/* ── Выпадающее меню ────────────────────────────────────────── */
+
+.nav__drop {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  padding-top: calc(8 * var(--wm));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(calc(8 * var(--wm)));
+  transition: opacity var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out),
+              visibility var(--duration-base);
+}
+.nav__item.is-open .nav__drop { opacity: 1; visibility: visible; transform: none; }
+
+/* язык — крайний справа, меню открывается по правому краю */
+.nav__drop--right { left: auto; right: 0; }
+
+.nav__drop-inner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  min-width: calc(240 * var(--wm));
+  padding: calc(12 * var(--wm));
+  border-radius: calc(16 * var(--wm));
+  background: var(--color-white-3);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(calc(24 * var(--wm)));
+}
+.nav__drop-inner a {
+  padding: calc(8 * var(--wm));
+  border-radius: calc(200 * var(--wm));
+  color: var(--color-black);
+  font-size: calc(16 * var(--wm));
+  font-weight: var(--weight-medium);
+  line-height: 1.5;
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.nav__drop-inner a:hover { background: var(--color-black-03); }
+.nav__drop-inner a.is-current { background: var(--color-black-03); }
+
+/* ── Переключатель языка ────────────────────────────────────── */
+
+.header__lang {
+  justify-content: center;
+  height: calc(40 * var(--wm));
+  font-weight: var(--weight-regular);
+}
+
+.header__lang-flag {
+  position: relative;
+  flex: none;
+  width: calc(24 * var(--wm));
+  height: calc(24 * var(--wm));
+  overflow: hidden;
+}
+.header__lang-flag svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: calc(20 * var(--wm));
+  height: calc(20 * var(--wm));
+  border-radius: 50%;
+}
+
+/* ── Бургер (мобильная версия) ──────────────────────────────── */
+
+.header__burger {
+  display: none;
+  flex: none;
+  width: calc(40 * var(--wm));
+  height: calc(40 * var(--wm));
+  border-radius: var(--_pill-radius);
+  background: var(--_pill-bg);
+  position: relative;
+  transition: background-color var(--duration-base) var(--ease-out),
+              border-radius var(--duration-base) var(--ease-out);
+}
+.header__burger span {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  width: calc(20 * var(--wm));
+  height: calc(2 * var(--wm));
+  background: currentColor;
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-out);
+}
+.header__burger span:nth-child(1) { top: calc(13 * var(--wm)); }
+.header__burger span:nth-child(2) { top: calc(19 * var(--wm)); }
+.header__burger span:nth-child(3) { top: calc(25 * var(--wm)); }
+
+.header__burger.is-open span:nth-child(1) { top: calc(19 * var(--wm)); transform: rotate(45deg); }
+.header__burger.is-open span:nth-child(2) { opacity: 0; }
+.header__burger.is-open span:nth-child(3) { top: calc(19 * var(--wm)); transform: rotate(-45deg); }
+
+@media (max-width: 1024px) {
+  .header__bar { gap: calc(40 * var(--wm));}
+}
+
+@media (max-width: 767px) {
+
+  .header__burger { display: block; }
+
+  /* 40 по бокам — из десктопного макета, на 390 это треть экрана;
+     здесь ставим общий отступ страницы и не даём ему сложиться
+     с собственными полями бара                                  */
+  .header {
+    padding: calc(16 * var(--wm)) var(--page-pad) 0;
+  }
+  .header.is-scrolled {
+    padding: calc(12 * var(--wm)) var(--page-pad) 0;
+  }
+
+  .header__bar {
+    gap: calc(16 * var(--wm));
+    padding: 0;
+  }
+  .header.is-scrolled .header__bar {
+    padding: calc(8 * var(--wm)) calc(12 * var(--wm));
+  }
+
+  .header__right {
+    position: fixed;
+    inset: calc(var(--header-height)) var(--page-pad) auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(8 * var(--wm));
+    padding: calc(16 * var(--wm));
+    border-radius: calc(24 * var(--wm));
+    background: var(--color-white-3);
+    backdrop-filter: blur(calc(24 * var(--wm)));
+    color: var(--color-black);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(-8 * var(--wm)));
+    transition: opacity var(--duration-base) var(--ease-out),
+                transform var(--duration-base) var(--ease-out),
+                visibility var(--duration-base);
+  }
+  .header__right.is-open { opacity: 1; visibility: visible; transform: none; margin-top: 20px;}
+
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+  }
+  .nav__link,
+  .header__lang {
+    --_pill-bg: var(--color-black-03);
+    --_pill-radius: calc(200 * var(--wm));
+  }
+
+  .nav__drop,
+  .nav__drop--right {
+    position: static;
+    padding-top: 0;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: grid-template-rows var(--duration-base) var(--ease-out);
+  }
+  .nav__item.is-open .nav__drop { grid-template-rows: 1fr; }
+  .nav__drop > * { overflow: hidden; }
+  .nav__drop-inner {
+    min-width: 0;
+    padding: calc(8 * var(--wm)) 0 0;
+    background: none;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+}

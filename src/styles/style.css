@@ -1,0 +1,2451 @@
+
+
+/* ─────────────────────────────────────────────────────────────
+   Кнопки
+   ───────────────────────────────────────────────────────────── */
+
+.btn {
+  --_bg: var(--color-white);
+  --_fg: var(--color-black);
+  --_border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--wm));
+  height: calc(56 * var(--wm));
+  padding: calc(16 * var(--wm));
+  border: 1px solid var(--_border);
+  border-radius: calc(8 * var(--wm));
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-btn-m);
+  font-weight: var(--weight-btn-m);
+  line-height: var(--leading-btn-m);
+  white-space: nowrap;
+  transition: background-color var(--duration-base) var(--ease-out),
+              border-color var(--duration-base) var(--ease-out),
+              color var(--duration-base) var(--ease-out);
+}
+.btn:hover { --_bg: var(--color-green-500); --_fg: var(--color-white); }
+
+/* прозрачная на тёмном */
+.btn--ghost {
+  --_bg: var(--color-white-05);
+  --_fg: var(--color-white);
+  --_border: var(--color-white-30);
+}
+.btn--ghost:hover { --_bg: var(--color-white-30); --_border: transparent; }
+
+/* фирменная зелёная */
+.btn--green {
+  --_bg: var(--color-green-brand);
+  --_fg: var(--color-white);
+}
+.btn--green:hover { --_bg: var(--color-green-500); }
+
+/* мягкая зелёная — документы */
+.btn--soft {
+  --_bg: var(--color-green-05);
+  --_fg: var(--color-green-brand);
+}
+.btn--soft:hover { --_bg: var(--color-green-brand); --_fg: var(--color-white); }
+
+/* приглушённая — «Показать еще» */
+.btn--faint {
+  --_bg: var(--color-black-02);
+  --_fg: var(--color-black);
+}
+.btn--faint:hover { --_bg: var(--color-black-08); }
+
+.btn--block { width: 100%; }
+
+/* Button/Small */
+.btn--sm {
+  height: auto;
+  padding: calc(8 * var(--wm));
+  font-size: var(--text-btn-s);
+  font-weight: var(--weight-btn-s);
+  line-height: var(--leading-btn-s);
+}
+
+/* Button/Extra small — Euclid Flex */
+.btn--xs {
+  height: auto;
+  gap: calc(10 * var(--wm));
+  padding: calc(8 * var(--wm)) calc(16 * var(--wm));
+  font-family: var(--font-alt);
+  font-size: var(--text-btn-xs);
+  font-weight: var(--weight-btn-xs);
+  line-height: var(--leading-btn-xs);
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Общая раскладка главной
+   ───────────────────────────────────────────────────────────── */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(120 * var(--wm));
+  padding-bottom: calc(120 * var(--wm));   /* тот же ритм до футера */
+  background: var(--color-white);
+
+  /* именно clip, а не hidden: hidden сделал бы из main скролл-
+     контейнер, и position: sticky в hero перестал бы работать */
+  overflow-x: clip;
+}
+
+/* контентная колонка: боковые отступы сайта 80 → 1280 при 1440 */
+.shell {
+  width: 100%;
+  padding-inline: var(--page-pad);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--wm));
+  text-align: center;
+}
+.section-head .section-heading { width: calc(600 * var(--wm)); max-width: 100%; }
+.section-head .section-description { width: calc(822 * var(--wm)); max-width: 100%; }
+.section-head--narrow .section-description { width: calc(600 * var(--wm)); }
+
+.section-head--light,
+.section-head--light .section-heading { color: var(--color-white); }
+
+@media (max-width: 767px) {
+  .page { gap: calc(64 * var(--wm)); padding-bottom: calc(64 * var(--wm)); }
+  .section-head .section-heading,
+  .section-head .section-description { width: 100%; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Первый экран
+   ───────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: calc(17 * var(--wm));
+  width: 100%;
+  min-height: calc(658 * var(--wm));
+  padding: calc(16 * var(--wm)) calc(16 * var(--wm)) calc(21 * var(--wm));
+  background: var(--gradient-diamond), var(--grad-dark-to);
+  overflow: hidden;
+}
+
+/* верхняя панель с картинкой — под ней лежит фиксированная шапка */
+/* Заставочная картинка именно проявляется, а не выезжает снизу:
+   анимация на загрузке, без сдвига. Геометрию не трогает, поэтому
+   с раздуванием панели не конфликтует.                          */
+/* До сворачивания подложка тёмная, как на направлениях: зелёный
+   градиент рядом с картинкой смотрится грязно. Отдельным слоем,
+   а не сменой background — градиент и цвет не анимируются между
+   собой, а прозрачность слоя анимируется.                     */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hero-about-bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-intro) var(--ease-out);
+}
+.has-hero-intro .hero::after { opacity: 1; }
+
+.hero__panel     { animation: fade-in var(--duration-intro) var(--ease-out) both; }
+
+
+.hero__panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(341 * var(--wm));
+  padding: calc(24 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-gray-dark);
+}
+
+/* Слайды панели: лежат стопкой и меняются кросс-фейдом, поэтому
+   между кадрами нет ни мигания подложкой, ни скачка раскладки. */
+.hero__slides {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.hero__slide.is-active { opacity: 1; }
+
+/* большая картинка вступительного состояния: лежит слоем сверху
+   и гаснет вместе с переходом в рабочий вид                     */
+.hero__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: url("../../assets/images/bigHeroImage.png") center / cover no-repeat;
+  opacity: 0;
+  transition: opacity var(--duration-intro) var(--ease-out-expo);
+}
+.has-hero-intro .hero .hero__panel::before { opacity: 1; }
+
+.hero__dots {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+}
+.hero__dot {
+  cursor: pointer;
+  width: calc(84 * var(--wm));
+  height: calc(4 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--color-white-50);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.hero__dot.is-active { background: var(--color-white); }
+
+/* ── Вступительное состояние hero ───────────────────────────
+   При загрузке блок стоит в «большом» виде (810, панель 776,
+   заголовок внутри панели, слайдер справа), через 3 секунды
+   JS снимает .is-intro и всё плавно переезжает в рабочий вид.
+
+   Анимируем только высоты и transform — без пересборки DOM,
+   поэтому переход идёт одним движением, без рывков.        */
+
+.hero,
+.hero__panel,
+.hero__content,
+.hero__dots {
+  transition: min-height var(--duration-intro) var(--ease-out-expo),
+              transform var(--duration-intro) var(--ease-out-expo),
+              width var(--duration-intro) var(--ease-out-expo),
+              padding var(--duration-intro) var(--ease-out-expo),
+              border-radius var(--duration-intro) var(--ease-out-expo),
+              opacity var(--duration-intro) var(--ease-out-expo);
+}
+
+/* Вступительный вид — ровно один экран, и только картинка: рамку
+   и скругления снимаем, чтобы зелёной подложки не было видно
+   вообще. При сворачивании панель отъезжает внутрь на свои 16,
+   скругление возвращается — и из-под неё открывается фон.     */
+.has-hero-intro .hero {
+  min-height: 100svh;
+  padding: 0;
+}
+.has-hero-intro .hero .hero__panel {
+  min-height: 100svh;
+  border-radius: 0;
+}
+
+/* до сворачивания на экране только картинка: шапка, заголовок
+   и кнопки проявляются вместе с переходом в рабочий вид      */
+.has-hero-intro .hero .hero__content,
+.has-hero-intro .hero .hero__dots {
+  opacity: 0;
+  pointer-events: none;
+}
+.has-hero-intro .header {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* заголовок с кнопками поднимается внутрь панели:
+   рабочая позиция 16 + 341 + 17 = 374, вступительная 16 + 500 = 516 */
+/* Сдвиг считается от высоты экрана, а не жёсткими 142: при 810
+   даёт ровно 142, на любой другой высоте держит заголовок на том
+   же расстоянии от нижней границы цветного hero.               */
+.has-hero-intro .hero .hero__content {
+  width: calc(833 * var(--wm));
+  max-width: 100%;
+  transform: translateY(calc(100svh - 668 * var(--wm)));
+}
+
+/* слайдер уезжает к правому краю панели: 1408 - 24 - 268 = 1116 */
+.has-hero-intro .hero .hero__dots { transform: translateX(calc(1092 * var(--wm))); }
+
+/* На мобильной вступительного вида нет: большая картинка весит
+   слишком много для мобильного трафика, а сам переезд на узком
+   экране почти не читается. Открываем сразу рабочий вид.      */
+@media (max-width: 767px) {
+  .has-hero-intro .hero { min-height: calc(658 * var(--wm)); }
+  .has-hero-intro .hero .hero__panel { min-height: calc(280 * var(--wm)); }
+  .has-hero-intro .hero .hero__content { width: 100%; transform: none; }
+  .has-hero-intro .hero .hero__dots { transform: none; }
+  .has-hero-intro .hero .hero__panel::before { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero__panel, .hero__content, .hero__dots { transition: none; }
+}
+
+/* Заголовок с кнопками выведен из потока: высоту hero задают
+   только панель и min-height (658 в рабочем виде, 810 во
+   вступительном), иначе контент прибавлялся бы сверху.
+   Позиция в рабочем виде: 16 (паддинг) + 341 (панель) + 17 = 374. */
+.hero__content {
+  position: absolute;
+  left: calc(40 * var(--wm));
+  top: calc(374 * var(--wm));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(27 * var(--wm));
+  width: calc(901 * var(--wm));
+  max-width: 100%;
+}
+.hero__content h1 { color: var(--color-white); }
+
+.hero__actions {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--wm));
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: auto;
+    gap: calc(16 * var(--wm));
+    padding: calc(8 * var(--wm)) calc(8 * var(--wm)) calc(24 * var(--wm));
+  }
+  .hero__panel { min-height: calc(280 * var(--wm)); }
+  .hero__content {
+    position: static;
+    width: 100%;
+    padding-inline: calc(8 * var(--wm));
+  }
+  .hero__actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .hero__dot { flex: 1; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   О холдинге — карточки-цифры
+   ───────────────────────────────────────────────────────────── */
+
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(42 * var(--wm));
+}
+
+/* Ряд 406 при карточках 372: средние две приподняты на 34,
+   крайние стоят по нижнему краю — отсюда и разница высот.   */
+.about__cards {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: calc(12 * var(--wm));
+  width: 100%;
+  min-height: calc(406 * var(--wm));
+}
+
+.stat-card:nth-child(2),
+.stat-card:nth-child(3) { margin-bottom: calc(34 * var(--wm)); }
+
+.stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+
+  /* базис 0 + max-width: четыре карточки делят строку поровну
+     (при 1440 это 311) и не разъезжаются шире 372              */
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: calc(372 * var(--wm));
+  min-height: calc(372 * var(--wm));
+  padding: calc(16 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
+  overflow: hidden;
+}
+
+/* Второй ряд: три карточки без фото, высота по содержимому.
+   Первая фиксированная 366, остальные делят остаток.        */
+/* Ряд строго 104 = 16 паддинга + 42 цифра + 6 + 24 подпись + 16.
+   Подписи в одну строку, иначе карточка перерастает ряд.        */
+.about__cards--wide {
+  align-items: stretch;
+  min-height: 0;
+  height: calc(104 * var(--wm));
+}
+.about__cards--wide .stat-card { height: 100%; }
+.about__cards--wide .stats-value,
+.about__cards--wide .stats-description { white-space: nowrap; }
+.about__cards--wide .stat-card:nth-child(2),
+.about__cards--wide .stat-card:nth-child(3) { margin-bottom: 0; }
+.about__cards--wide .stat-card {
+  min-height: 0;
+  max-width: none;
+}
+.about__cards--wide .stat-card:first-child { flex: 0 0 calc(366 * var(--wm)); }
+
+/* два ряда карточек идут с шагом 24, а не общие 42 у секции */
+.about__stack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--wm));
+  width: 100%;
+}
+
+.stat-card__area {
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--wm));
+}
+
+.stat-card__value {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(8 * var(--wm));
+}
+.stat-card__value .stats-value  { color: var(--color-green-500); }
+.stat-card__value .stats-prefix { color: var(--color-green-500); }
+.stat-card__value .stats-unit   { color: var(--color-black); }
+
+.stat-card .stats-description { color: var(--color-black-50); }
+
+.stat-card__img {
+  position: absolute;
+  left: 0;
+  top: calc(112 * var(--wm));
+  width: calc(302 * var(--wm));
+  height: calc(260 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .stat-card__img { left: 50%; translate: -50% 0; width: calc(100% - 32 * var(--wm)); }
+}
+
+@media (max-width: 767px) {
+  .about { gap: calc(24 * var(--wm)); }
+  .about__cards { flex-wrap: wrap; align-items: stretch; min-height: 0; }
+  .stat-card { flex: 1 1 calc(50% - 6 * var(--wm)); max-width: none; min-height: calc(320 * var(--wm)); }
+  .stat-card:nth-child(2),
+  .stat-card:nth-child(3) { margin-bottom: 0; }
+  .about__cards--wide { height: auto; }
+  .about__cards--wide .stat-card { height: auto; }
+  .about__cards--wide .stat-card:first-child { flex: 1 1 100%; }
+  .about__cards--wide .stats-description { white-space: normal; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Направления деятельности
+   ───────────────────────────────────────────────────────────── */
+
+.directions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(42 * var(--wm));
+}
+
+.directions__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(12 * var(--wm));
+  width: 100%;
+}
+
+.dir-card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  background: var(--surface-card);
+  overflow: hidden;
+}
+
+.dir-card__cover {
+  position: relative;
+  height: calc(260 * var(--wm));
+  overflow: hidden;
+}
+.dir-card__cover > img:not(.dir-card__logo) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* лого вписывается в 280 × 110, прижато влево, по центру обложки */
+.dir-card__cover > .dir-card__logo {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  top: 50%;
+  translate: 0 -50%;
+
+  /* жёсткий бокс 280 × 110: contain вписывает лого целиком,
+     не обрезая и не растягивая, прижимая к левому краю      */
+  width: calc(280 * var(--wm));
+  height: calc(110 * var(--wm));
+  object-fit: contain;
+  object-position: left center;
+}
+
+.dir-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(16 * var(--wm));
+  flex: 1;
+  min-height: calc(198 * var(--wm));
+  padding-inline: calc(16 * var(--wm));
+}
+
+.dir-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+}
+
+.dir-card__labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(4 * var(--wm));
+}
+.dir-card__labels .card-label { color: var(--color-green-label); }
+.dir-card__labels .card-label--plain { color: var(--color-black); }
+
+.dir-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--wm));
+  padding-block: calc(24 * var(--wm));
+}
+
+.dir-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.dir-card__meta li { display: flex; align-items: center; }
+.dir-card__meta li + li::before {
+  content: "";
+  width: calc(6 * var(--wm));
+  height: calc(6 * var(--wm));
+  margin-inline: calc(9 * var(--wm));
+  border-radius: 50%;
+  background: var(--color-green-500);
+}
+
+.dir-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--wm));
+  white-space: nowrap;
+  transition: color var(--duration-base) var(--ease-out);
+}
+/* Иконка вращается, поэтому её бокс округляем до целых пикселей:
+   при дробном размере центр поворота попадает на полпикселя и
+   вектор перерастрируется каждый кадр — отсюда дрожание.       */
+.dir-card__action svg {
+  width: calc(24 * var(--wm));
+  height: calc(24 * var(--wm));
+  width: round(calc(24 * var(--wm)), 1px);
+  height: round(calc(24 * var(--wm)), 1px);
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* ховер: текст и стрелка зеленеют, стрелка доворачивается
+   из «вправо-вверх» в «вправо-вниз»                        */
+.dir-card:hover .dir-card__action,
+.dir-card__action:hover { color: var(--color-green-500); }
+
+.dir-card:hover .dir-card__action svg,
+.dir-card__action:hover svg { transform: rotate(90deg) translateZ(0); }
+
+@media (max-width: 767px) {
+  .directions { gap: calc(24 * var(--wm)); }
+  .directions__grid { grid-template-columns: 1fr; }
+  .dir-card__cover { height: calc(200 * var(--wm)); }
+  .dir-card__foot { flex-direction: column; align-items: flex-start; gap: calc(12 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Выращиваемые культуры
+   ───────────────────────────────────────────────────────────── */
+
+/* Видео-подложка блока: лежит отдельным слоем под контентом,
+   поэтому поверх неё спокойно работают и блюр, и затемнение.
+   pointer-events снят — по блоку кликается то, что над ним.   */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.crops {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: calc(32 * var(--wm));
+  width: 100%;
+  min-height: calc(560 * var(--wm));
+  padding: calc(32 * var(--wm)) calc(41 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-gray-dark);
+  overflow: hidden;
+}
+/* Стопка без отрицательных значений: слой с backdrop-filter
+   прячет за фоном родителя всё, что лежит ниже нуля, поэтому
+   видео 0 → затемнение с блюром 1 → контент 2.               */
+.crops .bg-video { z-index: 0; }
+.crops::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-black-30);
+  backdrop-filter: blur(calc(42 * var(--wm)));
+}
+.crops > *:not(.bg-video) {
+  position: relative;
+  z-index: 2;
+}
+
+.crops__list {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--wm));
+}
+
+.crop-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+  flex: 1;
+  padding: calc(24 * var(--wm)) calc(16 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-soft);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.crop-card:hover { transform: translateY(calc(-4 * var(--wm))); }
+
+.crop-card__img {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: calc(210 * var(--wm));
+}
+.crop-card__img img {
+  max-width: 100%;
+  max-height: calc(189 * var(--wm));
+  object-fit: contain;
+}
+
+.crop-card .card-label { opacity: 0.8; text-align: center; }
+
+@media (max-width: 1024px) {
+  .crops__list { flex-wrap: wrap; justify-content: center; }
+  .crop-card { flex: 1 1 calc(33.333% - 8 * var(--wm)); }
+}
+
+@media (max-width: 767px) {
+  .crops { padding: calc(24 * var(--wm)) calc(16 * var(--wm)); }
+  .crop-card { flex: 1 1 calc(50% - 6 * var(--wm)); }
+  .crop-card__img { height: calc(150 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Кормовая мука
+   ───────────────────────────────────────────────────────────── */
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--wm));
+}
+
+.feed__inner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+}
+
+.feed__main {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
+  overflow: hidden;
+}
+
+
+.feed__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(32 * var(--wm));
+  flex: 1;
+  padding: calc(24 * var(--wm));
+}
+
+.feed__mix {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+}
+.feed__mix > .card-label { opacity: 0.5; }
+
+.feed__mix-row {
+  display: flex;
+  align-items: center;
+  gap: calc(4 * var(--wm));
+  width: 100%;
+}
+
+.mix-item {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(8 * var(--wm));
+  padding: calc(12 * var(--wm)) calc(16 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+}
+.mix-item--wheat  { flex: 1; background: var(--surface-lime); }
+.mix-item--wheat .stats-value { color: var(--color-green-500); }
+.mix-item--barley { background: var(--surface-sand); color: var(--color-brown); }
+.mix-item--barley .stats-value { color: var(--color-brown); }
+
+.feed__photo {
+  width: calc(640 * var(--wm));
+  height: calc(312 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  object-fit: cover;
+}
+
+/* таблица показателей */
+.feed__specs {
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
+}
+
+.feed__specs-row {
+  display: flex;
+  padding-block: calc(24 * var(--wm));
+  border-bottom: 1px solid var(--color-black-15);
+}
+
+.feed__spec {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--wm));
+  flex: 1;
+  padding-inline: calc(24 * var(--wm));
+  border-right: 1px solid var(--color-black-15);
+}
+.feed__spec:last-child { border-right: none; }
+.feed__spec .stats-value { color: var(--color-green-500); }
+
+.feed__note {
+  padding: calc(24 * var(--wm)) calc(10 * var(--wm));
+  text-align: center;
+  opacity: 0.7;
+}
+
+@media (max-width: 1024px) {
+  .feed__main { flex-direction: column; align-items: stretch; }
+  .feed__photo { width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .feed { gap: calc(24 * var(--wm)); }
+  .feed__specs-row { flex-wrap: wrap; gap: calc(24 * var(--wm)) 0; }
+  .feed__spec { flex: 1 1 50%; }
+  .feed__spec:nth-child(2n) { border-right: none; }
+  .feed__mix-row { flex-direction: column; align-items: stretch; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Международные поставки — карта
+   ───────────────────────────────────────────────────────────── */
+
+.geo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--wm));
+}
+
+.geo__map {
+  position: relative;
+  width: 100%;
+  min-height: calc(810 * var(--wm));
+  border: 1px solid var(--color-black-05);
+  border-radius: calc(12 * var(--wm));
+  background: var(--surface-card);
+  overflow: hidden;
+}
+.geo__map > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.geo__switch {
+  position: absolute;
+  left: 50%;
+  top: calc(24 * var(--wm));
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  height: calc(40 * var(--wm));
+  padding: calc(4 * var(--wm));
+  border-radius: calc(200 * var(--wm));
+  background: var(--color-white);
+}
+
+/* Активная пилюля — отдельный слой, который переезжает между
+   вкладками. Двигаем transform, поэтому ход плавный.        */
+.geo__switch-thumb {
+  position: absolute;
+  left: calc(4 * var(--wm));
+  top: calc(4 * var(--wm));
+  z-index: 0;
+  width: calc(208 * var(--wm));
+  height: calc(32 * var(--wm));
+  border-radius: calc(200 * var(--wm));
+  background: var(--color-green-500);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.geo__switch.is-second .geo__switch-thumb { transform: translateX(calc(208 * var(--wm))); }
+
+.geo__switch button {
+  --_bg: transparent;
+  --_fg: var(--color-white);
+  position: relative;
+  z-index: 1;
+  width: calc(208 * var(--wm));
+  border-radius: calc(200 * var(--wm));
+  transition: color var(--duration-base) var(--ease-out);
+}
+.geo__switch button:hover { --_bg: transparent; --_fg: var(--color-white); }
+
+/* цвет текста зависит от того, под какой вкладкой сейчас пилюля */
+.geo__switch button:nth-of-type(2) { --_fg: var(--color-black); }
+.geo__switch.is-second button:nth-of-type(1) { --_fg: var(--color-black); }
+.geo__switch.is-second button:nth-of-type(2) { --_fg: var(--color-white); }
+
+@media (max-width: 767px) {
+  .geo { gap: calc(24 * var(--wm)); }
+  .geo__map { min-height: calc(420 * var(--wm)); }
+  .geo__switch { width: calc(100% - 32 * var(--wm)); }
+  .geo__switch button { width: 50%; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Лицензии
+   ───────────────────────────────────────────────────────────── */
+
+.licenses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--wm));
+}
+
+.licenses__list {
+  display: flex;
+  gap: calc(12 * var(--wm));
+  width: 100%;
+}
+
+.license-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(30 * var(--wm));
+  flex: 1;
+  min-height: calc(360 * var(--wm));
+  padding: calc(16 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
+}
+
+.license-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--wm));
+}
+
+.license-card__foot {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+}
+.license-card__foot .card-meta { opacity: 0.5; }
+
+/* кнопка загорается от наведения на карточку целиком */
+.license-card:hover .btn--soft {
+  --_bg: var(--color-green-brand);
+  --_fg: var(--color-white);
+}
+
+@media (max-width: 1024px) {
+  .licenses__list { flex-wrap: wrap; }
+  .license-card { flex: 1 1 calc(50% - 6 * var(--wm)); }
+}
+
+@media (max-width: 767px) {
+  .licenses { gap: calc(24 * var(--wm)); }
+  .license-card { flex: 1 1 100%; min-height: auto; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Сотрудничество
+   ───────────────────────────────────────────────────────────── */
+
+.partner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(21 * var(--wm));
+  width: 100%;
+  border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
+}
+
+.partner__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(16 * var(--wm));
+  align-self: stretch;
+  width: calc(596 * var(--wm));
+  max-width: 100%;
+  padding: calc(24 * var(--wm));
+}
+.partner__text .section-heading,
+.partner__text .section-description { width: 100%; text-align: left; }
+
+.partner__photo {
+  flex: none;
+  width: calc(640 * var(--wm));
+  height: calc(324 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .partner { flex-direction: column; align-items: stretch; }
+  .partner__text { width: 100%; }
+  .partner__photo { width: 100%; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Новости
+   ───────────────────────────────────────────────────────────── */
+
+.news {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(32 * var(--wm));
+}
+
+.news__title { width: 100%; text-align: left; }
+
+/* сетка по 3 в ряд: следующая порция уходит на новую строку,
+   а не ужимает карточки первой                                */
+.news__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  /* по горизонтали 12, между рядами 24 */
+  gap: calc(24 * var(--wm)) calc(12 * var(--wm));
+  width: 100%;
+}
+
+.news-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: calc(20 * var(--wm));
+  overflow: hidden;
+}
+
+.news-card__img {
+  width: 100%;
+  height: calc(240 * var(--wm));
+  object-fit: cover;
+}
+
+.news-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(16 * var(--wm));
+  flex: 1;
+  min-height: calc(202 * var(--wm));
+  padding: calc(16 * var(--wm));
+  background: var(--surface-card);
+}
+
+.news-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+}
+
+.news-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--wm));
+}
+
+/* скрытые карточки второй порции — раскрываются по кнопке */
+.news-card.is-hidden { display: none; }
+
+.news-card.is-appearing {
+  animation: news-appear var(--duration-slow) var(--ease-out-expo) both;
+}
+@keyframes news-appear {
+  from { opacity: 0; transform: translateY(calc(16 * var(--wm))); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .news-card.is-appearing { animation: none; }
+}
+
+/* состояние всей карточки, а не только ссылки */
+.news-card:hover .dir-card__action { color: var(--color-green-500); }
+.news-card:hover .dir-card__action svg { transform: rotate(90deg) translateZ(0); }
+
+@media (max-width: 1024px) {
+  .news__list { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .news { gap: calc(24 * var(--wm)); }
+  .news__list { grid-template-columns: 1fr; }
+  .news-card__img { height: calc(200 * var(--wm)); }
+  .news-card__foot { flex-direction: column; align-items: flex-start; gap: calc(12 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Команда  (страница «О компании»)
+   ───────────────────────────────────────────────────────────── */
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--wm));
+}
+
+/* 4 карточки по 412 с гэпом 32 не влезают в 1280 — в макете
+   ряд уходит за правый край, поэтому это горизонтальная лента */
+.team__row {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(32 * var(--wm));
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.team__row::-webkit-scrollbar { display: none; }
+
+.team-card {
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  width: calc(412 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+/* Карточка притушена ровно настолько, насколько вылезла за край ленты.
+   Долю видимости считает JS и кладёт в --card-in (1 — целиком в кадре).
+   Без JS остаётся 1, то есть обычный вид, а не выцветший.            */
+.team-card { opacity: calc(0.5 + 0.5 * var(--card-in, 1)); }
+
+.team-card__img {
+  width: 100%;
+  height: calc(240 * var(--wm));
+  object-fit: cover;
+}
+
+.team-card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(16 * var(--wm));
+  flex: 1;
+  min-height: calc(202 * var(--wm));
+  padding: calc(16 * var(--wm));
+  background: var(--surface-card);
+}
+
+.team-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+}
+
+@media (max-width: 767px) {
+  .team { gap: calc(24 * var(--wm)); }
+  .team__row { gap: calc(12 * var(--wm)); }
+  .team-card { width: calc(300 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Партнёры
+   ───────────────────────────────────────────────────────────── */
+
+.partners {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(42 * var(--wm));
+}
+
+/* Лента скроллится, поэтому overflow убрать нельзя — вместо этого
+   выводим её за отступы страницы: плитки уезжают до края экрана,
+   а не обрезаются «шторкой» по границе контейнера. Внутренний
+   padding возвращает первую плитку на сетку контента.           */
+.partners__row {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--wm));
+  width: auto;
+  margin-inline: calc(-1 * var(--page-pad));
+  padding-inline: var(--page-pad);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.partners__row::-webkit-scrollbar { display: none; }
+
+/* плитка строго 260 × 260, логотип вписан по центру.
+   Прозрачность — по доле видимости, как у карточек команды */
+.partners__item {
+  opacity: calc(0.5 + 0.5 * var(--card-in, 1));
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(260 * var(--wm));
+  height: calc(260 * var(--wm));
+  padding: calc(24 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  overflow: hidden;
+}
+/* у логотипов в PNG своя белая подложка — multiply растворяет
+   её в фоне плитки, оставляя только сам знак                  */
+.partners__item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 767px) {
+  .partners { gap: calc(24 * var(--wm)); }
+  .partners__item { width: calc(180 * var(--wm)); height: calc(180 * var(--wm)); padding: calc(16 * var(--wm)); }
+}
+
+/* лента тянется мышью — курсор подсказывает это */
+[data-drag-scroll] { cursor: grab; }
+[data-drag-scroll].is-dragging { cursor: grabbing; scroll-snap-type: none; }
+[data-drag-scroll].is-dragging * { pointer-events: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   Hero страницы «О компании» — состояния по скроллу
+
+   Дорожка задаёт длину прокрутки, сам блок внутри неё липкий.
+   JS кладёт на дорожку прогресс 0…1 (несколько под-прогрессов
+   для разных слоёв), а CSS уже двигает элементы. Всё через
+   transform, поэтому анимация идёт без пересчёта layout.
+   Числа — координаты из макета: фото 0 → -435, заголовки
+   0 → -310, группа 596 → 294.
+   ───────────────────────────────────────────────────────────── */
+
+.hero-about-track {
+  --p-img: 0;
+  --p-title: 0;
+  --p-text: 0;
+  --p-group: 0;
+
+  /* hero занимает экран целиком — иначе под ним во время
+     залипания видна белая полоса                            */
+  --hero-h: 100dvh;
+
+  /* хвост после последнего положения: даёт дочитать финальный
+     текст, прежде чем блок отлипнет. Значение продублировано
+     в main.js константой TAIL_VH — менять вместе.           */
+  --hero-tail: 25vh;
+
+  position: relative;
+  width: 100%;
+  height: calc(var(--hero-h) + 180vh + var(--hero-tail));
+}
+
+.hero-about {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: var(--hero-h);
+  padding: calc(16 * var(--wm));
+  background: var(--hero-about-bg);
+  overflow: hidden;
+}
+
+.hero-about__panel {
+  position: relative;
+  height: 100%;
+  border-radius: calc(20 * var(--wm));
+  background: var(--hero-about-panel);
+  overflow: hidden;
+}
+
+.hero-about__img {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 73%;
+  height: calc(100% - 218 * var(--wm));
+  object-fit: cover;
+  transform: translate(-50%, calc(-77.96% * var(--p-img))) rotate(var(--img-rot, 0deg));
+}
+
+.hero-about__crumbs {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  top: calc(114 * var(--wm));
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+  color: var(--color-white);
+}
+.hero-about__crumbs a,
+.hero-about__crumbs span:not(.is-current) { opacity: 0.5; }
+.hero-about__crumbs a { transition: opacity var(--duration-base) var(--ease-out); }
+.hero-about__crumbs a:hover { opacity: 1; }
+
+/* Группа «заголовок + текст» прижата к низу панели. В макете она
+   уезжает вверх по мере появления абзацев — здесь того же добивается
+   нижняя привязка: блок растёт вверх и гарантированно остаётся
+   в пределах экрана на любой высоте окна.                        */
+.hero-about__group {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  bottom: calc(22 * var(--wm));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: calc(572 * var(--wm));
+  max-height: calc(100% - 160 * var(--wm));
+  color: var(--color-white);
+}
+
+/* окно 531 × 158, внутри которого лента из двух заголовков */
+.hero-about__titles {
+  width: calc(531 * var(--wm));
+  height: calc(158 * var(--wm));
+  overflow: hidden;
+}
+
+.hero-about__titles-track {
+  display: flex;
+  flex-direction: column;
+  gap: calc(158 * var(--wm));
+  transform: translateY(calc(-310 * var(--wm) * var(--p-title)));
+}
+
+.hero-about__title {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+  width: 100%;
+}
+.hero-about__title .section-label,
+.hero-about__title .section-heading {
+  width: 100%;
+  text-align: left;
+  color: var(--color-white);
+}
+
+/* Абзацы раскрываются по одному: третье и четвёртое положение
+   скролла. Высота — от измеренной JS натуральной, иначе скрытый
+   текст занимал бы место и отталкивал заголовок от низа.      */
+.hero-about__text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hero-about__para {
+  overflow: hidden;
+  will-change: height;
+}
+.hero-about__para:nth-child(1) {
+  height: calc(var(--h1, 0px) * var(--p-t1, 0));
+  margin-top: calc(42 * var(--wm) * var(--p-t1, 0));
+  opacity: var(--p-t1, 0);
+}
+.hero-about__para:nth-child(2) {
+  height: calc(var(--h2, 0px) * var(--p-t2, 0));
+  margin-top: calc(42 * var(--wm) * var(--p-t2, 0));
+  opacity: var(--p-t2, 0);
+}
+
+.hero-about__text .section-description {
+  width: 100%;
+  text-align: left;
+  color: var(--color-white);
+}
+
+@media (max-width: 767px) {
+  .hero-about-track { height: calc(var(--hero-h) + 120vh + var(--hero-tail)); }
+  .hero-about { padding: calc(8 * var(--wm)); }
+  .hero-about__crumbs { top: calc(80 * var(--wm)); left: calc(16 * var(--wm)); }
+  .hero-about__group {
+    left: calc(16 * var(--wm));
+    width: calc(100% - 32 * var(--wm));
+    gap: calc(20 * var(--wm));
+  }
+  .hero-about__titles { width: 100%; height: calc(120 * var(--wm)); }
+  .hero-about__titles-track {
+    gap: calc(120 * var(--wm));
+    transform: translateY(calc(-240 * var(--wm) * var(--p-title)));
+  }
+  .hero-about__para:nth-child(1),
+  .hero-about__para:nth-child(2) { margin-top: calc(16 * var(--wm) * var(--p-t1, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-about-track { height: var(--hero-h); }
+  .hero-about__img,
+  .hero-about__group,
+  .hero-about__titles-track { transform: none; }
+  .hero-about__para { height: auto; opacity: 1; margin-top: calc(42 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Страница «Контакты»
+   ───────────────────────────────────────────────────────────── */
+
+.page--contacts {
+  gap: 0;
+  padding-bottom: 0;
+  background: var(--color-black);
+}
+
+.contacts {
+  width: 100%;
+  /* от нижней карточки до футера в макете 37, а не общие 120 */
+  padding: calc(16 * var(--wm)) calc(16 * var(--wm)) calc(37 * var(--wm));
+}
+
+.contacts__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(12 * var(--wm));
+  align-items: start;
+}
+
+.contacts__col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--wm));
+}
+
+.contacts__card {
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-white-10);
+  overflow: hidden;
+}
+
+/* верхняя карточка: заголовок вверху, контакты внизу */
+.contacts__intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: calc(63 * var(--wm));
+  min-height: calc(527 * var(--wm));
+  padding: calc(152 * var(--wm)) calc(24 * var(--wm)) calc(24 * var(--wm));
+}
+
+.contacts__head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+}
+.contacts__head .section-label,
+.contacts__head .section-heading {
+  width: 100%;
+  text-align: left;
+  color: var(--color-white);
+}
+
+.contacts__list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--wm));
+}
+.contacts__row {
+  display: flex;
+  gap: calc(12 * var(--wm));
+}
+
+.contacts__item {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  flex: 1;
+  padding: calc(16 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  background: var(--color-white-05);
+  color: var(--color-white);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+a.contacts__item:hover { background: var(--color-white-15); }
+.contacts__item .section-label { opacity: 0.6; }
+
+/* нижняя карточка: карты */
+.contacts__maps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(42 * var(--wm));
+  min-height: calc(228 * var(--wm));
+  padding: calc(24 * var(--wm));
+}
+
+.contacts__maps-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+}
+.contacts__maps-head .section-heading,
+.contacts__maps-head .section-label {
+  width: 100%;
+  text-align: left;
+  color: var(--color-white);
+}
+
+.contacts__maps-row {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+}
+
+.map-link {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--wm));
+  flex: 1;
+  padding: calc(8 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--color-white-05);
+  color: var(--color-white);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.map-link:hover { background: var(--color-white-15); }
+
+.map-link__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(54 * var(--wm));
+  height: calc(54 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  background: var(--color-white);
+  overflow: hidden;
+}
+/* иконка заполняет плитку целиком */
+.map-link__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-link__text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--wm));
+}
+
+.map-link__action {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--wm));
+}
+.map-link__action svg {
+  width: calc(24 * var(--wm));
+  height: calc(24 * var(--wm));
+  transform-origin: 50% 50%;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.map-link:hover .map-link__action svg { transform: rotate(90deg) translateZ(0); }
+
+/* правая колонка: фото с формой поверх */
+.contacts__photo {
+  position: relative;
+  min-height: calc(767 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-white-10);
+  overflow: hidden;
+}
+.contacts__photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lead {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--wm));
+  width: calc(466 * var(--wm));
+  max-width: calc(100% - 32 * var(--wm));
+  padding: calc(24 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-white);
+}
+.lead__title { width: calc(324 * var(--wm)); max-width: 100%; text-align: left; }
+.lead .card-description { color: var(--color-black); }
+
+.lead__field {
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--wm));
+  height: calc(56 * var(--wm));
+  padding: calc(10 * var(--wm)) calc(16 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  background: var(--color-black-05);
+  cursor: text;
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.lead__field:focus-within { background: var(--color-black-08); }
+.lead__field .section-label { text-align: left; opacity: 0.6; }
+.lead__field input {
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: calc(16 * var(--wm));
+  line-height: 1.2;
+}
+.lead__field input:focus { outline: none; }
+
+.lead .btn { margin-top: calc(6 * var(--wm)); }
+
+@media (max-width: 1024px) {
+  .contacts__grid { grid-template-columns: 1fr; }
+  .contacts__intro { padding-top: calc(80 * var(--wm)); }
+}
+
+@media (max-width: 767px) {
+  .contacts { padding: calc(8 * var(--wm)) calc(8 * var(--wm)) calc(24 * var(--wm)); }
+  .contacts__intro {
+    min-height: 0;
+    gap: calc(32 * var(--wm));
+    padding: calc(100 * var(--wm)) calc(16 * var(--wm)) calc(16 * var(--wm));
+  }
+  .contacts__row { flex-direction: column; }
+  .contacts__maps { gap: calc(20 * var(--wm)); padding: calc(16 * var(--wm)); }
+  .contacts__maps-row { flex-direction: column; align-items: stretch; }
+  .contacts__photo { min-height: calc(560 * var(--wm)); }
+  .lead { width: calc(100% - 24 * var(--wm)); padding: calc(16 * var(--wm)); }
+  .lead__title { width: 100%; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Внутренние страницы без hero
+   ───────────────────────────────────────────────────────────── */
+
+/* шапка фиксированная, поэтому первую секцию отводим ниже неё:
+   пилюля 79 + 16 отступа макета */
+/* Шапка на светлых страницах: 24 отступ + 56 бар = 80.
+   До крошек от неё 40, до кнопки «назад» — 24.              */
+.page--inner {
+  padding-top: calc(120 * var(--wm));
+  padding-bottom: calc(120 * var(--wm));
+  gap: calc(120 * var(--wm));
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+}
+.crumbs a,
+.crumbs span:not(.is-current) { opacity: 0.5; }
+.crumbs a { transition: opacity var(--duration-base) var(--ease-out); }
+.crumbs a:hover { opacity: 1; }
+
+.news__head {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .page--inner {
+    padding-top: calc(96 * var(--wm));
+    padding-bottom: calc(64 * var(--wm));
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Страница новости
+   ───────────────────────────────────────────────────────────── */
+
+.article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(32 * var(--wm));
+}
+
+/* кнопка «Назад» — тёмная пилюля над заголовком */
+.page--article { padding-top: calc(104 * var(--wm)); }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(4 * var(--wm));
+  align-self: center;
+  padding: calc(4 * var(--wm)) calc(16 * var(--wm)) calc(4 * var(--wm)) calc(8 * var(--wm));
+  border-radius: calc(200 * var(--wm));
+  background: var(--color-black);
+  color: var(--color-white);
+  font-size: var(--text-card-action);
+  line-height: var(--leading-card-action);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.back-link:hover { background: var(--color-green-brand); }
+.back-link svg {
+  width: calc(24 * var(--wm));
+  height: calc(24 * var(--wm));
+}
+
+.article__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+  text-align: center;
+}
+.article__title { width: 100%; }
+
+.article__date {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+}
+
+.article__cover {
+  width: calc(1200 * var(--wm));
+  max-width: 100%;
+  height: calc(600 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  object-fit: cover;
+}
+
+/* колонка текста уже контентной — 1000 при 1440 */
+.article__lead,
+.article__block {
+  width: calc(1000 * var(--wm));
+  max-width: 100%;
+}
+
+.article__block {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+}
+.article__block .section-heading {
+  width: 100%;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .article { gap: calc(20 * var(--wm)); }
+  .article__cover { height: calc(240 * var(--wm)); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Страница направления
+   ───────────────────────────────────────────────────────────── */
+
+/* Один экран вместо 810 из макета: панель тянется на 100% высоты
+   секции, картинка абсолютная с cover, заголовок прижат к низу —
+   внутри ничего подстраивать не нужно.
+
+   svh, а не vh: на мобильных vh считается по окну без адресной
+   строки, и первый экран оказывается выше видимой области.     */
+.hero-dir {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: calc(560 * var(--wm));
+  padding: calc(16 * var(--wm));
+  background: var(--hero-about-bg);
+}
+
+/* Вступительный вид, как на главной: сначала только картинка на
+   весь экран, потом панель отъезжает внутрь на свои 16, углы
+   скругляются и наплывают крошки с заголовком. Высота уже 100svh,
+   поэтому анимируются только отступы, радиус и прозрачность.   */
+.hero-dir,
+.hero-dir__panel,
+.hero-dir__crumbs,
+.hero-dir__content {
+  transition: padding var(--duration-intro-dir) var(--ease-out-expo),
+              border-radius var(--duration-intro-dir) var(--ease-out-expo),
+              opacity var(--duration-intro-dir) var(--ease-out-expo);
+}
+
+.has-hero-intro .hero-dir { padding: 0; }
+.has-hero-intro .hero-dir .hero-dir__panel { border-radius: 0; }
+.has-hero-intro .hero-dir .hero-dir__crumbs,
+.has-hero-intro .hero-dir .hero-dir__content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-dir,
+  .hero-dir__panel,
+  .hero-dir__crumbs,
+  .hero-dir__content { transition: none; }
+}
+
+.hero-dir__panel {
+  position: relative;
+  height: 100%;
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-black);
+  overflow: hidden;
+}
+/* Тяжёлый PNG декодируется построчно, и без этого видно, как
+   картинка «наливается» сверху вниз. Показываем её только
+   целиком — по готовности JS ставит is-loaded.              */
+.hero-dir__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--duration-intro-dir) var(--ease-out);
+}
+.hero-dir__img.is-loaded { opacity: 1; }
+
+/* 24 от нижней грани шапки: 40 (отступ шапки) + 66 (бар) + 24,
+   минус 16 — на столько панель отступает от верха секции.     */
+.hero-dir__crumbs {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  top: calc(114 * var(--wm));
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+  color: var(--color-white);
+}
+.hero-dir__crumbs a,
+.hero-dir__crumbs span:not(.is-current) { opacity: 0.5; }
+.hero-dir__crumbs a:hover { opacity: 1; }
+
+.hero-dir__content {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  bottom: calc(24 * var(--wm));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(16 * var(--wm));
+  width: calc(630 * var(--wm));
+  max-width: calc(100% - 48 * var(--wm));
+  color: var(--color-white);
+}
+.hero-dir__content .section-heading,
+.hero-dir__content .section-description {
+  width: 100%;
+  text-align: left;
+  color: var(--color-white);
+}
+
+/* Служебные страницы (спасибо, 404): тот же hero, но контент
+   по центру и на 282 от верха панели — 24 паддинг + 66 шапка + 192. */
+.hero-dir__content--center {
+  left: calc(24 * var(--wm));
+  right: calc(24 * var(--wm));
+  top: calc(282 * var(--wm));
+  bottom: auto;
+  align-items: center;
+  width: auto;
+  max-width: none;
+}
+/* колонка текста 630 по центру: «Спасибо!» отдельной строкой,
+   дальше перенос по ширине, а не по краю панели                */
+.hero-dir__content--center .section-heading,
+.hero-dir__content--center .section-description {
+  width: calc(630 * var(--wm));
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* страница целиком в один экран: без ритма между блоками и футера */
+.page--flush {
+  gap: 0;
+  padding-bottom: 0;
+}
+
+/* чипы этапов */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+}
+.chip {
+  padding: calc(8 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--color-green-15);
+}
+
+.feed__photo--tall    { height: calc(371 * var(--wm)); }
+.feed__photo--product { height: calc(470 * var(--wm)); }
+.feed__main--soft     { background: var(--surface-soft-2); }
+
+/* ── Графики ─────────────────────────────────────────────── */
+
+.charts {
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--wm));
+}
+
+.charts__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(12 * var(--wm));
+}
+
+/* ── Карточка графика ────────────────────────────────────────
+   Все координаты — из макета (карточка 634 × 440), поэтому
+   позиции абсолютные и считаются от неё через --wm.          */
+
+.chart-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(440 * var(--wm));
+  border: 1px solid var(--color-black-03);
+  border-radius: calc(12 * var(--wm));
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.chart-card__note {
+  position: absolute;
+  right: calc(24 * var(--wm));
+  top: calc(28 * var(--wm));
+  opacity: 0.6;
+}
+
+.chart-card__head {
+  position: absolute;
+  left: calc(24 * var(--wm));
+  top: calc(24 * var(--wm));
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+  z-index: 2;
+}
+
+.chart-card__title {
+  display: flex;
+  align-items: center;
+  gap: calc(6 * var(--wm));
+  text-align: left;
+  white-space: nowrap;
+}
+
+.chart-card__hint {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(16 * var(--wm));
+  height: calc(16 * var(--wm));
+  border-radius: 50%;
+  cursor: help;
+}
+.chart-card__hint img { width: 100%; height: 100%; }
+
+/* подсказка: в макете лежит скрытым слоем, показываем по наведению */
+.chart-card__hint::after {
+  content: attr(data-hint);
+  position: absolute;
+  left: calc(127 * var(--wm));
+  top: calc(24 * var(--wm));
+  z-index: 3;
+  width: calc(408 * var(--wm));
+  padding: calc(12 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--surface-hint);
+  color: var(--color-black);
+  font-size: var(--text-section-label);
+  font-weight: var(--weight-section-label);
+  line-height: var(--leading-section-label);
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-out), visibility var(--duration-base);
+}
+.chart-card__hint:hover::after,
+.chart-card__hint:focus-visible::after { opacity: 1; visibility: visible; }
+
+.chart-card__value {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(8 * var(--wm));
+}
+.chart-card__value .stats-value { color: var(--color-green-500); }
+
+/* область графика: 634 × 243 от низа карточки */
+.chart-card__plot {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(243 * var(--wm));
+}
+
+.chart-card__line {
+  position: absolute;
+  left: calc(39 * var(--wm));
+  top: 0;
+  width: calc(553 * var(--wm));
+  height: calc(205 * var(--wm));
+}
+
+.chart-card__axis {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+/* Точки со значениями. Координаты из макета: left — по горизонтали,
+   bottom — по вертикали, обе от левого нижнего угла области графика.
+   Чтобы поднять цифру — увеличь bottom, опустить — уменьши.        */
+.chart-card__dot { position: absolute; height: calc(43 * var(--wm)); width: auto; }
+.chart-card__dot--a { left: calc(30 * var(--wm));  bottom: calc(143 * var(--wm)); }
+.chart-card__dot--b { left: calc(212 * var(--wm)); bottom: calc(92 * var(--wm)); }
+.chart-card__dot--c { left: calc(391 * var(--wm)); bottom: calc(235 * var(--wm)); }
+.chart-card__dot--d { left: calc(572 * var(--wm)); bottom: calc(179 * var(--wm)); }
+
+/* пунктирные направляющие */
+.chart-card__guide { position: absolute; opacity: 1; }
+.chart-card__guide--v {
+  left: calc(226 * var(--wm));
+  bottom: calc(38 * var(--wm));
+  width: 1px;
+  height: calc(61 * var(--wm));
+}
+.chart-card__guide--h {
+  left: calc(306 * var(--wm));
+  bottom: calc(141 * var(--wm));
+  width: calc(205 * var(--wm));
+  height: 1px;
+}
+
+/* ── Второй график: область 634 × 220, линия ниже и положе ── */
+
+.chart-card--gross .chart-card__plot { height: calc(220 * var(--wm)); }
+.chart-card--gross .chart-card__line {
+  top: calc(11 * var(--wm));
+  height: calc(171 * var(--wm));
+}
+.chart-card--gross .chart-card__guide--h {
+  left: calc(324 * var(--wm));
+  bottom: calc(122 * var(--wm));
+  width: calc(168 * var(--wm));
+}
+
+/* точки второго графика — подпись текстом, кружок на CSS */
+.chart-dot {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(6 * var(--wm));
+  height: calc(43 * var(--wm));   /* как высота SVG-точки: 22 + 6 + 15 */
+  white-space: nowrap;
+}
+.chart-dot--a { left: calc(20 * var(--wm));  bottom: calc(145 * var(--wm)); }
+.chart-dot--b { left: calc(204 * var(--wm)); bottom: calc(92 * var(--wm)); }
+.chart-dot--c { left: calc(380 * var(--wm)); bottom: calc(198 * var(--wm)); }
+.chart-dot--d { left: calc(562 * var(--wm)); bottom: calc(177 * var(--wm)); }
+/* кружок один в один как в SVG первого графика:
+   внешний диаметр 15, обводка 2, оба масштабируются вместе с --wm */
+.chart-dot::after {
+  content: "";
+  box-sizing: border-box;
+  width: calc(15 * var(--wm));
+  height: calc(15 * var(--wm));
+  border: calc(2 * var(--wm)) solid var(--color-green-label);
+  border-radius: 50%;
+  background: var(--color-white);
+}
+
+@media (max-width: 767px) {
+  .chart-card { height: calc(360 * var(--wm)); }
+  .chart-card__hint::after { left: 0; top: calc(40 * var(--wm)); width: calc(280 * var(--wm)); }
+}
+
+/* ── Структура посевных площадей ─────────────────────────── */
+
+.crops-table {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--wm));
+  padding: calc(24 * var(--wm));
+  border: 1px solid var(--color-black-03);
+  border-radius: calc(20 * var(--wm));
+  background: var(--color-white);
+}
+
+.crops-table__photo {
+  width: 100%;
+  height: calc(480 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  object-fit: cover;
+}
+
+.crops-table__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(24 * var(--wm));
+}
+.crops-table__head .card-heading-l { width: calc(491 * var(--wm)); max-width: 100%; }
+
+.crops-table__years {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--wm));
+}
+
+.btn--year {
+  --_bg: var(--color-black-03);
+  --_fg: var(--color-black);
+  height: auto;
+  padding: calc(12 * var(--wm));
+}
+.btn--year:hover { --_bg: var(--color-black-08); --_fg: var(--color-black); }
+.btn--year.is-active { --_bg: var(--color-green-500); --_fg: var(--color-white); }
+
+.crops-table__body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+}
+
+.crops-table__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--wm));
+  padding-block: calc(12 * var(--wm));
+  border-bottom: 1px solid var(--color-black-20);
+}
+.crops-table__list li > span:first-child { opacity: 0.8; }
+
+.crops-table__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--wm));
+  padding: calc(16 * var(--wm));
+  border-radius: calc(12 * var(--wm));
+  background: var(--surface-lime);
+}
+.crops-table__total > span:first-child { opacity: 0.8; }
+.crops-table__total .card-heading-m { color: var(--color-green-brand); }
+
+/* ── Карточка сырья и характеристики ─────────────────────── */
+
+.raw-card {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--wm));
+  width: 100%;
+  padding: calc(12 * var(--wm)) calc(16 * var(--wm));
+  border-radius: calc(8 * var(--wm));
+  background: var(--surface-lime);
+}
+.raw-card .card-heading-m { color: var(--color-green-brand); }
+.raw-card .card-description { opacity: 0.5; }
+
+.specs-list { width: 100%; }
+.specs-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8 * var(--wm));
+  padding-block: calc(12 * var(--wm));
+  border-bottom: 1px solid var(--color-black-20);
+}
+.specs-list li > span:first-child { opacity: 0.5; }
+
+/* ── Построение графиков при прокрутке ───────────────────────
+   Линия прочерчивается по своей траектории: путь «обводится»
+   штрихом длиной во всю линию, а смещение штриха уводит его за
+   край и возвращает. Заливка проступает следом, точки выходят
+   по очереди слева направо, пунктиры — последними.           */
+
+/* Кривая разгибается из прямой: сам путь пересчитывается покадрово
+   в JS, поэтому здесь только проявление заливки под ней.         */
+.chart-line__fill {
+  opacity: 0;
+  transition: opacity var(--duration-draw) var(--ease-out);
+}
+.is-drawn .chart-line__fill { opacity: 0.4; }
+
+/* точки: --i задаёт очередь, её проставляет JS по порядку слева */
+.chart-card__dot,
+.chart-dot,
+.chart-wide__dot {
+  opacity: 0;
+  transform: translateY(calc(6 * var(--wm)));
+  transition: opacity var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+  transition-delay: calc(var(--duration-draw) * 0.45 + var(--i, 0) * 110ms);
+}
+.is-drawn .chart-card__dot,
+.is-drawn .chart-dot,
+.is-drawn .chart-wide__dot {
+  opacity: 1;
+  transform: none;
+}
+
+.chart-card__guide,
+.chart-wide__guide {
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+  transition-delay: calc(var(--duration-draw) * 0.9);
+}
+.is-drawn .chart-card__guide { opacity: 1; }
+.is-drawn .chart-wide__guide { opacity: 0.1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-line__stroke,
+  .chart-line__fill,
+  .chart-card__dot,
+  .chart-dot,
+  .chart-wide__dot,
+  .chart-card__guide,
+  .chart-wide__guide { transition: none; }
+}
+
+/* ── Широкий график: закупка и экспорт ───────────────────── */
+
+/* Карточка 1280 × 440 на всю ширину контента, две линии
+   и восемь точек. Координаты точек — из макета, отсчёт от
+   низа карточки: больше bottom — цифра выше.               */
+.chart-wide {
+  position: relative;
+  width: 100%;
+  height: calc(440 * var(--wm));
+  border: 1px solid var(--color-black-03);
+  border-radius: calc(12 * var(--wm));
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.chart-wide__head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--wm));
+  width: 100%;
+  padding: calc(28 * var(--wm));
+  z-index: 2;
+}
+
+.chart-wide__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(24 * var(--wm));
+}
+.chart-wide__period { opacity: 0.6; }
+
+/* легенда: штрих цвета линии + подпись */
+.chart-wide__legend {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(24 * var(--wm));
+}
+.chart-wide__key {
+  display: flex;
+  align-items: center;
+  gap: calc(16 * var(--wm));
+}
+.chart-wide__key::before {
+  content: "";
+  width: calc(30 * var(--wm));
+  height: calc(4 * var(--wm));
+  border-radius: calc(2 * var(--wm));
+  background: var(--_key, var(--color-green-500));
+}
+.chart-wide__key--buy    { --_key: var(--color-green-500); }
+.chart-wide__key--export { --_key: var(--color-orange); }
+.chart-wide__key span { opacity: 0.6; }
+
+/* область графика: от 101 сверху и до низа карточки */
+.chart-wide__plot {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(339 * var(--wm));
+}
+
+.chart-wide__line {
+  position: absolute;
+  left: calc(35 * var(--wm));
+  top: calc(35 * var(--wm));
+  width: calc(1211 * var(--wm));
+  height: calc(267 * var(--wm));
+}
+
+/* ось годов прижата к низу */
+.chart-wide__axis {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: calc(8 * var(--wm)) calc(24 * var(--wm));
+  background: var(--color-white);
+}
+.chart-wide__axis span { opacity: 0.6; }
+
+/* вертикальные пунктиры к точкам */
+/* прозрачность задаёт состояние построения выше, здесь её нет —
+   иначе это правило перебило бы её и пунктир был виден сразу   */
+.chart-wide__guide {
+  position: absolute;
+  bottom: calc(38 * var(--wm));
+  width: 1px;
+  border-left: 1px dashed var(--color-black);
+}
+.chart-wide__guide--a { left: calc(441 * var(--wm)); height: calc(61 * var(--wm)); }
+.chart-wide__guide--b { left: calc(839 * var(--wm)); height: calc(173 * var(--wm)); }
+
+/* Точка со значением: цифра сверху, кружок снизу — как в SVG
+   на странице сельского хозяйства (22 текст + 6 + 15 кружок). */
+.chart-wide__dot {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(6 * var(--wm));
+  height: calc(43 * var(--wm));
+  white-space: nowrap;
+}
+.chart-wide__dot::after {
+  content: "";
+  box-sizing: border-box;
+  width: calc(15 * var(--wm));
+  height: calc(15 * var(--wm));
+  border: calc(2 * var(--wm)) solid var(--_dot, var(--color-green-label));
+  border-radius: 50%;
+  background: var(--color-white);
+}
+.chart-wide__dot--export { --_dot: var(--color-orange); }
+.chart-wide__dot--soft   { --_dot: var(--color-green-500); }
+
+/* 2022 */
+.chart-wide__dot--a { left: calc(9 * var(--wm));    bottom: calc(146 * var(--wm)); }
+.chart-wide__dot--b { left: calc(9 * var(--wm));    bottom: calc(78 * var(--wm)); }
+/* 2023 */
+.chart-wide__dot--c { left: calc(418 * var(--wm));  bottom: calc(92 * var(--wm)); }
+.chart-wide__dot--d { left: calc(414 * var(--wm));  bottom: calc(199 * var(--wm)); }
+/* 2024 */
+.chart-wide__dot--e { left: calc(814 * var(--wm));  bottom: calc(204 * var(--wm)); }
+.chart-wide__dot--f { left: calc(814 * var(--wm));  bottom: calc(142 * var(--wm)); }
+/* 2025 */
+.chart-wide__dot--g { left: calc(1211 * var(--wm)); bottom: calc(296 * var(--wm)); }
+.chart-wide__dot--h { left: calc(1211 * var(--wm)); bottom: calc(239 * var(--wm)); }
+
+@media (max-width: 767px) {
+  .chart-wide { height: calc(360 * var(--wm)); }
+  .chart-wide__dot { font-size: calc(13 * var(--wm)); }
+}
+
+/* ── Галерея ─────────────────────────────────────────────── */
+
+.gallery {
+  /* переключение кадра — единый тайминг для сдвига ленты и роста кадра:
+     разойдутся хоть на миллисекунду, и центр «поплывёт» на промежуточных */
+  --g-ease: var(--ease-out-expo);
+  --g-time: var(--duration-slow);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--wm));
+}
+
+/* Окно ленты; скролла нет — лента едет трансформом.
+   Высота жёстко равна высоте центрального кадра: иначе при смене размера
+   лента то 380, то 420, и всё, что ниже, прыгает на 40px.
+
+   overflow не режем: боковые кадры уходят до края экрана, а не обрезаются
+   «шторкой» по границе контейнера. Горизонтального скролла не будет —
+   .page стоит на overflow-x: clip и обрежет ленту по краю окна.        */
+.gallery__row {
+  width: 100%;
+  height: calc(420 * var(--wm));
+}
+
+/* Сдвиг ленты считает JS по замеренным в покое ширинам и кладёт в --g-shift.
+   Трансформ и рост кадра идут одним transition, поэтому центр активного
+   кадра приколот к центру окна на всём протяжении анимации.               */
+.gallery__track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: calc(12 * var(--wm));
+  width: max-content;
+  transform: translate3d(var(--g-shift, 0px), 0, 0);
+  transition: transform var(--g-time) var(--g-ease);
+  will-change: transform;
+}
+
+/* боковые кадры 380 × 380, центральный — 640 × 420 */
+.gallery__track img {
+  flex: none;
+  width: calc(380 * var(--wm));
+  height: calc(380 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  object-fit: cover;
+  cursor: pointer;
+  transition: width var(--g-time) var(--g-ease),
+              height var(--g-time) var(--g-ease),
+              opacity var(--g-time) var(--g-ease);
+  /* боковые чуть притушены, центральный в полную силу */
+  opacity: 0.75;
+}
+.gallery__track img:hover { opacity: 1; }
+.gallery__track img.is-active {
+  opacity: 1;
+  width: calc(640 * var(--wm));
+  height: calc(420 * var(--wm));
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery { --g-time: 1ms; }
+}
+
+.gallery__nav {
+  display: flex;
+  align-items: center;
+  gap: calc(17 * var(--wm));
+}
+.gallery__arrow {
+  display: grid;
+  place-items: center;
+  width: calc(32 * var(--wm));
+  height: calc(32 * var(--wm));
+  border-radius: 50%;
+  background: var(--color-black-03);
+  color: var(--color-black);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+.gallery__arrow:hover { background: var(--color-green-500); color: var(--color-white); }
+.gallery__arrow svg { width: 100%; height: 100%; }
+
+@media (max-width: 1024px) {
+  .charts__row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  .hero-dir { height: auto; }
+  .hero-dir__panel { min-height: calc(520 * var(--wm)); }
+  .hero-dir__content { width: calc(100% - 32 * var(--wm)); left: calc(16 * var(--wm)); }
+  .hero-dir__content--center {
+    width: auto;
+    left: calc(16 * var(--wm));
+    right: calc(16 * var(--wm));
+    top: auto;
+    bottom: calc(48 * var(--wm));
+  }
+  .crops-table__head { flex-direction: column; }
+  .crops-table__head .card-heading-l { width: 100%; }
+  .crops-table__years { flex-wrap: wrap; }
+  .crops-table__photo { height: calc(220 * var(--wm)); }
+  .gallery__row { height: calc(300 * var(--wm)); }
+  .gallery__track img { width: calc(260 * var(--wm)); height: calc(260 * var(--wm)); }
+  .gallery__track img.is-active { width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
+}
