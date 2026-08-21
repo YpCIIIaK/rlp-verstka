@@ -640,17 +640,25 @@
     };
 
     btn.addEventListener("click", (e) => {
-      if (!mq("(max-width: 767px)").matches || !item.closest("[data-nav]")) return;
+      // на десктопе список открывает наведение, клик по ссылке ведёт дальше
+      if (mq("(hover: hover)").matches && btn.tagName === "A") return;
       e.preventDefault();
       set(!item.classList.contains("is-open"));
     });
 
-    item.addEventListener("mouseenter", () => set(true));
-    item.addEventListener("mouseleave", () => set(false));
-    item.addEventListener("focusin", () => set(true));
-    item.addEventListener("focusout", (e) => {
-      if (!item.contains(e.relatedTarget)) set(false);
-    });
+    /* На тач-экране касание сначала даёт фокус и наведение —
+       список открывается, — а следом приходит click и тут же
+       его закрывает: пункт приходилось жать дважды. Оба этих
+       способа вешаем только там, где есть настоящий указатель;
+       на телефоне список открывает само касание.             */
+    if (mq("(hover: hover)").matches) {
+      item.addEventListener("mouseenter", () => set(true));
+      item.addEventListener("mouseleave", () => set(false));
+      item.addEventListener("focusin", () => set(true));
+      item.addEventListener("focusout", (e) => {
+        if (!item.contains(e.relatedTarget)) set(false);
+      });
+    }
     item.addEventListener("keydown", (e) => {
       if (e.key === "Escape") { set(false); btn.blur(); }
     });

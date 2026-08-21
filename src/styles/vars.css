@@ -215,10 +215,10 @@
     --text-section-desc:  calc(16 * var(--wm));
     --text-section-label: calc(13 * var(--wm));
 
-    --text-stats-value:   calc(32 * var(--wm));
-    --text-stats-prefix:  calc(16 * var(--wm));
-    --text-stats-unit:    calc(16 * var(--wm));
-    --text-stats-desc:    calc(14 * var(--wm));
+    --text-stats-value:   calc(26 * var(--wm));
+    --text-stats-prefix:  calc(15 * var(--wm));
+    --text-stats-unit:    calc(15 * var(--wm));
+    --text-stats-desc:    calc(13 * var(--wm));
 
     --text-card-label:  calc(13 * var(--wm));
     --text-card-h-l:    calc(20 * var(--wm));

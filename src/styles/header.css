@@ -270,18 +270,31 @@
                 transform var(--duration-base) var(--ease-out),
                 visibility var(--duration-base);
   }
-  .header__right.is-open { opacity: 1; visibility: visible; transform: none; margin-top: 20px;}
+  .header__right.is-open { opacity: 1; visibility: visible; transform: none; margin-top: calc(20 * var(--wm)); }
 
   .nav {
     flex-direction: column;
     align-items: stretch;
     height: auto;
   }
+  /* Все пункты одной высоты и с одинаковым шагом: раньше высоту
+     задавали свои паддинги у ссылок и фиксированные 40 у языка,
+     и на глаз промежутки читались неровно.                    */
   .nav__link,
   .header__lang {
     --_pill-bg: var(--color-black-03);
     --_pill-radius: calc(200 * var(--wm));
+
+    justify-content: center;
+    width: 100%;
+    min-height: calc(44 * var(--wm));
+    height: auto;
+    padding: calc(10 * var(--wm)) calc(20 * var(--wm));
+    text-align: center;
   }
+
+  /* обёртка выпадающего пункта тянется наравне с остальными */
+  .nav__item { width: 100%; }
 
   .nav__drop,
   .nav__drop--right {
@@ -296,11 +309,19 @@
   }
   .nav__item.is-open .nav__drop { grid-template-rows: 1fr; }
   .nav__drop > * { overflow: hidden; }
+  /* Отступ появляется только у раскрытого списка: в свёрнутом
+     он оставался внутри и добавлял высоты — под «Направлениями»
+     промежуток был заметно больше, чем у соседних пунктов.    */
   .nav__drop-inner {
     min-width: 0;
-    padding: calc(8 * var(--wm)) 0 0;
+    padding: 0;
     background: none;
     box-shadow: none;
     backdrop-filter: none;
+  }
+  .nav__item.is-open .nav__drop-inner { padding-top: calc(8 * var(--wm)); }
+  /* вложенные пункты с отступом слева — видно, что это подуровень */
+  .nav__drop-inner a {
+    padding: calc(10 * var(--wm)) calc(20 * var(--wm)) calc(10 * var(--wm)) calc(32 * var(--wm));
   }
 }

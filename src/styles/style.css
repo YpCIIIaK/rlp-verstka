@@ -338,6 +338,14 @@
   }
   .hero__actions { flex-direction: column; align-items: stretch; width: 100%; }
   .hero__dot { flex: 1; }
+
+  /* Заголовок длинный, а экран узкий: разрешаем переносить по
+     слогам. Работает от lang="ru" на <html>; break-word — на
+     случай слова, которое не влезает даже целой строкой.     */
+  .hero-heading {
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -446,6 +454,9 @@
   .about { gap: calc(24 * var(--wm)); }
   .about__cards { flex-wrap: wrap; align-items: stretch; min-height: 0; }
   .stat-card { flex: 1 1 calc(50% - 6 * var(--wm)); max-width: none; min-height: calc(320 * var(--wm)); }
+  /* 112 сверху + 260 высоты не влезали в карточку и обрезались:
+     тянем картинку по остатку высоты, с полем 16 снизу        */
+  .stat-card__img { height: calc(100% - 128 * var(--wm)); }
   .stat-card:nth-child(2),
   .stat-card:nth-child(3) { margin-bottom: 0; }
   .about__cards--wide { height: auto; }
@@ -679,6 +690,9 @@
   .crops { padding: calc(24 * var(--wm)) calc(16 * var(--wm)); }
   .crop-card { flex: 1 1 calc(50% - 6 * var(--wm)); }
   .crop-card__img { height: calc(150 * var(--wm)); }
+  /* предел 189 из макета выше самого бокса — картинка вылезала
+     за него и накрывала подпись под ней                       */
+  .crop-card__img img { max-height: 100%; }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -796,6 +810,8 @@
   .feed__spec { flex: 1 1 50%; }
   .feed__spec:nth-child(2n) { border-right: none; }
   .feed__mix-row { flex-direction: column; align-items: stretch; }
+  /* кнопка во всю ширину блока; боковые поля даёт padding текста */
+  .feed__text .btn { width: 100%; }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -844,13 +860,16 @@
   left: calc(4 * var(--wm));
   top: calc(4 * var(--wm));
   z-index: 0;
-  width: calc(208 * var(--wm));
+  /* половина переключателя за вычетом поля: ширина считается от
+     него самого, поэтому ход в 100% всегда попадает во вкладку
+     при любой ширине экрана                                    */
+  width: calc(50% - 4 * var(--wm));
   height: calc(32 * var(--wm));
   border-radius: calc(200 * var(--wm));
   background: var(--color-green-500);
   transition: transform var(--duration-base) var(--ease-out);
 }
-.geo__switch.is-second .geo__switch-thumb { transform: translateX(calc(208 * var(--wm))); }
+.geo__switch.is-second .geo__switch-thumb { transform: translateX(100%); }
 
 .geo__switch button {
   --_bg: transparent;
@@ -1129,8 +1148,18 @@
 
 @media (max-width: 767px) {
   .team { gap: calc(24 * var(--wm)); }
-  .team__row { gap: calc(12 * var(--wm)); }
-  .team-card { width: calc(300 * var(--wm)); }
+
+  /* Карточка встаёт по центру экрана, а не по левому краю.
+     Поля по краям — половина свободного места: без них первая
+     и последняя карточки физически не могут доехать до центра. */
+  .team__row {
+    gap: calc(12 * var(--wm));
+    padding-inline: max(0px, calc((100% - 300 * var(--wm)) / 2));
+  }
+  .team-card {
+    width: calc(300 * var(--wm));
+    scroll-snap-align: center;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1245,10 +1274,14 @@
   position: absolute;
   left: 50%;
   top: 0;
+
   width: 73%;
   height: calc(100% - 218 * var(--wm));
   object-fit: cover;
-  transform: translate(-50%, calc(-77.96% * var(--p-img))) rotate(var(--img-rot, 0deg));
+  /* scale по умолчанию единица — на десктопе ничего не меняет */
+  transform: translate(-50%, calc(-77.96% * var(--p-img)))
+             rotate(var(--img-rot, 0deg))
+             scale(var(--img-scale, 1));
 }
 
 .hero-about__crumbs {
@@ -1341,16 +1374,31 @@
 @media (max-width: 767px) {
   .hero-about-track { height: calc(var(--hero-h) + 120vh + var(--hero-tail)); }
   .hero-about { padding: calc(8 * var(--wm)); }
+  /* Во всю ширину панели. Плюс запас на поворот: при наклоне до
+     10.36° прямоугольник перестаёт накрывать панель, и по краям
+     видно подложку. Нужный коэффициент — cos θ + (H / W)·sin θ,
+     при панели 374 и картинке около 610 это ≈ 1.28; берём 1.35
+     с запасом на высокие экраны. Растягиваем масштабом, а не
+     шириной: ширина увеличивает размах краёв при повороте и
+     делает только хуже.                                       */
+  .hero-about__img {
+    width: 100%;
+    --img-scale: 1.35;
+  }
   .hero-about__crumbs { top: calc(80 * var(--wm)); left: calc(16 * var(--wm)); }
   .hero-about__group {
     left: calc(16 * var(--wm));
     width: calc(100% - 32 * var(--wm));
     gap: calc(20 * var(--wm));
   }
-  .hero-about__titles { width: 100%; height: calc(120 * var(--wm)); }
+  /* Окно под заголовок: 16 метка + 16 отступ + 4 строки по 31.5
+     (24 × 1.3125) = 158, берём 176 с запасом на пятую строку.
+     Шаг ленты и её ход считаются от той же величины — иначе
+     второй заголовок встанет не на место первого.            */
+  .hero-about__titles { width: 100%; height: calc(176 * var(--wm)); }
   .hero-about__titles-track {
-    gap: calc(120 * var(--wm));
-    transform: translateY(calc(-240 * var(--wm) * var(--p-title)));
+    gap: calc(176 * var(--wm));
+    transform: translateY(calc(-352 * var(--wm) * var(--p-title)));
   }
   .hero-about__para:nth-child(1),
   .hero-about__para:nth-child(2) { margin-top: calc(16 * var(--wm) * var(--p-t1, 0)); }
@@ -2441,6 +2489,27 @@ a.contacts__item:hover { background: var(--color-white-15); }
     top: auto;
     bottom: calc(48 * var(--wm));
   }
+  /* подписи вкладок длинные, в жёсткие 208 на узком экране не
+     влезают: делим ширину поровну и разрешаем перенос         */
+  .geo__switch {
+    height: auto;
+    padding: calc(4 * var(--wm));
+  }
+  .geo__switch button {
+    width: auto;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: calc(8 * var(--wm)) calc(6 * var(--wm));
+    font-size: calc(12 * var(--wm));
+    line-height: 1.25;
+    white-space: normal;
+  }
+  .geo__switch-thumb { height: calc(100% - 8 * var(--wm)); }
+
+  /* показатели в блоке продукции: 26 на узкой колонке слишком
+     крупно, ряд из четырёх значений расползается              */
+  .feed__spec .stats-value { font-size: calc(20 * var(--wm)); }
+
   .crops-table__head { flex-direction: column; }
   .crops-table__head .card-heading-l { width: 100%; }
   .crops-table__years { flex-wrap: wrap; }

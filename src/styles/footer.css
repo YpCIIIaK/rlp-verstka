@@ -68,14 +68,12 @@
 /* контакты и первая соцсеть в макете идут Medium */
 .footer__link--medium { font-weight: var(--weight-medium); }
 
-/* акцентный пункт (Вакансии) и текущая страница — один вид */
-.footer__link.is-current,
-.footer__link--accent {
+/* подсвечена только текущая страница */
+.footer__link.is-current {
   color: var(--color-green-500);
   text-decoration: underline;
 }
-.footer__link.is-current:hover,
-.footer__link--accent:hover { color: var(--color-white); }
+.footer__link.is-current:hover { color: var(--color-white); }
 
 /* ── Нижняя плашка ──────────────────────────────────────────── */
 
@@ -117,6 +115,10 @@
     width: 100%;
   }
   .footer__col { flex: 1 1 calc(45% - 16 * var(--wm)); }
+
+  /* На узком экране линия в целый пиксель при плотности экрана
+     читается заметно толще, чем на десктопе — приглушаем цветом. */
+  .footer__main { border-bottom-color: var(--color-white-15); }
 
   .footer__bottom {
     flex-direction: column;
