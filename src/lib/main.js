@@ -777,7 +777,8 @@
         properties: { RLP_AREA: a.name, RLP_COLOR: a.color },
         geometry: {
           type: "MultiPolygon",
-          coordinates: a.rings.map((r) => [r.map((p) => [p[1], p[0]])])
+          // shape: [полигон][кольцо][точка], первое кольцо внешнее, дальше дырки
+          coordinates: a.shape.map((poly) => poly.map((ring) => ring.map((p) => [p[1], p[0]])))
         }
       }));
       const AREA_PLACES = areas.map((a) => ({ lat: a.lat, lng: a.lng, name: a.name, small: true }));
@@ -827,7 +828,8 @@
         .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor(() => "#6f6f6f")
         .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.005 : 0.001))
-        .polygonCapCurvatureResolution(2)
+        // области дробим мельче стран — иначе на краях видны изломы
+        .polygonCapCurvatureResolution((feat) => (feat.properties?.RLP_COLOR ? 0.4 : 2))
         .polygonsTransitionDuration(0)
         .pathsData(regions)
         .pathPointLat((p) => p[0])
