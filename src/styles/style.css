@@ -1672,10 +1672,11 @@ a.contacts__item:hover { background: var(--color-white-15); }
 
 
 .article {
+  --article-gap: calc(32 * var(--wm));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(32 * var(--wm));
+  gap: var(--article-gap);
 }
 
 
@@ -1702,6 +1703,10 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .back-link svg {
   width: calc(24 * var(--wm));
   height: calc(24 * var(--wm));
+}
+
+.article > .back-link + .article__head {
+  margin-top: calc(16 * var(--wm) - var(--article-gap));
 }
 
 .article__head {
@@ -1747,7 +1752,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 
 @media (max-width: 767px) {
-  .article { gap: calc(20 * var(--wm)); }
+  .article { --article-gap: calc(20 * var(--wm)); }
   .article__cover { height: calc(240 * var(--wm)); }
 }
 
