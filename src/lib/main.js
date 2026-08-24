@@ -678,7 +678,7 @@
     const GLOBE_SRC = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.1";
     const GEO_SRC = "https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson";
     // Границы регионов: Natural Earth admin-1 — Казахстан, Китай, Иран,
-    // Турция, Центральная Азия, из Европы только Франция, Германия, Польша,
+    // Турция, из Европы только Франция, Германия, Польша,
     // Испания, Италия, Румыния и Великобритания; склеено и упрощено, 181 КБ.
     const REGIONS_SRC = "assets/geo/regions.js";
     // Контуры четырёх областей Казахстана, которые подсвечиваем в режиме
@@ -811,6 +811,44 @@
           ""
         );
       };
+
+      const ringHas = (lng, lat, ring) => {
+        let inside = false;
+        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+          const xi = ring[i][0], yi = ring[i][1];
+          const xj = ring[j][0], yj = ring[j][1];
+          const dy = yj - yi;
+          if (!dy) continue;
+          if (((yi > lat) !== (yj > lat)) && (lng < ((xj - xi) * (lat - yi)) / dy + xi)) inside = !inside;
+        }
+        return inside;
+      };
+
+      const featHas = (lng, lat, feat) => {
+        const g = feat.geometry;
+        if (!g) return false;
+        const list = g.type === "Polygon" ? [g.coordinates]
+          : g.type === "MultiPolygon" ? g.coordinates : [];
+        return list.some((poly) => {
+          if (!poly?.[0] || !ringHas(lng, lat, poly[0])) return false;
+          return !poly.slice(1).some((hole) => ringHas(lng, lat, hole));
+        });
+      };
+
+      const CA_SOUTH = new Set(["UZ", "KG", "TJ", "TM"]);
+      const caLand = countries.filter((f) => CA_SOUTH.has(isoOf(f)));
+      if (caLand.length) {
+        regions = regions.filter((path) => {
+          if (!path?.length) return false;
+          const mid = path[path.length >> 1];
+          const pts = [path[0], mid, path[path.length - 1]];
+          let hits = 0;
+          for (let i = 0; i < pts.length; i++) {
+            if (caLand.some((f) => featHas(pts[i][1], pts[i][0], f))) hits += 1;
+          }
+          return hits < 2;
+        });
+      }
 
       const capColor = (feat) => {
         if (feat.properties?.RLP_COLOR) return feat.properties.RLP_COLOR;
