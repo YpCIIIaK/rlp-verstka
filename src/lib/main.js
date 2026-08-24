@@ -709,6 +709,10 @@
     const VIEW_KZ = { lat: 51.1694, lng: 71.4278, altitude: 0.62 };
     const GREEN = "#5ebf66";
     const ORANGE = "#e1a623";
+    /* В Африке и Южной Америке границы стран приглушаем, но не убираем:
+       без них материк выглядит пустым пятном. */
+    const QUIET_CONTINENTS = new Set(["Africa", "South America"]);
+    const DROP_A3 = new Set(["FLK", "SGS", "ATF", "CPV", "STP", "COM", "MUS", "SYC"]);
     const PARTNER_ISO = new Set(["CN", "IR", "TR", "UZ", "KG", "TJ", "TM", "DE", "FR", "IT", "PL", "ES", "NL", "GB", "AT", "BE", "CZ", "RO"]);
 
     const oceanTex = () => {
@@ -749,9 +753,12 @@
       let countries = [];
       try {
         const geo = await fetch(GEO_SRC).then((r) => r.json());
-        countries = (geo.features || []).filter(
-          (d) => d.properties?.ADM0_A3 && d.properties.ADM0_A3 !== "ATA"
-        );
+        countries = (geo.features || []).filter((d) => {
+          const pr = d.properties || {};
+          if (!pr.ADM0_A3 || pr.ADM0_A3 === "ATA") return false;
+          // мелкие островные территории вдали от наших рынков только сорят
+          return !DROP_A3.has(pr.ADM0_A3);
+        });
       } catch {
         countries = [];
       }
@@ -826,7 +833,8 @@
         .enablePointerInteraction(false)
         .polygonCapColor(capColor)
         .polygonSideColor(() => "rgba(0,0,0,0)")
-        .polygonStrokeColor(() => "#6f6f6f")
+        .polygonStrokeColor((feat) =>
+          QUIET_CONTINENTS.has(feat.properties?.CONTINENT) ? "#a8a8a8" : "#6f6f6f")
         .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.005 : 0.001))
         // области дробим мельче стран — иначе на краях видны изломы
         .polygonCapCurvatureResolution((feat) => (feat.properties?.RLP_COLOR ? 0.4 : 2))
