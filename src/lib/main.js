@@ -835,7 +835,9 @@
         .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor((feat) =>
           QUIET_CONTINENTS.has(feat.properties?.CONTINENT) ? "#a8a8a8" : "#6f6f6f")
-        .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.005 : 0.001))
+        // страна 0.001, подсвеченные области 0.002, линии границ 0.003 —
+        // минимальные зазоры, при которых слои не мерцают, но и не парят
+        .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.002 : 0.001))
         // области дробим мельче стран — иначе на краях видны изломы
         .polygonCapCurvatureResolution((feat) => (feat.properties?.RLP_COLOR ? 0.4 : 2))
         .polygonsTransitionDuration(0)
