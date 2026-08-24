@@ -630,9 +630,9 @@
     const map = el.closest(".geo__map");
     const sw = map?.querySelector("[data-switch]");
     const GLOBE_SRC = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.1";
-    const TEX = "https://unpkg.com/three-globe/example/img";
+    const GEO_SRC = "https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson";
 
-    const ORIGIN = { lat: 53.15, lng: 66.77, name: "Казахстан" };
+    const ORIGIN = { lat: 51.1694, lng: 71.4278, name: "Казахстан" };
     const MARKETS = [
       { lat: 35.0, lng: 103.0, name: "Китай" },
       { lat: 32.4, lng: 53.7, name: "Иран" },
@@ -648,13 +648,25 @@
       name: `Казахстан → ${to.name}`
     }));
     const PLACES = [ORIGIN, ...MARKETS];
-    const VIEW = {
+    const VIEW_EXPORT = {
       lat: (ORIGIN.lat + MARKETS.reduce((s, m) => s + m.lat, 0)) / PLACES.length,
       lng: (ORIGIN.lng + MARKETS.reduce((s, m) => s + m.lng, 0)) / PLACES.length,
       altitude: 2.15
     };
+    const VIEW_KZ = { lat: 51.1694, lng: 71.4278, altitude: 1.15 };
     const GREEN = "#5ebf66";
     const ORANGE = "#e1a623";
+    const PARTNER_ISO = new Set(["CN", "IR", "TR", "UZ", "KG", "TJ", "TM", "DE", "FR", "IT", "PL", "ES", "NL", "GB", "AT", "BE", "CZ", "RO"]);
+
+    const oceanTex = () => {
+      const c = document.createElement("canvas");
+      c.width = 4;
+      c.height = 2;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#f3f3f3";
+      ctx.fillRect(0, 0, 4, 2);
+      return c.toDataURL("image/png");
+    };
 
     const loadScript = (src) => new Promise((resolve, reject) => {
       if (window.Globe) { resolve(); return; }
@@ -671,6 +683,14 @@
       catch { return; }
       if (!window.Globe) return;
 
+      let countries = [];
+      try {
+        const geo = await fetch(GEO_SRC).then((r) => r.json());
+        countries = (geo.features || []).filter((d) => d.properties?.ISO_A2 !== "AQ");
+      } catch {
+        countries = [];
+      }
+
       const makeLabel = (d) => {
         const node = document.createElement("div");
         node.className = "geo__label";
@@ -678,41 +698,68 @@
         return node;
       };
 
-      const globe = new window.Globe(el, { animateIn: !prefersReduced, waitForGlobeReady: true })
-        .globeImageUrl(`${TEX}/earth-blue-marble.jpg`)
-        .bumpImageUrl(`${TEX}/earth-topology.png`)
+      const isoOf = (feat) => String(feat.properties?.ISO_A2 || feat.properties?.ISO_A3 || "");
+
+      const capColor = (feat) => {
+        const iso = isoOf(feat);
+        if (iso === "KZ") return GREEN;
+        if (PARTNER_ISO.has(iso)) return "rgba(94, 191, 102, 0.38)";
+        return "#c9c9c9";
+      };
+
+      const globe = new window.Globe(el, {
+        animateIn: false,
+        waitForGlobeReady: true,
+        rendererConfig: { antialias: true, alpha: true, powerPreference: "high-performance" }
+      })
+        .globeImageUrl(oceanTex())
+        .bumpImageUrl(null)
         .backgroundColor("#ffffff")
-        .showAtmosphere(true)
-        .atmosphereColor("#8ecae6")
-        .atmosphereAltitude(0.15)
+        .showAtmosphere(false)
         .showGraticules(false)
+        .polygonsData(countries)
+        .polygonCapColor(capColor)
+        .polygonSideColor(() => "rgba(180, 180, 180, 0.25)")
+        .polygonStrokeColor(() => "#6f6f6f")
+        .polygonAltitude(0.01)
+        .polygonCapCurvatureResolution(5)
+        .polygonsTransitionDuration(0)
         .arcColor(() => [GREEN, ORANGE])
-        .arcStroke(0.6)
+        .arcStroke(0.55)
         .arcDashLength(0.4)
-        .arcDashGap(0.15)
-        .arcDashAnimateTime(prefersReduced ? 0 : 2200)
+        .arcDashGap(0.18)
+        .arcDashAnimateTime(prefersReduced ? 0 : 2800)
         .arcAltitudeAutoScale(0.35)
         .arcLabel("name")
         .pointColor((d) => (d.name === ORIGIN.name ? GREEN : ORANGE))
-        .pointAltitude(0.03)
-        .pointRadius(0.45)
+        .pointAltitude(0.02)
+        .pointRadius(0.38)
         .pointLabel("name")
         .htmlLat("lat")
         .htmlLng("lng")
         .htmlAltitude(0.02)
         .htmlElement(makeLabel)
         .ringColor(() => GREEN)
-        .ringMaxRadius(2.4)
-        .ringPropagationSpeed(1.8)
-        .ringRepeatPeriod(prefersReduced ? 0 : 1400);
+        .ringMaxRadius(2.2)
+        .ringPropagationSpeed(1.6)
+        .ringRepeatPeriod(prefersReduced ? 0 : 1800);
+
+      const renderer = globe.renderer?.();
+      if (renderer?.setPixelRatio) renderer.setPixelRatio(Math.min(1.25, window.devicePixelRatio || 1));
+
+      const look = (index) => {
+        const view = index === 1 ? VIEW_KZ : VIEW_EXPORT;
+        globe.pointOfView(view, prefersReduced ? 0 : 1100);
+      };
 
       const apply = (index) => {
         const exportMode = index !== 1;
         globe
           .arcsData(exportMode ? ARCS : [])
-          .pointsData(PLACES)
-          .htmlElementsData(PLACES)
+          .pointsData(exportMode ? PLACES : [ORIGIN])
+          .htmlElementsData(exportMode ? PLACES : [ORIGIN])
           .ringsData([ORIGIN]);
+        look(index);
       };
 
       apply(sw?.classList.contains("is-second") ? 1 : 0);
@@ -720,13 +767,13 @@
 
       const size = () => globe.width(el.clientWidth).height(el.clientHeight);
       size();
-      globe.pointOfView(VIEW, prefersReduced ? 0 : 800);
 
       const controls = globe.controls();
       controls.autoRotate = false;
       controls.enableZoom = false;
       controls.enablePan = false;
       controls.enableRotate = true;
+      controls.rotateSpeed = 0.55;
 
       globe.onGlobeReady(() => map?.classList.add("is-globe"));
 
@@ -989,7 +1036,7 @@
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (e) => {
       const id = link.getAttribute("href");
-      if (id === "#") return;
+      if (id === "#" || link.hasAttribute("data-modal-open")) return;
       const target = document.querySelector(id);
       if (!target) return;
 

@@ -293,3 +293,55 @@ main > article.article.is-visible,
 
 
 html.is-locked, html.is-locked body { overflow: hidden; }
+
+.modal {
+  position: fixed;
+  inset: unset;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  z-index: var(--z-modal);
+  width: max-content;
+  max-width: calc(100vw - 32 * var(--wm));
+  height: max-content;
+  max-height: calc(100dvh - 32 * var(--wm));
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 280ms var(--ease-out);
+}
+.modal.is-visible { opacity: 1; }
+.modal::backdrop {
+  background: rgba(19, 31, 22, 0.56);
+}
+.modal .lead {
+  position: relative;
+  left: auto;
+  top: auto;
+  translate: none;
+  transform: translateY(calc(12 * var(--wm)));
+  transition: transform 280ms var(--ease-out);
+}
+.modal.is-visible .lead { transform: none; }
+.modal .lead__close {
+  position: absolute;
+  top: calc(16 * var(--wm));
+  right: calc(16 * var(--wm));
+  display: grid;
+  place-items: center;
+  width: calc(32 * var(--wm));
+  height: calc(32 * var(--wm));
+  border-radius: 50%;
+  color: var(--color-black);
+  opacity: 0.45;
+  transition: opacity var(--duration-base) var(--ease-out),
+              background-color var(--duration-base) var(--ease-out);
+}
+.modal .lead__close:hover { opacity: 1; background: var(--color-black-05); }
+.modal .lead__close svg {
+  width: calc(20 * var(--wm));
+  height: calc(20 * var(--wm));
+}

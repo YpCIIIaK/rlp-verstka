@@ -143,7 +143,7 @@
         <div class="hero-dir__content">
           <h1 class="section-heading">Хранение</h1>
           <p class="section-description">Приёмка, сушка, хранение и отгрузка сельскохозяйственной продукции на собственной инфраструктуре.</p>
-          <a class="btn" href="../contacts.html">Запросить коммерческое предложение</a>
+          <a class="btn" href="#lead-modal" data-modal-open="lead-modal">Запросить коммерческое предложение</a>
         </div>
       </div>
     </section>
@@ -262,7 +262,7 @@
           <p class="section-label">Сотрудничество</p>
           <h2 class="section-heading">Развиваем агробизнес вместе</h2>
           <p class="section-description">Открыты к партнёрству с производителями, поставщиками и покупателями сельскохозяйственной продукции</p>
-          <a class="btn btn--green" href="../contacts.html">Стать партнером</a>
+          <a class="btn btn--green" href="#lead-modal" data-modal-open="lead-modal">Стать партнером</a>
         </div>
         <img class="partner__photo" src="../assets/images/sotrudnichestvo.webp" alt="" width="640" height="324" loading="lazy" />
       </div>
@@ -328,6 +328,32 @@
 
   </footer>
 
+  
+  <dialog class="modal" id="lead-modal" aria-labelledby="lead-modal-title">
+    <form class="lead" action="#" method="post">
+      <button class="lead__close" type="button" data-modal-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 7L17 17M17 7L7 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+      <h2 class="section-heading lead__title" id="lead-modal-title">Оставить заявку</h2>
+      <p class="card-description">Расскажите, чем мы можем быть вам полезны. Свяжемся с вами и ответим на вопросы</p>
+      <label class="lead__field">
+        <span class="section-label">Имя</span>
+        <input type="text" name="name" required />
+      </label>
+      <label class="lead__field">
+        <span class="section-label">Телефон</span>
+        <input type="tel" name="phone" required />
+      </label>
+      <label class="lead__field">
+        <span class="section-label">Эл.почта</span>
+        <input type="email" name="email" />
+      </label>
+      <button class="btn btn--green btn--block" type="submit">Отправить</button>
+    </form>
+  </dialog>
+
   <div class="fab-stack">
     <a class="fab fab--phone" href="tel:+77017326006" aria-label="Позвонить">
       <span class="fab__icon">
@@ -347,6 +373,6 @@
   </div>
   <script src="../assets/vendor/lenis.min.js"></script>
   <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="../src/lib/main.js?v=138"></script>
+  <script src="../src/lib/main.js?v=139"></script>
 </body>
 </html>
