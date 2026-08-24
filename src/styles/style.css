@@ -652,18 +652,19 @@
 
 @media (max-width: 767px) {
   .crops { padding: calc(24 * var(--wm)) calc(16 * var(--wm)); overflow: hidden; }
-  .crops__list { width: 100%; }
+  .crops__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    width: 100%;
+  }
   .crop-card {
-    flex: 1 1 calc(50% - 6 * var(--wm));
-    max-width: calc(50% - 6 * var(--wm));
+    max-width: none;
     min-width: 0;
     overflow: hidden;
   }
 
-  .crop-card:last-child {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
+  .crop-card:last-child { grid-column: 1 / -1; }
   .crop-card .card-heading-s {
     width: 100%;
     overflow-wrap: anywhere;
@@ -2573,7 +2574,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .geo__switch-thumb { height: calc(100% - 8 * var(--wm)); }
 
 
-  .feed__spec .stats-value { font-size: calc(20 * var(--wm)); }
+  .feed__spec .stats-value { font-size: calc(28 * var(--wm)); }
 
   .crops-table__head { flex-direction: column; }
   .crops-table__head .card-heading-l { width: 100%; }

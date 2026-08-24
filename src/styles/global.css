@@ -345,3 +345,18 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   width: calc(20 * var(--wm));
   height: calc(20 * var(--wm));
 }
+
+
+@media (max-width: 767px) {
+  /* На мобилке ширина модалки считалась как max-content, а .lead внутри
+     задан в процентах — процент брался от той же ширины, коробка выходила
+     шире содержимого, и окно вставало не по центру. Фиксируем ширину. */
+  .modal {
+    width: calc(100vw - 32 * var(--wm));
+    max-width: calc(100vw - 32 * var(--wm));
+  }
+  .modal .lead {
+    width: 100%;
+    max-width: 100%;
+  }
+}
