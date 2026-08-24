@@ -178,6 +178,7 @@
   --duration-slow: 600ms;
   --duration-intro: 1100ms;
   --duration-intro-dir: 800ms;
+  --duration-intro-frame: 500ms;   /* обод до сжатия картинки */
   --duration-draw: 1400ms;
   --ease-out:      cubic-bezier(0.33, 1, 0.68, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

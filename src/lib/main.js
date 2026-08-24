@@ -141,16 +141,45 @@
   const INTRO_MAIN_MS = 1500;
   const INTRO_DIR_MS  = 1000;
 
+  /* Шаги заставки на главной, миллисекунды от предыдущего шага:
+     hold — картинка во весь экран, frame — проступает тёмно-зелёный обод,
+     shrink — картинка сжимается в панель, header — появляется хедер,
+     дальше текст с кнопками. Правится здесь, менять CSS не нужно. */
+  const INTRO_STEPS = { hold: 1500, frame: 550, shrink: 850, header: 300 };
+
   const root = document.documentElement;
   if (root.classList.contains("has-hero-intro")) {
     const isDirection = !!document.querySelector(".hero-dir");
-    const hold = isDirection ? INTRO_DIR_MS : INTRO_MAIN_MS;
 
-    const drop = () => root.classList.remove("has-hero-intro");
+    const drop = () =>
+      root.classList.remove("has-hero-intro", "hero-intro-frame",
+                            "hero-intro-head", "hero-intro-text");
 
+    const after = (ms, fn) => window.setTimeout(fn, ms);
 
-    if (prefersReduced || mq("(max-width: 767px)").matches) drop();
-    else window.setTimeout(drop, hold);
+    if (prefersReduced || mq("(max-width: 767px)").matches) {
+      drop();
+    } else if (isDirection) {
+      after(INTRO_DIR_MS, drop);
+    } else {
+      // хедер и тексты держим скрытыми и после того, как картинка сожмётся
+      root.classList.add("hero-intro-head", "hero-intro-text");
+
+      after(INTRO_STEPS.hold, () => {
+        root.classList.add("hero-intro-frame");                       // обод
+
+        after(INTRO_STEPS.frame, () => {
+          root.classList.remove("has-hero-intro", "hero-intro-frame"); // сжатие
+
+          after(INTRO_STEPS.shrink, () => {
+            root.classList.remove("hero-intro-head");                 // хедер
+
+            after(INTRO_STEPS.header, () =>
+              root.classList.remove("hero-intro-text"));              // тексты
+          });
+        });
+      });
+    }
   }
 
 

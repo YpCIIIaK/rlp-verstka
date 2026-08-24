@@ -263,6 +263,31 @@
 .has-hero-intro .hero .hero__dots { transform: none; }
 
 
+/* Заставка идёт по шагам, каждый следующий класс снимается в main.js.
+   Шаг 1: картинка ещё во весь экран, но вокруг уже проступает тёмно-зелёный
+   обод. Шаг 2 (снятие has-hero-intro): картинка сжимается в панель.
+   Шаги 3 и 4: сначала хедер, потом текст с кнопками. */
+.has-hero-intro.hero-intro-frame .hero {
+  padding: calc(16 * var(--wm)) calc(16 * var(--wm)) calc(21 * var(--wm));
+  transition-duration: var(--duration-intro-frame);
+}
+.has-hero-intro.hero-intro-frame .hero .hero__panel {
+  min-height: calc(100svh - 37 * var(--wm));
+  border-radius: calc(20 * var(--wm));
+  transition-duration: var(--duration-intro-frame);
+}
+
+.hero-intro-head .header {
+  opacity: 0;
+  pointer-events: none;
+}
+.hero-intro-text .hero .hero__content,
+.hero-intro-text .hero .hero__dots {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
 @media (max-width: 767px) {
   .has-hero-intro .hero { min-height: calc(658 * var(--wm)); }
   .has-hero-intro .hero .hero__panel { min-height: calc(280 * var(--wm)); }
@@ -1209,10 +1234,6 @@
   display: flex;
   width: max-content;
   animation: partners-marquee 40s linear infinite;
-}
-.partners__row:hover .partners__track,
-.partners__row:focus-within .partners__track {
-  animation-play-state: paused;
 }
 .partners__set {
   display: flex;
