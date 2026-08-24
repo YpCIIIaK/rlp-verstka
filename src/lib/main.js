@@ -648,6 +648,10 @@
     const sw = map?.querySelector("[data-switch]");
     const GLOBE_SRC = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.1";
     const GEO_SRC = "https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson";
+    // Границы регионов: Natural Earth admin-1 — Казахстан, Китай, Иран,
+    // Турция, Центральная Азия, из Европы только Франция, Германия, Польша,
+    // Испания, Италия, Румыния и Великобритания; склеено и упрощено, 181 КБ.
+    const REGIONS_SRC = "assets/geo/regions.js";
 
     const ORIGIN = { lat: 51.1694, lng: 71.4278, name: "Казахстан" };
     const MARKETS = [
@@ -695,6 +699,16 @@
       document.head.appendChild(s);
     });
 
+    const loadRegions = () => new Promise((resolve, reject) => {
+      if (window.RLP_REGIONS) { resolve(); return; }
+      const s = document.createElement("script");
+      s.src = REGIONS_SRC;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+
     const boot = async () => {
       try { await loadScript(GLOBE_SRC); }
       catch { return; }
@@ -703,13 +717,20 @@
       let countries = [];
       try {
         const geo = await fetch(GEO_SRC).then((r) => r.json());
-        countries = (geo.features || []).filter((d) => {
-          const iso = d.properties?.ISO_A2;
-          return iso && iso !== "AQ" && iso !== "-99";
-        });
+        countries = (geo.features || []).filter(
+          (d) => d.properties?.ADM0_A3 && d.properties.ADM0_A3 !== "ATA"
+        );
       } catch {
         countries = [];
       }
+
+      // подключаем скриптом, а не fetch: так набор виден и при открытии
+      // разметки с диска, где fetch к локальному файлу режет CORS
+      let regions = [];
+      try {
+        await loadRegions();
+        regions = window.RLP_REGIONS || [];
+      } catch { regions = []; }
 
       const makeLabel = (d) => {
         const node = document.createElement("div");
@@ -718,7 +739,20 @@
         return node;
       };
 
-      const isoOf = (feat) => String(feat.properties?.ISO_A2 || feat.properties?.ISO_A3 || "");
+      /* У Франции и Норвегии в наборе ISO_A2 стоит «-99» — из-за него
+         они раньше вылетали из выборки и не рисовались вовсе. */
+      const A3_TO_A2 = { FRA: "FR", NOR: "NO" };
+
+      const isoOf = (feat) => {
+        const pr = feat.properties || {};
+        const ok = (v) => v && v !== "-99";
+        return String(
+          (ok(pr.ISO_A2) && pr.ISO_A2) ||
+          (ok(pr.WB_A2) && pr.WB_A2) ||
+          A3_TO_A2[pr.ADM0_A3] ||
+          ""
+        );
+      };
 
       const capColor = (feat) => {
         const iso = isoOf(feat);
@@ -742,9 +776,19 @@
         .polygonCapColor(capColor)
         .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor(() => "#6f6f6f")
-        .polygonAltitude(0.006)
+        .polygonAltitude(0.001)
         .polygonCapCurvatureResolution(2)
         .polygonsTransitionDuration(0)
+        .pathsData(regions)
+        .pathPointLat((p) => p[0])
+        .pathPointLng((p) => p[1])
+        .pathColor(() => "rgba(80, 80, 80, 0.9)")
+        .pathStroke(0.6)
+        .pathPointAlt(0.003)
+        .pathDashLength(1)
+        .pathDashGap(0)
+        .pathDashAnimateTime(0)
+        .pathTransitionDuration(0)
         .arcColor(() => [GREEN, ORANGE])
         .arcStroke(0.55)
         .arcDashLength(1)

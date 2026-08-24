@@ -33,7 +33,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-500-cyrillic.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/inter-700-cyrillic.woff2" crossorigin />
 
-  <link rel="stylesheet" href="../src/styles/main.css?v=136" />
+  <link rel="stylesheet" href="../src/styles/main.css?v=156" />
   <link rel="stylesheet" href="../assets/vendor/swiper/swiper-bundle.min.css" />
 
   <noscript>
@@ -106,9 +106,40 @@
 
           <div class="nav__drop nav__drop--right">
             <div class="nav__drop-inner">
-              <a class="is-current" href="#"><img class="header__lang-flag-img" src="../assets/images/flag-ru.png" alt="" width="20" height="20" />Русский</a>
-              <a href="#"><img class="header__lang-flag-img" src="../assets/images/flag-kz.png" alt="" width="20" height="20" />Қазақша</a>
-              <a href="#"><img class="header__lang-flag-img" src="../assets/images/chineese.png" alt="" width="20" height="20" />中文</a>
+              <a class="is-current" href="#"><svg class="header__lang-flag-img" viewBox="0 0 20 20" aria-hidden="true">
+                <clipPath id="lang-flag-ru"><circle cx="10" cy="10" r="10" /></clipPath>
+                <g clip-path="url(#lang-flag-ru)">
+                  <rect width="20" height="6.67" fill="#f5f5f5" />
+                  <rect y="6.67" width="20" height="6.66" fill="#41479b" />
+                  <rect y="13.33" width="20" height="6.67" fill="#ff4b55" />
+                </g>
+              </svg>Русский</a>
+              <a href="#"><svg class="header__lang-flag-img" viewBox="0 0 20 20" aria-hidden="true">
+                <clipPath id="lang-flag-kz"><circle cx="10" cy="10" r="10" /></clipPath>
+                <g clip-path="url(#lang-flag-kz)">
+                  <rect width="20" height="20" fill="#00afca" />
+                  <circle cx="10" cy="9" r="3" fill="#ffd400" />
+                  <line x1="13.90" y1="9.00" x2="15.40" y2="9.00" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="12.76" y1="11.76" x2="13.82" y2="12.82" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="10.00" y1="12.90" x2="10.00" y2="14.40" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="7.24" y1="11.76" x2="6.18" y2="12.82" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="6.10" y1="9.00" x2="4.60" y2="9.00" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="7.24" y1="6.24" x2="6.18" y2="5.18" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="10.00" y1="5.10" x2="10.00" y2="3.60" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                  <line x1="12.76" y1="6.24" x2="13.82" y2="5.18" stroke="#ffd400" stroke-width="0.9" stroke-linecap="round" />
+                </g>
+              </svg>Қазақша</a>
+              <a href="#"><svg class="header__lang-flag-img" viewBox="0 0 20 20" aria-hidden="true">
+                <clipPath id="lang-flag-cn"><circle cx="10" cy="10" r="10" /></clipPath>
+                <g clip-path="url(#lang-flag-cn)">
+                  <rect width="20" height="20" fill="#ee1c25" />
+                  <polygon points="6.20,3.80 7.04,6.04 9.43,6.15 7.56,7.64 8.20,9.95 6.20,8.63 4.20,9.95 4.84,7.64 2.97,6.15 5.36,6.04" fill="#ffde02" />
+                  <polygon points="11.60,3.10 11.87,3.83 12.65,3.86 12.04,4.34 12.25,5.09 11.60,4.66 10.95,5.09 11.16,4.34 10.55,3.86 11.33,3.83" fill="#ffde02" />
+                  <polygon points="13.60,5.50 13.87,6.23 14.65,6.26 14.04,6.74 14.25,7.49 13.60,7.06 12.95,7.49 13.16,6.74 12.55,6.26 13.33,6.23" fill="#ffde02" />
+                  <polygon points="13.40,8.50 13.67,9.23 14.45,9.26 13.84,9.74 14.05,10.49 13.40,10.06 12.75,10.49 12.96,9.74 12.35,9.26 13.13,9.23" fill="#ffde02" />
+                  <polygon points="11.20,10.30 11.47,11.03 12.25,11.06 11.64,11.54 11.85,12.29 11.20,11.86 10.55,12.29 10.76,11.54 10.15,11.06 10.93,11.03" fill="#ffde02" />
+                </g>
+              </svg>中文</a>
             </div>
           </div>
         </div>
@@ -373,6 +404,6 @@
   </div>
   <script src="../assets/vendor/lenis.min.js"></script>
   <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="../src/lib/main.js?v=140"></script>
+  <script src="../src/lib/main.js?v=156"></script>
 </body>
 </html>
