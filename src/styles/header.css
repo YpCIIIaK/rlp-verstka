@@ -1,22 +1,20 @@
 
 
-/* Шапка: два состояния из макета — прозрачная поверх контента
-   и «проскролленная» на светлой подложке. Между ними плавный
-   переход, включая радиусы пилюль, цвет текста и подмену лого.  */
+
 
 .header {
   position: fixed;
   inset-inline: 0;
   top: 0;
   z-index: var(--z-header);
-  /* прозрачное состояние: 40 сверху и по бокам */
+
   padding: calc(40 * var(--wm));
   padding-bottom: 0;
   transition: padding var(--duration-base) var(--ease-out),
               opacity var(--duration-intro) var(--ease-out-expo);
 }
 
-/* на подложке шапка подбирается: 24 сверху, по бокам — отступ страницы */
+
 .header.is-scrolled {
   padding: calc(24 * var(--wm)) var(--page-pad) 0;
 }
@@ -30,9 +28,7 @@
   align-items: center;
   justify-content: space-between;
   gap: calc(520 * var(--wm));
-  /* без собственных отступов: в прозрачном состоянии всё расстояние
-     до края даёт .header (40), иначе они складываются и логотип
-     уезжает на 64 вместо 40 из макета                            */
+
   padding: 0;
   border-radius: calc(200 * var(--wm));
   background: transparent;
@@ -53,7 +49,7 @@
   backdrop-filter: blur(calc(24 * var(--wm)));
 }
 
-/* ── Логотип: две версии с кросс-фейдом ─────────────────────── */
+
 
 .header__logo {
   position: relative;
@@ -77,7 +73,7 @@
 .header.is-scrolled .header__logo-light { opacity: 0; }
 .header.is-scrolled .header__logo-dark  { opacity: 1; }
 
-/* ── Навигация ──────────────────────────────────────────────── */
+
 
 .header__right {
   display: flex;
@@ -127,7 +123,7 @@
 }
 .nav__item.is-open .nav__chevron { transform: rotate(180deg); }
 
-/* ── Выпадающее меню ────────────────────────────────────────── */
+
 
 .nav__drop {
   position: absolute;
@@ -143,7 +139,7 @@
 }
 .nav__item.is-open .nav__drop { opacity: 1; visibility: visible; transform: none; }
 
-/* язык — крайний справа, меню открывается по правому краю */
+
 .nav__drop--right { left: auto; right: 0; }
 
 .nav__drop-inner {
@@ -179,7 +175,7 @@
 .nav__drop-inner a:hover { background: var(--color-black-03); }
 .nav__drop-inner a.is-current { background: var(--color-black-03); }
 
-/* ── Переключатель языка ────────────────────────────────────── */
+
 
 .header__lang {
   justify-content: center;
@@ -201,10 +197,11 @@
   translate: -50% -50%;
   width: calc(20 * var(--wm));
   height: calc(20 * var(--wm));
+  overflow: visible;
   border-radius: 50%;
 }
 
-/* ── Бургер (мобильная версия) ──────────────────────────────── */
+
 
 .header__burger {
   display: none;
@@ -243,9 +240,7 @@
 
   .header__burger { display: block; }
 
-  /* 40 по бокам — из десктопного макета, на 390 это треть экрана;
-     здесь ставим общий отступ страницы и не даём ему сложиться
-     с собственными полями бара                                  */
+
   .header {
     padding: calc(16 * var(--wm)) var(--page-pad) 0;
   }
@@ -287,9 +282,7 @@
     align-items: stretch;
     height: auto;
   }
-  /* Все пункты одной высоты и с одинаковым шагом: раньше высоту
-     задавали свои паддинги у ссылок и фиксированные 40 у языка,
-     и на глаз промежутки читались неровно.                    */
+
   .nav__link,
   .header__lang {
     --_pill-bg: var(--color-black-03);
@@ -303,7 +296,7 @@
     text-align: center;
   }
 
-  /* обёртка выпадающего пункта тянется наравне с остальными */
+
   .nav__item { width: 100%; }
 
   .nav__drop,
@@ -319,9 +312,7 @@
   }
   .nav__item.is-open .nav__drop { grid-template-rows: 1fr; }
   .nav__drop > * { overflow: hidden; }
-  /* Отступ появляется только у раскрытого списка: в свёрнутом
-     он оставался внутри и добавлял высоты — под «Направлениями»
-     промежуток был заметно больше, чем у соседних пунктов.    */
+
   .nav__drop-inner {
     min-width: 0;
     padding: 0;
@@ -330,7 +321,7 @@
     backdrop-filter: none;
   }
   .nav__item.is-open .nav__drop-inner { padding-top: calc(8 * var(--wm)); }
-  /* вложенные пункты с отступом слева — видно, что это подуровень */
+
   .nav__drop-inner a {
     padding: calc(10 * var(--wm)) calc(20 * var(--wm)) calc(10 * var(--wm)) calc(32 * var(--wm));
   }

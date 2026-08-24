@@ -2,7 +2,7 @@
 
 .footer { margin-top: auto; }
 
-/* ── Основная часть: градиент + колонки ─────────────────────── */
+
 
 .footer__main {
   position: relative;
@@ -12,8 +12,7 @@
   min-height: calc(252 * var(--wm));
   padding: calc(24 * var(--wm)) var(--container-pad) calc(68 * var(--wm));
   border-bottom: 1px solid var(--color-green-700);
-  /* картинка нарисована ровно под этот прямоугольник (4320 × 756 —
-     это 1440 × 252 в три раза), поэтому cover её не подрезает      */
+
   background: url("../../assets/images/footerGrad.webp") center / cover no-repeat,
               var(--grad-dark-to);
   overflow: hidden;
@@ -65,17 +64,17 @@
 }
 .footer__link:hover { color: var(--color-green-500); }
 
-/* контакты и первая соцсеть в макете идут Medium */
+
 .footer__link--medium { font-weight: var(--weight-medium); }
 
-/* подсвечена только текущая страница */
+
 .footer__link.is-current {
   color: var(--color-green-500);
   text-decoration: underline;
 }
 .footer__link.is-current:hover { color: var(--color-white); }
 
-/* ── Нижняя плашка ──────────────────────────────────────────── */
+
 
 .footer__bottom {
   display: flex;
@@ -116,8 +115,7 @@
   }
   .footer__col { flex: 1 1 calc(45% - 16 * var(--wm)); }
 
-  /* На узком экране линия в целый пиксель при плотности экрана
-     читается заметно толще, чем на десктопе — приглушаем цветом. */
+
   .footer__main { border-bottom-color: var(--color-white-15); }
 
   .footer__bottom {

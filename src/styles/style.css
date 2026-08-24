@@ -1,8 +1,6 @@
 
 
-/* ─────────────────────────────────────────────────────────────
-   Кнопки
-   ───────────────────────────────────────────────────────────── */
+
 
 .btn {
   --_bg: var(--color-white);
@@ -30,7 +28,7 @@
 }
 .btn:hover { --_bg: var(--color-green-500); --_fg: var(--color-white); }
 
-/* прозрачная на тёмном */
+
 .btn--ghost {
   --_bg: var(--color-white-05);
   --_fg: var(--color-white);
@@ -38,30 +36,30 @@
 }
 .btn--ghost:hover { --_bg: var(--color-white-30); --_border: transparent; }
 
-/* фирменная зелёная */
+
 .btn--green {
   --_bg: var(--color-green-brand);
   --_fg: var(--color-white);
 }
 .btn--green:hover { --_bg: var(--color-green-500); }
 
-/* мягкая зелёная — документы */
+
 .btn--soft {
   --_bg: var(--color-green-05);
   --_fg: var(--color-green-brand);
 }
 .btn--soft:hover { --_bg: var(--color-green-brand); --_fg: var(--color-white); }
 
-/* приглушённая — «Показать еще» */
+
 .btn--faint {
   --_bg: var(--color-black-02);
   --_fg: var(--color-black);
 }
-.btn--faint:hover { --_bg: var(--color-black-08); }
+.btn--faint:hover { --_bg: var(--color-green-brand); --_fg: var(--color-white); }
 
 .btn--block { width: 100%; }
 
-/* Button/Small */
+
 .btn--sm {
   height: auto;
   padding: calc(8 * var(--wm));
@@ -70,7 +68,7 @@
   line-height: var(--leading-btn-s);
 }
 
-/* Button/Extra small — Euclid Flex */
+
 .btn--xs {
   height: auto;
   gap: calc(10 * var(--wm));
@@ -82,24 +80,21 @@
   text-align: center;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Общая раскладка главной
-   ───────────────────────────────────────────────────────────── */
+
 
 .page {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: calc(120 * var(--wm));
-  padding-bottom: calc(120 * var(--wm));   /* тот же ритм до футера */
+  padding-bottom: calc(120 * var(--wm));
   background: var(--color-white);
 
-  /* именно clip, а не hidden: hidden сделал бы из main скролл-
-     контейнер, и position: sticky в hero перестал бы работать */
+
   overflow-x: clip;
 }
 
-/* контентная колонка: боковые отступы сайта 80 → 1280 при 1440 */
+
 .shell {
   width: 100%;
   padding-inline: var(--page-pad);
@@ -126,9 +121,7 @@
   .section-head .section-description { width: 100%; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Первый экран
-   ───────────────────────────────────────────────────────────── */
+
 
 .hero {
   position: relative;
@@ -143,14 +136,9 @@
   overflow: hidden;
 }
 
-/* верхняя панель с картинкой — под ней лежит фиксированная шапка */
-/* Заставочная картинка именно проявляется, а не выезжает снизу:
-   анимация на загрузке, без сдвига. Геометрию не трогает, поэтому
-   с раздуванием панели не конфликтует.                          */
-/* До сворачивания подложка тёмная, как на направлениях: зелёный
-   градиент рядом с картинкой смотрится грязно. Отдельным слоем,
-   а не сменой background — градиент и цвет не анимируются между
-   собой, а прозрачность слоя анимируется.                     */
+
+
+
 .hero::after {
   content: "";
   position: absolute;
@@ -178,8 +166,7 @@
   background: var(--color-gray-dark);
 }
 
-/* Слайды панели: лежат стопкой и меняются кросс-фейдом, поэтому
-   между кадрами нет ни мигания подложкой, ни скачка раскладки. */
+
 .hero__slides {
   position: absolute;
   inset: 0;
@@ -198,8 +185,7 @@
 }
 .hero__slide.is-active { opacity: 1; }
 
-/* большая картинка вступительного состояния: лежит слоем сверху
-   и гаснет вместе с переходом в рабочий вид                     */
+
 .hero__panel::before {
   content: "";
   position: absolute;
@@ -213,8 +199,11 @@
 .has-hero-intro .hero .hero__panel::before { opacity: 1; }
 
 .hero__dots {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
+  align-self: flex-end;
   gap: calc(8 * var(--wm));
 }
 .hero__dot {
@@ -227,13 +216,7 @@
 }
 .hero__dot.is-active { background: var(--color-white); }
 
-/* ── Вступительное состояние hero ───────────────────────────
-   При загрузке блок стоит в «большом» виде (810, панель 776,
-   заголовок внутри панели, слайдер справа), через 3 секунды
-   JS снимает .is-intro и всё плавно переезжает в рабочий вид.
 
-   Анимируем только высоты и transform — без пересборки DOM,
-   поэтому переход идёт одним движением, без рывков.        */
 
 .hero,
 .hero__panel,
@@ -247,10 +230,7 @@
               opacity var(--duration-intro) var(--ease-out-expo);
 }
 
-/* Вступительный вид — ровно один экран, и только картинка: рамку
-   и скругления снимаем, чтобы зелёной подложки не было видно
-   вообще. При сворачивании панель отъезжает внутрь на свои 16,
-   скругление возвращается — и из-под неё открывается фон.     */
+
 .has-hero-intro .hero {
   min-height: 100svh;
   padding: 0;
@@ -260,8 +240,7 @@
   border-radius: 0;
 }
 
-/* до сворачивания на экране только картинка: шапка, заголовок
-   и кнопки проявляются вместе с переходом в рабочий вид      */
+
 .has-hero-intro .hero .hero__content,
 .has-hero-intro .hero .hero__dots {
   opacity: 0;
@@ -272,23 +251,18 @@
   pointer-events: none;
 }
 
-/* заголовок с кнопками поднимается внутрь панели:
-   рабочая позиция 16 + 341 + 17 = 374, вступительная 16 + 500 = 516 */
-/* Сдвиг считается от высоты экрана, а не жёсткими 142: при 810
-   даёт ровно 142, на любой другой высоте держит заголовок на том
-   же расстоянии от нижней границы цветного hero.               */
+
+
 .has-hero-intro .hero .hero__content {
   width: calc(833 * var(--wm));
   max-width: 100%;
   transform: translateY(calc(100svh - 668 * var(--wm)));
 }
 
-/* слайдер уезжает к правому краю панели: 1408 - 24 - 268 = 1116 */
-.has-hero-intro .hero .hero__dots { transform: translateX(calc(1092 * var(--wm))); }
 
-/* На мобильной вступительного вида нет: большая картинка весит
-   слишком много для мобильного трафика, а сам переезд на узком
-   экране почти не читается. Открываем сразу рабочий вид.      */
+.has-hero-intro .hero .hero__dots { transform: none; }
+
+
 @media (max-width: 767px) {
   .has-hero-intro .hero { min-height: calc(658 * var(--wm)); }
   .has-hero-intro .hero .hero__panel { min-height: calc(280 * var(--wm)); }
@@ -301,10 +275,7 @@
   .hero, .hero__panel, .hero__content, .hero__dots { transition: none; }
 }
 
-/* Заголовок с кнопками выведен из потока: высоту hero задают
-   только панель и min-height (658 в рабочем виде, 810 во
-   вступительном), иначе контент прибавлялся бы сверху.
-   Позиция в рабочем виде: 16 (паддинг) + 341 (панель) + 17 = 374. */
+
 .hero__content {
   position: absolute;
   left: calc(40 * var(--wm));
@@ -337,20 +308,17 @@
     padding-inline: calc(8 * var(--wm));
   }
   .hero__actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .hero__dots { align-self: stretch; width: 100%; }
   .hero__dot { flex: 1; }
 
-  /* Заголовок длинный, а экран узкий: разрешаем переносить по
-     слогам. Работает от lang="ru" на <html>; break-word — на
-     случай слова, которое не влезает даже целой строкой.     */
+
   .hero-heading {
     hyphens: auto;
     overflow-wrap: break-word;
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   О холдинге — карточки-цифры
-   ───────────────────────────────────────────────────────────── */
+
 
 .about {
   display: flex;
@@ -359,8 +327,7 @@
   gap: calc(42 * var(--wm));
 }
 
-/* Ряд 406 при карточках 372: средние две приподняты на 34,
-   крайние стоят по нижнему краю — отсюда и разница высот.   */
+
 .about__cards {
   display: flex;
   flex-wrap: nowrap;
@@ -379,8 +346,7 @@
   flex-direction: column;
   gap: calc(8 * var(--wm));
 
-  /* базис 0 + max-width: четыре карточки делят строку поровну
-     (при 1440 это 311) и не разъезжаются шире 372              */
+
   flex: 1 1 0;
   min-width: 0;
   max-width: calc(372 * var(--wm));
@@ -391,10 +357,8 @@
   overflow: hidden;
 }
 
-/* Второй ряд: три карточки без фото, высота по содержимому.
-   Первая фиксированная 366, остальные делят остаток.        */
-/* Ряд строго 104 = 16 паддинга + 42 цифра + 6 + 24 подпись + 16.
-   Подписи в одну строку, иначе карточка перерастает ряд.        */
+
+
 .about__cards--wide {
   align-items: stretch;
   min-height: 0;
@@ -411,7 +375,7 @@
 }
 .about__cards--wide .stat-card:first-child { flex: 0 0 calc(366 * var(--wm)); }
 
-/* два ряда карточек идут с шагом 24, а не общие 42 у секции */
+
 .about__stack {
   display: flex;
   flex-direction: column;
@@ -454,8 +418,7 @@
   .about { gap: calc(24 * var(--wm)); }
   .about__cards { flex-wrap: wrap; align-items: stretch; min-height: 0; }
   .stat-card { flex: 1 1 calc(50% - 6 * var(--wm)); max-width: none; min-height: calc(320 * var(--wm)); }
-  /* 112 сверху + 260 высоты не влезали в карточку и обрезались:
-     тянем картинку по остатку высоты, с полем 16 снизу        */
+
   .stat-card__img { height: calc(100% - 128 * var(--wm)); }
   .stat-card:nth-child(2),
   .stat-card:nth-child(3) { margin-bottom: 0; }
@@ -475,9 +438,7 @@
   .about__cards--wide .stats-description { white-space: normal; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Направления деятельности
-   ───────────────────────────────────────────────────────────── */
+
 
 .directions {
   display: flex;
@@ -512,17 +473,21 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+.dir-card:hover .dir-card__cover > img:not(.dir-card__logo) {
+  transform: scale(1.05);
 }
 
-/* лого вписывается в 280 × 110, прижато влево, по центру обложки */
+
 .dir-card__cover > .dir-card__logo {
   position: absolute;
   left: calc(24 * var(--wm));
   top: 50%;
   translate: 0 -50%;
 
-  /* жёсткий бокс 280 × 110: contain вписывает лого целиком,
-     не обрезая и не растягивая, прижимая к левому краю      */
+
   width: calc(280 * var(--wm));
   height: calc(110 * var(--wm));
   object-fit: contain;
@@ -583,32 +548,21 @@
   white-space: nowrap;
   transition: color var(--duration-base) var(--ease-out);
 }
-/* кликабельны обложка и название: ссылка «Подробнее» накрывает карточку */
+
 .dir-card__action::after {
   content: "";
   position: absolute;
   inset: 0;
 }
-/* Иконка вращается, поэтому её бокс округляем до целых пикселей:
-   при дробном размере центр поворота попадает на полпикселя и
-   вектор перерастрируется каждый кадр — отсюда дрожание.       */
-/* Один в один как стрелки в контактах: там поворот идёт ровно.
-   Округление размера, backface-visibility и will-change отсюда
-   убраны — именно они и давали дрожание.                     */
-.dir-card__action svg {
-  width: calc(24 * var(--wm));
-  height: calc(24 * var(--wm));
-  transform-origin: 50% 50%;
-  transition: transform var(--duration-base) var(--ease-out);
-}
 
-/* ховер: текст и стрелка зеленеют, стрелка доворачивается
-   из «вправо-вверх» в «вправо-вниз»                        */
 .dir-card:hover .dir-card__action,
 .dir-card__action:hover { color: var(--color-green-500); }
 
-.dir-card:hover .dir-card__action svg,
-.dir-card__action:hover svg { transform: rotate(90deg) translateZ(0); }
+.dir-card:hover .card-action svg,
+.news-card:hover .card-action svg,
+.map-link:hover .card-action svg {
+  transform: rotate(90deg);
+}
 
 @media (max-width: 767px) {
   .directions { gap: calc(24 * var(--wm)); }
@@ -617,13 +571,9 @@
   .dir-card__foot { flex-direction: column; align-items: flex-start; gap: calc(12 * var(--wm)); }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Выращиваемые культуры
-   ───────────────────────────────────────────────────────────── */
 
-/* Видео-подложка блока: лежит отдельным слоем под контентом,
-   поэтому поверх неё спокойно работают и блюр, и затемнение.
-   pointer-events снят — по блоку кликается то, что над ним.   */
+
+
 .bg-video {
   position: absolute;
   inset: 0;
@@ -647,9 +597,7 @@
   background: var(--color-gray-dark);
   overflow: hidden;
 }
-/* Стопка без отрицательных значений: слой с backdrop-filter
-   прячет за фоном родителя всё, что лежит ниже нуля, поэтому
-   видео 0 → затемнение с блюром 1 → контент 2.               */
+
 .crops .bg-video { z-index: 0; }
 .crops::before {
   content: "";
@@ -711,8 +659,7 @@
     min-width: 0;
     overflow: hidden;
   }
-  /* пять карточек: последняя на всю ширину, иначе длинное
-     название («Чечевица красная») не сжимается и вылезает   */
+
   .crop-card:last-child {
     flex: 1 1 100%;
     max-width: 100%;
@@ -725,17 +672,14 @@
     height: calc(150 * var(--wm));
     overflow: hidden;
   }
-  /* предел 189 из макета выше самого бокса — картинка вылезала
-     за него и накрывала подпись под ней                       */
+
   .crop-card__img img {
     max-width: 100%;
     max-height: 100%;
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Кормовая мука
-   ───────────────────────────────────────────────────────────── */
+
 
 .feed {
   display: flex;
@@ -806,7 +750,7 @@
   object-fit: cover;
 }
 
-/* таблица показателей */
+
 .feed__specs {
   border-radius: calc(20 * var(--wm));
   background: var(--surface-card);
@@ -848,13 +792,11 @@
   .feed__spec { flex: 1 1 50%; }
   .feed__spec:nth-child(2n) { border-right: none; }
   .feed__mix-row { flex-direction: column; align-items: stretch; }
-  /* кнопка во всю ширину блока; боковые поля даёт padding текста */
+
   .feed__text .btn { width: 100%; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Международные поставки — карта
-   ───────────────────────────────────────────────────────────── */
+
 
 .geo {
   display: flex;
@@ -923,16 +865,13 @@
   background: var(--color-white);
 }
 
-/* Активная пилюля — отдельный слой, который переезжает между
-   вкладками. Двигаем transform, поэтому ход плавный.        */
+
 .geo__switch-thumb {
   position: absolute;
   left: calc(4 * var(--wm));
   top: calc(4 * var(--wm));
   z-index: 0;
-  /* половина переключателя за вычетом поля: ширина считается от
-     него самого, поэтому ход в 100% всегда попадает во вкладку
-     при любой ширине экрана                                    */
+
   width: calc(50% - 4 * var(--wm));
   height: calc(32 * var(--wm));
   border-radius: calc(200 * var(--wm));
@@ -952,7 +891,7 @@
 }
 .geo__switch button:hover { --_bg: transparent; --_fg: var(--color-white); }
 
-/* цвет текста зависит от того, под какой вкладкой сейчас пилюля */
+
 .geo__switch button:nth-of-type(2) { --_fg: var(--color-black); }
 .geo__switch.is-second button:nth-of-type(1) { --_fg: var(--color-black); }
 .geo__switch.is-second button:nth-of-type(2) { --_fg: var(--color-white); }
@@ -964,9 +903,7 @@
   .geo__switch button { width: 50%; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Лицензии
-   ───────────────────────────────────────────────────────────── */
+
 
 .licenses {
   display: flex;
@@ -1006,7 +943,7 @@
 }
 .license-card__foot .card-meta { opacity: 0.5; }
 
-/* кнопка загорается от наведения на карточку целиком */
+
 .license-card:hover .btn--soft {
   --_bg: var(--color-green-brand);
   --_fg: var(--color-white);
@@ -1022,9 +959,7 @@
   .license-card { flex: 1 1 100%; min-height: auto; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Сотрудничество
-   ───────────────────────────────────────────────────────────── */
+
 
 .partner {
   display: flex;
@@ -1064,9 +999,7 @@
   .partner__photo { width: 100%; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Новости
-   ───────────────────────────────────────────────────────────── */
+
 
 .news {
   display: flex;
@@ -1078,18 +1011,18 @@
 
 .news__title { width: 100%; text-align: left; }
 
-/* сетка по 3 в ряд: следующая порция уходит на новую строку,
-   а не ужимает карточки первой                                */
+
 .news__list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
-  /* по горизонтали 12, между рядами 24 */
+
   gap: calc(24 * var(--wm)) calc(12 * var(--wm));
   width: 100%;
 }
 
 .news-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: calc(20 * var(--wm));
@@ -1100,9 +1033,16 @@
   width: 100%;
   height: calc(240 * var(--wm));
   object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+.news-card:hover .news-card__img {
+  transform: scale(1.05);
 }
 
 .news-card__body {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1118,6 +1058,10 @@
   flex-direction: column;
   gap: calc(8 * var(--wm));
 }
+.news-card .card-heading-m {
+  font-size: var(--text-card-h-s);
+  line-height: var(--leading-card-h-s);
+}
 
 .news-card__foot {
   display: flex;
@@ -1126,7 +1070,7 @@
   gap: calc(8 * var(--wm));
 }
 
-/* скрытые карточки второй порции — раскрываются по кнопке */
+
 .news-card.is-hidden { display: none; }
 
 .news-card.is-appearing {
@@ -1138,11 +1082,12 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .news-card.is-appearing { animation: none; }
+  .dir-card:hover .dir-card__cover > img:not(.dir-card__logo),
+  .news-card:hover .news-card__img { transform: none; }
 }
 
-/* состояние всей карточки, а не только ссылки */
+
 .news-card:hover .dir-card__action { color: var(--color-green-500); }
-.news-card:hover .dir-card__action svg { transform: rotate(90deg) translateZ(0); }
 
 @media (max-width: 1024px) {
   .news__list { grid-template-columns: repeat(2, 1fr); }
@@ -1155,9 +1100,7 @@
   .news-card__foot { flex-direction: column; align-items: flex-start; gap: calc(12 * var(--wm)); }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Команда  (страница «О компании»)
-   ───────────────────────────────────────────────────────────── */
+
 
 .team {
   display: flex;
@@ -1166,31 +1109,24 @@
   gap: calc(32 * var(--wm));
 }
 
-/* 4 карточки по 412 с гэпом 32 не влезают в 1280 — в макете
-   ряд уходит за правый край, поэтому это горизонтальная лента */
+
 .team__row {
-  display: flex;
-  align-items: flex-start;
-  gap: calc(32 * var(--wm));
   width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  overflow: hidden;
 }
-.team__row::-webkit-scrollbar { display: none; }
+.team__row .swiper-slide {
+  width: calc(412 * var(--wm));
+  height: auto;
+}
 
 .team-card {
   display: flex;
   flex-direction: column;
-  flex: none;
-  width: calc(412 * var(--wm));
+  width: 100%;
   border-radius: calc(20 * var(--wm));
   overflow: hidden;
-  scroll-snap-align: start;
 }
-/* Карточка притушена ровно настолько, насколько вылезла за край ленты.
-   Долю видимости считает JS и кладёт в --card-in (1 — целиком в кадре).
-   Без JS остаётся 1, то есть обычный вид, а не выцветший.            */
+
 .team-card { opacity: calc(0.5 + 0.5 * var(--card-in, 1)); }
 
 .team-card__img {
@@ -1219,22 +1155,16 @@
 @media (max-width: 767px) {
   .team { gap: calc(24 * var(--wm)); }
 
-  /* Карточка встаёт по центру экрана, а не по левому краю.
-     Поля по краям — половина свободного места: без них первая
-     и последняя карточки физически не могут доехать до центра. */
-  .team__row {
-    gap: calc(12 * var(--wm));
-    padding-inline: max(0px, calc((100% - 300 * var(--wm)) / 2));
+
+  .team__row .swiper-slide {
+    width: calc(300 * var(--wm));
   }
   .team-card {
-    width: calc(300 * var(--wm));
-    scroll-snap-align: center;
+    width: 100%;
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Партнёры
-   ───────────────────────────────────────────────────────────── */
+
 
 .partners {
   display: flex;
@@ -1243,10 +1173,7 @@
   gap: calc(42 * var(--wm));
 }
 
-/* Лента скроллится, поэтому overflow убрать нельзя — вместо этого
-   выводим её за отступы страницы: плитки уезжают до края экрана,
-   а не обрезаются «шторкой» по границе контейнера. Внутренний
-   padding возвращает первую плитку на сетку контента.           */
+
 .partners__row {
   display: flex;
   align-items: center;
@@ -1288,8 +1215,7 @@
   .partners__track { animation: none; }
 }
 
-/* плитка строго 260 × 260, логотип вписан по центру.
-   Прозрачность — по доле видимости, как у карточек команды */
+
 .partners__item {
   opacity: calc(0.5 + 0.5 * var(--card-in, 1));
   display: grid;
@@ -1301,8 +1227,7 @@
   border-radius: calc(20 * var(--wm));
   overflow: hidden;
 }
-/* у логотипов в PNG своя белая подложка — multiply растворяет
-   её в фоне плитки, оставляя только сам знак                  */
+
 .partners__item img {
   max-width: 100%;
   max-height: 100%;
@@ -1315,21 +1240,12 @@
   .partners__item { width: calc(180 * var(--wm)); height: calc(180 * var(--wm)); padding: calc(16 * var(--wm)); }
 }
 
-/* лента тянется мышью — курсор подсказывает это */
+
 [data-drag-scroll] { cursor: grab; }
 [data-drag-scroll].is-dragging { cursor: grabbing; scroll-snap-type: none; }
 [data-drag-scroll].is-dragging * { pointer-events: none; }
 
-/* ─────────────────────────────────────────────────────────────
-   Hero страницы «О компании» — состояния по скроллу
 
-   Дорожка задаёт длину прокрутки, сам блок внутри неё липкий.
-   JS кладёт на дорожку прогресс 0…1 (несколько под-прогрессов
-   для разных слоёв), а CSS уже двигает элементы. Всё через
-   transform, поэтому анимация идёт без пересчёта layout.
-   Числа — координаты из макета: фото 0 → -435, заголовки
-   0 → -310, группа 596 → 294.
-   ───────────────────────────────────────────────────────────── */
 
 .hero-about-track {
   --p-img: 0;
@@ -1337,13 +1253,10 @@
   --p-text: 0;
   --p-group: 0;
 
-  /* hero занимает экран целиком — иначе под ним во время
-     залипания видна белая полоса                            */
+
   --hero-h: 100dvh;
 
-  /* хвост после последнего положения: даёт дочитать финальный
-     текст, прежде чем блок отлипнет. Значение продублировано
-     в main.js константой TAIL_VH — менять вместе.           */
+
   --hero-tail: 25vh;
 
   position: relative;
@@ -1377,7 +1290,7 @@
   width: 73%;
   height: calc(100% - 218 * var(--wm));
   object-fit: cover;
-  /* scale по умолчанию единица — на десктопе ничего не меняет */
+
   transform: translate(-50%, calc(-77.96% * var(--p-img)))
              rotate(var(--img-rot, 0deg))
              scale(var(--img-scale, 1));
@@ -1397,10 +1310,7 @@
 .hero-about__crumbs a { transition: opacity var(--duration-base) var(--ease-out); }
 .hero-about__crumbs a:hover { opacity: 1; }
 
-/* Группа «заголовок + текст» прижата к низу панели. В макете она
-   уезжает вверх по мере появления абзацев — здесь того же добивается
-   нижняя привязка: блок растёт вверх и гарантированно остаётся
-   в пределах экрана на любой высоте окна.                        */
+
 .hero-about__group {
   position: absolute;
   left: calc(24 * var(--wm));
@@ -1413,7 +1323,7 @@
   color: var(--color-white);
 }
 
-/* окно 531 × 158, внутри которого лента из двух заголовков */
+
 .hero-about__titles {
   width: calc(531 * var(--wm));
   height: calc(158 * var(--wm));
@@ -1440,9 +1350,7 @@
   color: var(--color-white);
 }
 
-/* Абзацы раскрываются по одному: третье и четвёртое положение
-   скролла. Высота — от измеренной JS натуральной, иначе скрытый
-   текст занимал бы место и отталкивал заголовок от низа.      */
+
 .hero-about__text {
   display: flex;
   flex-direction: column;
@@ -1473,13 +1381,7 @@
 @media (max-width: 767px) {
   .hero-about-track { height: calc(var(--hero-h) + 120vh + var(--hero-tail)); }
   .hero-about { padding: calc(8 * var(--wm)); }
-  /* Во всю ширину панели. Плюс запас на поворот: при наклоне до
-     10.36° прямоугольник перестаёт накрывать панель, и по краям
-     видно подложку. Нужный коэффициент — cos θ + (H / W)·sin θ,
-     при панели 374 и картинке около 610 это ≈ 1.28; берём 1.35
-     с запасом на высокие экраны. Растягиваем масштабом, а не
-     шириной: ширина увеличивает размах краёв при повороте и
-     делает только хуже.                                       */
+
   .hero-about__img {
     width: 100%;
     --img-scale: 1.35;
@@ -1490,10 +1392,7 @@
     width: calc(100% - 32 * var(--wm));
     gap: calc(20 * var(--wm));
   }
-  /* Окно под заголовок: 16 метка + 16 отступ + 4 строки по 31.5
-     (24 × 1.3125) = 158, берём 176 с запасом на пятую строку.
-     Шаг ленты и её ход считаются от той же величины — иначе
-     второй заголовок встанет не на место первого.            */
+
   .hero-about__titles { width: 100%; height: calc(176 * var(--wm)); }
   .hero-about__titles-track {
     gap: calc(176 * var(--wm));
@@ -1511,9 +1410,7 @@
   .hero-about__para { height: auto; opacity: 1; margin-top: calc(42 * var(--wm)); }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Страница «Контакты»
-   ───────────────────────────────────────────────────────────── */
+
 
 .page--contacts {
   gap: 0;
@@ -1523,7 +1420,7 @@
 
 .contacts {
   width: 100%;
-  /* от нижней карточки до футера в макете 37, а не общие 120 */
+
   padding: calc(16 * var(--wm)) calc(16 * var(--wm)) calc(37 * var(--wm));
 }
 
@@ -1546,7 +1443,7 @@
   overflow: hidden;
 }
 
-/* верхняя карточка: заголовок вверху, контакты внизу */
+
 .contacts__intro {
   display: flex;
   flex-direction: column;
@@ -1592,7 +1489,7 @@
 a.contacts__item:hover { background: var(--color-white-15); }
 .contacts__item .section-label { opacity: 0.6; }
 
-/* нижняя карточка: карты */
+
 .contacts__maps {
   display: flex;
   flex-direction: column;
@@ -1643,7 +1540,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   background: var(--color-white);
   overflow: hidden;
 }
-/* иконка заполняет плитку целиком */
+
 .map-link__icon img {
   width: 100%;
   height: 100%;
@@ -1661,15 +1558,8 @@ a.contacts__item:hover { background: var(--color-white-15); }
   align-items: center;
   gap: calc(6 * var(--wm));
 }
-.map-link__action svg {
-  width: calc(24 * var(--wm));
-  height: calc(24 * var(--wm));
-  transform-origin: 50% 50%;
-  transition: transform var(--duration-base) var(--ease-out);
-}
-.map-link:hover .map-link__action svg { transform: rotate(90deg) translateZ(0); }
 
-/* правая колонка: фото с формой поверх */
+
 .contacts__photo {
   position: relative;
   min-height: calc(767 * var(--wm));
@@ -1746,14 +1636,10 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .lead__title { width: 100%; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Внутренние страницы без hero
-   ───────────────────────────────────────────────────────────── */
 
-/* шапка фиксированная, поэтому первую секцию отводим ниже неё:
-   пилюля 79 + 16 отступа макета */
-/* Шапка на светлых страницах: 24 отступ + 56 бар = 80.
-   До крошек от неё 40, до кнопки «назад» — 24.              */
+
+
+
 .page--inner {
   padding-top: calc(120 * var(--wm));
   padding-bottom: calc(120 * var(--wm));
@@ -1785,9 +1671,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Страница новости
-   ───────────────────────────────────────────────────────────── */
+
 
 .article {
   display: flex;
@@ -1796,8 +1680,12 @@ a.contacts__item:hover { background: var(--color-white-15); }
   gap: calc(32 * var(--wm));
 }
 
-/* кнопка «Назад» — тёмная пилюля над заголовком */
-.page--article { padding-top: calc(104 * var(--wm)); }
+
+.page--article { padding-top: calc((24 + 8 + 63 + 8 + 24) * var(--wm)); }
+
+@media (max-width: 767px) {
+  .page--article { padding-top: calc((12 + 8 + 63 + 8 + 24) * var(--wm)); }
+}
 
 .back-link {
   display: inline-flex;
@@ -1843,7 +1731,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   object-fit: cover;
 }
 
-/* колонка текста уже контентной — 1000 при 1440 */
+
 .article__lead,
 .article__block {
   width: calc(1000 * var(--wm));
@@ -1865,16 +1753,9 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .article__cover { height: calc(240 * var(--wm)); }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Страница направления
-   ───────────────────────────────────────────────────────────── */
 
-/* Один экран вместо 810 из макета: панель тянется на 100% высоты
-   секции, картинка абсолютная с cover, заголовок прижат к низу —
-   внутри ничего подстраивать не нужно.
 
-   svh, а не vh: на мобильных vh считается по окну без адресной
-   строки, и первый экран оказывается выше видимой области.     */
+
 .hero-dir {
   width: 100%;
   height: 100vh;
@@ -1884,10 +1765,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   background: var(--hero-about-bg);
 }
 
-/* Вступительный вид, как на главной: сначала только картинка на
-   весь экран, потом панель отъезжает внутрь на свои 16, углы
-   скругляются и наплывают крошки с заголовком. Высота уже 100svh,
-   поэтому анимируются только отступы, радиус и прозрачность.   */
+
 .hero-dir,
 .hero-dir__panel,
 .hero-dir__crumbs,
@@ -1919,9 +1797,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   background: var(--color-black);
   overflow: hidden;
 }
-/* Тяжёлый PNG декодируется построчно, и без этого видно, как
-   картинка «наливается» сверху вниз. Показываем её только
-   целиком — по готовности JS ставит is-loaded.              */
+
 .hero-dir__img {
   position: absolute;
   inset: 0;
@@ -1933,8 +1809,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .hero-dir__img.is-loaded { opacity: 1; }
 
-/* 24 от нижней грани шапки: 40 (отступ шапки) + 66 (бар) + 24,
-   минус 16 — на столько панель отступает от верха секции.     */
+
 .hero-dir__crumbs {
   position: absolute;
   left: calc(24 * var(--wm));
@@ -1967,8 +1842,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   color: var(--color-white);
 }
 
-/* Служебные страницы (спасибо, 404): тот же hero, но контент
-   по центру и на 282 от верха панели — 24 паддинг + 66 шапка + 192. */
+
 .hero-dir__content--center {
   left: calc(24 * var(--wm));
   right: calc(24 * var(--wm));
@@ -1978,8 +1852,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   width: auto;
   max-width: none;
 }
-/* колонка текста 630 по центру: «Спасибо!» отдельной строкой,
-   дальше перенос по ширине, а не по краю панели                */
+
 .hero-dir__content--center .section-heading,
 .hero-dir__content--center .section-description {
   width: calc(630 * var(--wm));
@@ -1988,13 +1861,13 @@ a.contacts__item:hover { background: var(--color-white-15); }
   text-align: center;
 }
 
-/* страница целиком в один экран: без ритма между блоками и футера */
+
 .page--flush {
   gap: 0;
   padding-bottom: 0;
 }
 
-/* чипы этапов */
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -2011,7 +1884,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .feed__photo--product { height: calc(470 * var(--wm)); }
 .feed__main--soft     { background: var(--surface-soft-2); }
 
-/* ── Графики ─────────────────────────────────────────────── */
+
 
 .charts {
   display: flex;
@@ -2025,9 +1898,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   gap: calc(12 * var(--wm));
 }
 
-/* ── Карточка графика ────────────────────────────────────────
-   Все координаты — из макета (карточка 634 × 440), поэтому
-   позиции абсолютные и считаются от неё через --wm.          */
+
 
 .chart-card {
   position: relative;
@@ -2076,7 +1947,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .chart-card__hint img { width: 100%; height: 100%; }
 
-/* подсказка: в макете лежит скрытым слоем, показываем по наведению */
+
 .chart-card__hint::after {
   content: attr(data-hint);
   position: absolute;
@@ -2108,7 +1979,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .chart-card__value .stats-value { color: var(--color-green-500); }
 
-/* область графика: 634 × 243 от низа карточки */
+
 .chart-card__plot {
   position: absolute;
   left: 0;
@@ -2117,11 +1988,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(243 * var(--wm));
 }
 
-/* Отступ кривой от левого края карточки. В макете он 39 — столько
-   нужно первой подписи, она центрируется над своей точкой и краем
-   уходит левее начала линии. Ставим 10: щели почти нет, а подпись
-   ещё помещается. Цифры сдвигаются на ту же величину, поэтому
-   менять достаточно здесь — они не разъедутся с кривой.        */
+
 .chart-card__plot { --plot-x: calc(10 * var(--wm)); }
 
 .chart-card__line {
@@ -2132,7 +1999,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(205 * var(--wm));
 }
 
-/* сдвиг цифр = насколько линия отъехала от исходных 39 */
+
 .chart-card__dot,
 .chart-dot {
   translate: calc(var(--plot-x) - 39 * var(--wm)) 0;
@@ -2146,16 +2013,14 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: auto;
 }
 
-/* Точки со значениями. Координаты из макета: left — по горизонтали,
-   bottom — по вертикали, обе от левого нижнего угла области графика.
-   Чтобы поднять цифру — увеличь bottom, опустить — уменьши.        */
+
 .chart-card__dot { position: absolute; height: calc(43 * var(--wm)); width: auto; }
 .chart-card__dot--a { left: calc(30 * var(--wm));  bottom: calc(143 * var(--wm)); }
 .chart-card__dot--b { left: calc(212 * var(--wm)); bottom: calc(92 * var(--wm)); }
 .chart-card__dot--c { left: calc(391 * var(--wm)); bottom: calc(235 * var(--wm)); }
 .chart-card__dot--d { left: calc(572 * var(--wm)); bottom: calc(179 * var(--wm)); }
 
-/* пунктирные направляющие */
+
 .chart-card__guide { position: absolute; opacity: 1; }
 .chart-card__guide--v {
   left: calc(226 * var(--wm));
@@ -2170,7 +2035,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: 1px;
 }
 
-/* ── Второй график: область 634 × 220, линия ниже и положе ── */
+
 
 .chart-card--gross .chart-card__plot { height: calc(220 * var(--wm)); }
 .chart-card--gross .chart-card__line {
@@ -2183,7 +2048,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   width: calc(168 * var(--wm));
 }
 
-/* точки второго графика — подпись текстом, кружок на CSS */
+
 .chart-dot {
   position: absolute;
   display: flex;
@@ -2191,15 +2056,14 @@ a.contacts__item:hover { background: var(--color-white-15); }
   align-items: center;
   justify-content: flex-end;
   gap: calc(6 * var(--wm));
-  height: calc(43 * var(--wm));   /* как высота SVG-точки: 22 + 6 + 15 */
+  height: calc(43 * var(--wm));
   white-space: nowrap;
 }
 .chart-dot--a { left: calc(20 * var(--wm));  bottom: calc(145 * var(--wm)); }
 .chart-dot--b { left: calc(204 * var(--wm)); bottom: calc(92 * var(--wm)); }
 .chart-dot--c { left: calc(380 * var(--wm)); bottom: calc(198 * var(--wm)); }
 .chart-dot--d { left: calc(562 * var(--wm)); bottom: calc(177 * var(--wm)); }
-/* кружок один в один как в SVG первого графика:
-   внешний диаметр 15, обводка 2, оба масштабируются вместе с --wm */
+
 .chart-dot::after {
   content: "";
   box-sizing: border-box;
@@ -2215,7 +2079,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-card__hint::after { left: 0; top: calc(40 * var(--wm)); width: calc(280 * var(--wm)); }
 }
 
-/* ── Структура посевных площадей ─────────────────────────── */
+
 
 .crops-table {
   display: flex;
@@ -2285,7 +2149,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .crops-table__total > span:first-child { opacity: 0.8; }
 .crops-table__total .card-heading-m { color: var(--color-green-brand); }
 
-/* ── Карточка сырья и характеристики ─────────────────────── */
+
 
 .raw-card {
   display: flex;
@@ -2310,21 +2174,16 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .specs-list li > span:first-child { opacity: 0.5; }
 
-/* ── Построение графиков при прокрутке ───────────────────────
-   Линия прочерчивается по своей траектории: путь «обводится»
-   штрихом длиной во всю линию, а смещение штриха уводит его за
-   край и возвращает. Заливка проступает следом, точки выходят
-   по очереди слева направо, пунктиры — последними.           */
 
-/* Кривая разгибается из прямой: сам путь пересчитывается покадрово
-   в JS, поэтому здесь только проявление заливки под ней.         */
+
+
 .chart-line__fill {
   opacity: 0;
   transition: opacity var(--duration-draw) var(--ease-out);
 }
 .is-drawn .chart-line__fill { opacity: 0.4; }
 
-/* точки: --i задаёт очередь, её проставляет JS по порядку слева */
+
 .chart-card__dot,
 .chart-dot,
 .chart-wide__dot {
@@ -2360,11 +2219,9 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-wide__guide { transition: none; }
 }
 
-/* ── Широкий график: закупка и экспорт ───────────────────── */
 
-/* Карточка 1280 × 440 на всю ширину контента, две линии
-   и восемь точек. Координаты точек — из макета, отсчёт от
-   низа карточки: больше bottom — цифра выше.               */
+
+
 .chart-wide {
   position: relative;
   width: 100%;
@@ -2395,7 +2252,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .chart-wide__period { opacity: 0.6; }
 
-/* легенда: штрих цвета линии + подпись */
+
 .chart-wide__legend {
   display: flex;
   align-items: flex-start;
@@ -2417,7 +2274,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .chart-wide__key--export { --_key: var(--color-orange); }
 .chart-wide__key span { opacity: 0.6; }
 
-/* область графика: от 101 сверху и до низа карточки */
+
 .chart-wide__plot {
   position: absolute;
   left: 0;
@@ -2434,7 +2291,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(267 * var(--wm));
 }
 
-/* ось годов прижата к низу */
+
 .chart-wide__axis {
   position: absolute;
   left: 0;
@@ -2448,9 +2305,8 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .chart-wide__axis span { opacity: 0.6; }
 
-/* вертикальные пунктиры к точкам */
-/* прозрачность задаёт состояние построения выше, здесь её нет —
-   иначе это правило перебило бы её и пунктир был виден сразу   */
+
+
 .chart-wide__guide {
   position: absolute;
   bottom: calc(38 * var(--wm));
@@ -2460,8 +2316,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .chart-wide__guide--a { left: calc(441 * var(--wm)); height: calc(61 * var(--wm)); }
 .chart-wide__guide--b { left: calc(839 * var(--wm)); height: calc(173 * var(--wm)); }
 
-/* Точка со значением: цифра сверху, кружок снизу — как в SVG
-   на странице сельского хозяйства (22 текст + 6 + 15 кружок). */
+
 .chart-wide__dot {
   position: absolute;
   display: flex;
@@ -2484,22 +2339,21 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .chart-wide__dot--export { --_dot: var(--color-orange); }
 .chart-wide__dot--soft   { --_dot: var(--color-green-500); }
 
-/* 2022 */
+
 .chart-wide__dot--a { left: calc(9 * var(--wm));    bottom: calc(146 * var(--wm)); }
 .chart-wide__dot--b { left: calc(9 * var(--wm));    bottom: calc(78 * var(--wm)); }
-/* 2023 */
+
 .chart-wide__dot--c { left: calc(418 * var(--wm));  bottom: calc(92 * var(--wm)); }
 .chart-wide__dot--d { left: calc(414 * var(--wm));  bottom: calc(199 * var(--wm)); }
-/* 2024 */
+
 .chart-wide__dot--e { left: calc(814 * var(--wm));  bottom: calc(204 * var(--wm)); }
 .chart-wide__dot--f { left: calc(814 * var(--wm));  bottom: calc(142 * var(--wm)); }
-/* 2025 */
+
 .chart-wide__dot--g { left: calc(1211 * var(--wm)); bottom: calc(296 * var(--wm)); }
 .chart-wide__dot--h { left: calc(1211 * var(--wm)); bottom: calc(239 * var(--wm)); }
 
 @media (max-width: 767px) {
-  /* Как у графиков на agriculture: линия вписывается в карточку,
-     точки считаются долей ширины кривой и центрируются на ней. */
+
   .chart-wide {
     height: calc(470 * var(--wm));
     --plot-x: calc(20 * var(--wm));
@@ -2534,11 +2388,9 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-wide__guide--b { left: calc(var(--plot-x) + 0.6650 * var(--plot-w)); }
 }
 
-/* ── Галерея ─────────────────────────────────────────────── */
+
 
 .gallery {
-  /* переключение кадра — единый тайминг для сдвига ленты и роста кадра:
-     разойдутся хоть на миллисекунду, и центр «поплывёт» на промежуточных */
   --g-ease: var(--ease-out-expo);
   --g-time: var(--duration-slow);
 
@@ -2546,59 +2398,49 @@ a.contacts__item:hover { background: var(--color-white-15); }
   flex-direction: column;
   align-items: center;
   gap: calc(24 * var(--wm));
+  overflow: hidden;
 }
 
-/* Окно ленты; скролла нет — лента едет трансформом.
-   Высота жёстко равна высоте центрального кадра: иначе при смене размера
-   лента то 380, то 420, и всё, что ниже, прыгает на 40px.
 
-   overflow не режем: боковые кадры уходят до края экрана, а не обрезаются
-   «шторкой» по границе контейнера. Горизонтального скролла не будет —
-   .page стоит на overflow-x: clip и обрежет ленту по краю окна.        */
 .gallery__row {
   width: 100%;
   height: calc(420 * var(--wm));
-  touch-action: pan-y;
-  cursor: grab;
+  overflow: visible;
 }
-.gallery__row.is-swiping { cursor: grabbing; }
-
-/* Сдвиг ленты считает JS по замеренным в покое ширинам и кладёт в --g-shift.
-   Трансформ и рост кадра идут одним transition, поэтому центр активного
-   кадра приколот к центру окна на всём протяжении анимации.               */
-.gallery__track {
+.gallery__row.swiper { overflow: visible; }
+.gallery__row .swiper-wrapper {
+  align-items: center;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gallery .swiper-slide {
   display: flex;
   align-items: center;
-  height: 100%;
-  gap: calc(12 * var(--wm));
-  width: max-content;
-  transform: translate3d(calc(var(--g-shift, 0px) + var(--g-drag, 0px)), 0, 0);
-  transition: transform var(--g-time) var(--g-ease);
-  will-change: transform;
+  justify-content: center;
+  width: calc(380 * var(--wm));
+  height: calc(420 * var(--wm));
+  overflow: visible;
+  z-index: 1;
 }
-.gallery__row.is-swiping .gallery__track { transition: none; }
-
-/* боковые кадры 380 × 380, центральный — 640 × 420 */
-.gallery__track img {
+.gallery .swiper-slide-prev,
+.gallery .swiper-slide-next { z-index: 2; }
+.gallery .swiper-slide-active { z-index: 3; }
+.gallery .swiper-slide img {
   flex: none;
   width: calc(380 * var(--wm));
   height: calc(380 * var(--wm));
   border-radius: calc(20 * var(--wm));
   object-fit: cover;
-  cursor: pointer;
+  opacity: 0.75;
   transition: width var(--g-time) var(--g-ease),
               height var(--g-time) var(--g-ease),
               opacity var(--g-time) var(--g-ease);
-  /* боковые чуть притушены, центральный в полную силу */
-  opacity: 0.75;
 }
-.gallery__track img:hover { opacity: 1; }
-.gallery__track img.is-active {
-  opacity: 1;
+.gallery .swiper-slide-active img {
   width: calc(640 * var(--wm));
   height: calc(420 * var(--wm));
-  cursor: default;
+  opacity: 1;
 }
+.gallery .swiper-slide img:hover { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .gallery { --g-time: 1ms; }
@@ -2626,17 +2468,11 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .charts__row { grid-template-columns: 1fr; }
 }
 
-/* ─────────────────────────────────────────────────────────────
-   ГРАФИКИ НА МОБИЛЬНОЙ — здесь меняются положения цифр
-   ───────────────────────────────────────────────────────────── */
+
 
 @media (max-width: 767px) {
 
-  /* Шапка карточки в поток и по центру: в строку 24 из макета
-     заголовок на узком экране не помещался. display: contents
-     убирает саму обёртку, и заголовок, подпись и значение
-     становятся детьми карточки — только так подпись встаёт
-     между заголовком и цифрой, она лежит в другом узле.     */
+
   .chart-card {
     height: calc(470 * var(--wm));
     padding: calc(20 * var(--wm)) calc(12 * var(--wm)) 0;
@@ -2662,7 +2498,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
     justify-content: center;
     margin-top: calc(10 * var(--wm));
   }
-  /* подсказка от края экрана, а не от заголовка */
+
   .chart-card__hint::after {
     left: calc(12 * var(--wm));
     right: calc(12 * var(--wm));
@@ -2670,18 +2506,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
     width: auto;
   }
 
-  /* ── Цифры на графиках ────────────────────────────────────
-     Линия шириной 553 из макета в карточку телефона не влезает
-     и уходит за правый край, поэтому здесь она вписывается в её
-     ширину с полями 20. Положение цифр считается от самих точек
-     кривой: доля × ширина линии. Доли взяты из пути — это места,
-     где кривая меняет направление.
 
-     Цифра центрируется на своей точке (translate -50%), так что
-     двигать её вручную нужно правкой доли, а не пикселей.
-
-     Высоту (bottom) задают общие правила выше — по вертикали
-     пропорции те же, что на десктопе.                        */
   .chart-card__plot {
     --plot-x: calc(20 * var(--wm));
     --plot-w: calc(100% - 40 * var(--wm));
@@ -2691,13 +2516,13 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-card__dot,
   .chart-dot { translate: -50% 0; }
 
-  /* Урожайность */
+
   .chart-card__dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w)); }
   .chart-card__dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); }
   .chart-card__dot--c { left: calc(var(--plot-x) + 0.6486 * var(--plot-w)); }
   .chart-card__dot--d { left: calc(var(--plot-x) + 0.9982 * var(--plot-w)); }
 
-  /* Валовый сбор — третья точка у этой кривой правее */
+
   .chart-dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w)); }
   .chart-dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); }
   .chart-dot--c { left: calc(var(--plot-x) + 0.6685 * var(--plot-w)); }
@@ -2715,8 +2540,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
     top: auto;
     bottom: calc(48 * var(--wm));
   }
-  /* подписи вкладок длинные, в жёсткие 208 на узком экране не
-     влезают: делим ширину поровну и разрешаем перенос         */
+
   .geo__switch {
     height: auto;
     padding: calc(4 * var(--wm));
@@ -2732,8 +2556,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   }
   .geo__switch-thumb { height: calc(100% - 8 * var(--wm)); }
 
-  /* показатели в блоке продукции: 26 на узкой колонке слишком
-     крупно, ряд из четырёх значений расползается              */
+
   .feed__spec .stats-value { font-size: calc(20 * var(--wm)); }
 
   .crops-table__head { flex-direction: column; }
@@ -2741,6 +2564,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .crops-table__years { flex-wrap: wrap; }
   .crops-table__photo { height: calc(220 * var(--wm)); }
   .gallery__row { height: calc(300 * var(--wm)); }
-  .gallery__track img { width: calc(260 * var(--wm)); height: calc(260 * var(--wm)); }
-  .gallery__track img.is-active { width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
+  .gallery .swiper-slide { width: calc(260 * var(--wm)); height: calc(300 * var(--wm)); }
+  .gallery .swiper-slide img { width: calc(260 * var(--wm)); height: calc(260 * var(--wm)); }
+  .gallery .swiper-slide-active img { width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
 }

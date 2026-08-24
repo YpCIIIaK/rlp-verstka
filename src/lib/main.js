@@ -4,24 +4,26 @@
   const mq = (q) => window.matchMedia(q);
   const prefersReduced = mq("(prefers-reduced-motion: reduce)").matches;
 
-  /* ── Переходы включаем после применения стилей ──────────── */
 
-  /* Два кадра: к этому моменту вся цепочка @import уже применена
-     и геометрия посчитана, поэтому первый переход не тащит за
-     собой скачок от дефолтных размеров.                      */
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => document.documentElement.classList.add("is-ready"));
-  });
 
-  /* ── Перезагрузка открывает страницу сверху ─────────────── */
 
-  /* Браузер сам возвращает позицию скролла при F5, а с плавным
-     скроллом это выглядит как рывок вниз на старте. Отключаем
-     восстановление и на всякий случай встаём в ноль.        */
+  const reveal = () => {
+    if (document.documentElement.classList.contains("is-ready")) return;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => document.documentElement.classList.add("is-ready"));
+    });
+  };
+  if (document.readyState === "complete") reveal();
+  else window.addEventListener("load", reveal);
+  window.setTimeout(reveal, 4000);
+
+
+
+
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.addEventListener("beforeunload", () => window.scrollTo(0, 0));
 
-  /* ── Плавный скролл (Lenis) ─────────────────────────────── */
+
 
   let lenis = null;
   if (typeof Lenis !== "undefined" && !prefersReduced) {
@@ -30,7 +32,7 @@
     requestAnimationFrame(raf);
   }
 
-  /* ── Маска телефона +7 (999) 999 9999 ───────────────────── */
+
 
   const initPhoneMask = () => {
     const inputs = document.querySelectorAll('input[type="tel"]');
@@ -91,7 +93,7 @@
 
   initPhoneMask();
 
-  /* ── Плавающие лейблы полей ─────────────────────────────── */
+
 
   const syncFieldFilled = (input) => {
     const field = input.closest(".field");
@@ -107,18 +109,17 @@
     sync();
   });
 
-  // автозаполнение браузера приходит с задержкой
+
   window.setTimeout(() => {
     document.querySelectorAll(".field input").forEach(syncFieldFilled);
   }, 300);
 
-  /* ── Hero направлений: картинка появляется целиком ──────── */
+
 
   document.querySelectorAll(".hero-dir__img").forEach((img) => {
     const show = () => img.classList.add("is-loaded");
 
-    // decode() ждёт не загрузку, а готовность к отрисовке: только
-    // после неё картинка выводится разом, а не построчно
+
     if (img.complete && img.naturalWidth) {
       if (img.decode) img.decode().then(show).catch(show);
       else show();
@@ -132,16 +133,13 @@
     img.addEventListener("error", show);
   });
 
-  /* ── Hero: вступительный вид → рабочий ──────────────────── */
 
-  /* Состоянием управляет класс has-hero-intro на <html>: он стоит
-     прямо в разметке, поэтому шапка и заголовок не успевают
-     мигнуть до того, как отработает скрипт.                  */
 
-  /* ── Сколько держится заставка, мс ─────────────────────────
-     Главная и направления настраиваются независимо.          */
-  const INTRO_MAIN_MS = 1500;   // главная — с большой картинкой
-  const INTRO_DIR_MS  = 1000;   // страницы направлений
+
+
+
+  const INTRO_MAIN_MS = 1500;
+  const INTRO_DIR_MS  = 1000;
 
   const root = document.documentElement;
   if (root.classList.contains("has-hero-intro")) {
@@ -150,31 +148,35 @@
 
     const drop = () => root.classList.remove("has-hero-intro");
 
-    // на мобильной вступительный вид пропускаем совсем
+
     if (prefersReduced || mq("(max-width: 767px)").matches) drop();
     else window.setTimeout(drop, hold);
   }
 
-  /* ── Шапка: прозрачная над hero, светлая ниже ───────────── */
+
 
   const header = document.querySelector("[data-header]");
   if (header) {
-    // пока hero на экране, шапка остаётся прозрачной поверх него
+
     const hero = document.querySelector("[data-hero-scroll], .hero, .hero-dir");
 
-    // на тёмных страницах (контакты) шапка прозрачная всегда
+
     const alwaysLight = header.hasAttribute("data-header-transparent");
+    const scrollSolid = header.hasAttribute("data-header-scroll");
 
     const setState = () => {
       let solid;
 
       if (alwaysLight) {
         solid = false;
+      } else if (scrollSolid) {
+        const y = lenis ? lenis.scroll : window.scrollY;
+        solid = y > 24;
       } else if (hero) {
         const bottom = hero.getBoundingClientRect().bottom;
         solid = bottom <= header.offsetHeight;
       } else {
-        // на страницах без hero фон светлый — шапка сразу непрозрачная
+
         solid = true;
       }
 
@@ -194,7 +196,7 @@
     window.addEventListener("resize", requestHeader);
   }
 
-  /* ── Новости: «Показать еще» ────────────────────────────── */
+
 
   const newsMore = document.querySelector("[data-news-more]");
   const newsList = document.querySelector("[data-news-list]");
@@ -216,25 +218,24 @@
     });
   }
 
-  /* ── Hero «О компании»: 4 положения по скроллу ──────────── */
+
 
   const heroTrack = document.querySelector("[data-hero-scroll]");
   if (heroTrack && !prefersReduced) {
-    const STOPS = 4;                     // 1: заголовок, 2: второй заголовок,
-    const LAST = STOPS - 1;              // 3: первый абзац, 4: второй абзац
-    const TAIL_VH = 0.25;                 // хвост после 4-го положения,
-                                         // дублирует --hero-tail в CSS
+    const STOPS = 4;
+    const LAST = STOPS - 1;
+    const TAIL_VH = 0.25;
+
 
     const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
     const part = (p, from, to) => clamp01((p - from) / (to - from));
 
     const paras = [...heroTrack.querySelectorAll(".hero-about__para")];
 
-    // наклон картинки в каждом из четырёх положений, градусы.
-    // Минус — правый угол поднимается вверх (против часовой).
+
     const ANGLES = [0, -5.49, -8.09, -10.36];
 
-    // угол между соседними положениями — линейно
+
     const angleAt = (p) => {
       const scaled = clamp01(p) * LAST;
       const i = Math.min(Math.floor(scaled), LAST - 1);
@@ -242,7 +243,7 @@
       return ANGLES[i] + (ANGLES[i + 1] - ANGLES[i]) * t;
     };
 
-    // натуральные высоты абзацев — для схлопывания без «прыжков»
+
     const measure = () => {
       paras.forEach((el, i) => {
         el.style.height = "auto";
@@ -254,8 +255,7 @@
     const metrics = () => {
       const pinned = heroTrack.firstElementChild.offsetHeight;
       const tail = window.innerHeight * TAIL_VH;
-      // прогресс добирает 1 до хвоста: последний экран блок
-      // просто стоит на месте, давая дочитать текст
+
       const distance = heroTrack.offsetHeight - pinned - tail;
       const start = heroTrack.getBoundingClientRect().top + window.scrollY;
       return { distance, start };
@@ -292,10 +292,10 @@
     update();
   }
 
-  /* ── Структура посевов: переключение по годам ───────────── */
+
 
   document.querySelectorAll("[data-years]").forEach((box) => {
-    // TODO: цифры 2022–2024 условные, ждём данные от клиента
+
     const DATA = {
       2022: { wheat: "6 120 (46%)", flax: "2 410 (18%)", lentil: "3 980 (30%)",
               sunflower: "—", forage: "420 (3%)", fallow: "380 (3%)", total: "13 310 га" },
@@ -324,16 +324,13 @@
     if (active) show(active.dataset.year);
   });
 
-  /* ── Графики: кривая разгибается из прямой ──────────────── */
+
 
   document.querySelectorAll(".chart-card, .chart-wide").forEach((chart) => {
     const paths = [...chart.querySelectorAll(".chart-line__stroke, .chart-line__fill")];
     const dots = [...chart.querySelectorAll(".chart-card__dot, .chart-dot, .chart-wide__dot")];
 
-    /* Разбираем «d» на команды с аргументами. Морфинг возможен
-       только между путями одинаковой структуры, поэтому вместо
-       готовых библиотек считаем плоский вариант из самого пути:
-       все вертикальные координаты садим на нижнюю линию.      */
+
     const ARGS = { M: [0, 1], L: [0, 1], C: [0, 1, 0, 1, 0, 1], V: [1], H: [0], Z: [] };
 
     const parse = (d) => {
@@ -351,7 +348,7 @@
     const serialize = (cmds) =>
       cmds.map((c) => c.cmd + c.args.map((n) => Math.round(n * 100) / 100).join(" ")).join("");
 
-    /* нижняя линия — по высоте viewBox, минус пиксель на обводку */
+
     const svg = chart.querySelector("svg");
     const box = svg ? svg.getAttribute("viewBox").split(/\s+/) : null;
     const baseline = box ? parseFloat(box[3]) - 1 : 0;
@@ -361,7 +358,7 @@
         const real = parse(el.getAttribute("d") || "");
         if (!real.length || real.some((c) => ARGS[c.cmd] === undefined)) return null;
 
-        // плоская копия: та же структура команд, но по вертикали ровно
+
         const flat = real.map((c) => ({
           cmd: c.cmd,
           args: c.args.map((n, i) => (ARGS[c.cmd][i % ARGS[c.cmd].length] ? baseline : n)),
@@ -395,7 +392,7 @@
       const started = performance.now();
       const tick = (now) => {
         const p = Math.min(1, (now - started) / DURATION);
-        // тот же характер, что у --ease-out: быстрый старт, мягкий выход
+
         draw(1 - Math.pow(1 - p, 3));
         if (p < 1) requestAnimationFrame(tick);
       };
@@ -417,135 +414,70 @@
     io.observe(chart);
   });
 
-  /* ── Галерея: центральный кадр крупнее, листание стрелками ─ */
 
-  document.querySelectorAll("[data-gallery]").forEach((row) => {
-    const track = row.querySelector("[data-gallery-track]");
-    const items = track ? [...track.querySelectorAll("img")] : [];
-    if (!items.length) return;
 
-    const root = row.closest(".gallery") || row.parentElement;
-    const prev = root.querySelector("[data-gallery-prev]");
-    const next = root.querySelector("[data-gallery-next]");
+  if (typeof Swiper !== "undefined") {
+    document.querySelectorAll("[data-gallery]").forEach((el) => {
+      const root = el.closest(".gallery") || el.parentElement;
+      const prev = root.querySelector("[data-gallery-prev]");
+      const next = root.querySelector("[data-gallery-next]");
+      const count = el.querySelectorAll(".swiper-slide").length;
+      const start = count > 2 ? 2 : 0;
 
-    let index = items.findIndex((el) => el.classList.contains("is-active"));
-    if (index < 0) index = Math.floor(items.length / 2);
+      const swiper = new Swiper(el, {
+        slidesPerView: "auto",
+        centeredSlides: true,
+        spaceBetween: 12,
+        speed: 520,
+        initialSlide: start,
+        grabCursor: true,
+        slideToClickedSlide: true,
+        watchSlidesProgress: true,
+        resistanceRatio: 0.7,
+        longSwipesRatio: 0.2,
+        threshold: 8,
+        navigation: prev && next ? { prevEl: prev, nextEl: next } : undefined,
+        on: {
+          resize(s) { s.update(); },
+          touchStart() { if (lenis) lenis.stop(); },
+          touchEnd() { if (lenis) lenis.start(); },
+        },
+      });
 
-    /* Размеры замеряем один раз в покое и кешируем: во время анимации
-       ширина кадра промежуточная, и замер по ней уводит центр. Из CSS
-       переменные читать нельзя — calc() в них браузер не вычисляет.   */
-    let side = 0;
-    let active = 0;
-    let gap = 0;
-
-    const measure = () => {
-      gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      const idle = items.find((el) => !el.classList.contains("is-active"));
-      side = idle ? idle.getBoundingClientRect().width : 0;
-      active = items[index].getBoundingClientRect().width;
-    };
-
-    /* Позиция считается формулой, а не по offsetLeft: все кадры левее
-       активного идут в боковом размере, значит центр активного известен
-       заранее — ещё до того, как анимация размера началась.            */
-    const place = () => {
-      const centre = index * (side + gap) + active / 2;
-      track.style.setProperty("--g-shift", (row.clientWidth / 2 - centre) + "px");
-    };
-
-    const show = (i) => {
-      index = Math.max(0, Math.min(items.length - 1, i));
-      items.forEach((el, n) => el.classList.toggle("is-active", n === index));
-      place();
-    };
-
-    prev?.addEventListener("click", () => show(index - 1));
-    next?.addEventListener("click", () => show(index + 1));
-
-    /* Свайп / перетаскивание: лента едет за пальцем, по порогу
-       переключает кадр, иначе возвращается. Вертикаль отдаём
-       странице — иначе нельзя проскроллить, начав жест на фото. */
-    let dragging = false;
-    let locked = "";
-    let startX = 0;
-    let startY = 0;
-    let dragX = 0;
-    let swiped = false;
-
-    // клик по боковому кадру тоже делает его центральным
-    items.forEach((el, n) => el.addEventListener("click", (e) => {
-      if (swiped) { e.preventDefault(); e.stopPropagation(); return; }
-      show(n);
-    }));
-
-    const setDrag = (x) => row.style.setProperty("--g-drag", x + "px");
-
-    const finish = () => {
-      if (!dragging) return;
-      dragging = false;
-      locked = "";
-      row.classList.remove("is-swiping");
-      const threshold = Math.min(80, row.clientWidth * 0.18);
-      swiped = Math.abs(dragX) > 8;
-      const nextIndex = dragX < -threshold ? index + 1
-        : dragX > threshold ? index - 1
-        : index;
-      setDrag(0);
-      show(nextIndex);
-      window.setTimeout(() => { swiped = false; }, 0);
-    };
-
-    row.addEventListener("pointerdown", (e) => {
-      if (e.button !== 0) return;
-      dragging = true;
-      locked = "";
-      startX = e.clientX;
-      startY = e.clientY;
-      dragX = 0;
+      window.addEventListener("load", () => swiper.update());
     });
 
-    row.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      if (!locked) {
-        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-        locked = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-        if (locked !== "x") return;
-        row.classList.add("is-swiping");
-        row.setPointerCapture(e.pointerId);
-      }
-      if (locked !== "x") return;
-      dragX = dx;
-      setDrag(dx);
+    document.querySelectorAll("[data-team]").forEach((el) => {
+      const cards = [...el.querySelectorAll(".team-card")];
+
+      const paint = () => {
+        const box = el.getBoundingClientRect();
+        cards.forEach((card) => {
+          const r = card.getBoundingClientRect();
+          const seen = Math.min(r.right, box.right) - Math.max(r.left, box.left);
+          const ratio = r.width ? Math.max(0, Math.min(1, seen / r.width)) : 1;
+          card.style.setProperty("--card-in", ratio.toFixed(3));
+        });
+      };
+
+      new Swiper(el, {
+        slidesPerView: "auto",
+        grabCursor: true,
+        speed: 500,
+        breakpoints: {
+          0: { spaceBetween: 12, centeredSlides: true },
+          768: { spaceBetween: 32, centeredSlides: false },
+        },
+        on: {
+          init: paint,
+          setTranslate: paint,
+          resize: paint,
+        },
+      });
     });
+  }
 
-    row.addEventListener("pointerup", finish);
-    row.addEventListener("pointercancel", finish);
 
-    measure();
-    place();
-
-    window.addEventListener("resize", () => { measure(); place(); });
-    // шрифты и --wm пересчитываются после первой отрисовки — перемеряем
-    window.addEventListener("load", () => { measure(); place(); });
-  });
-
-  /* ── Текущая страница подсвечена в футере ───────────────── */
-
-  (() => {
-    /* Сравниваем по разобранному пути, а не по строке href: во
-       вложенных папках ссылки идут через ../ и не совпадут.   */
-    const here = location.pathname.replace(/\/$/, "/index.html");
-
-    document.querySelectorAll(".footer__link").forEach((link) => {
-      const href = link.getAttribute("href") || "";
-      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
-      if (new URL(href, location.href).pathname === here) link.classList.add("is-current");
-    });
-  })();
-
-  /* ── Слайдшоу в hero: кросс-фейд по кругу ────────────────── */
 
   document.querySelectorAll("[data-hero-slides]").forEach((box) => {
     const slides = [...box.querySelectorAll(".hero__slide")];
@@ -565,8 +497,6 @@
       });
     };
 
-    /* таймер перезапускаем от каждого переключения — после клика
-       по полоске следующий кадр ждёт полный интервал, а не остаток */
     const play = () => {
       window.clearInterval(timer);
       if (prefersReduced) return;
@@ -575,7 +505,6 @@
 
     dots.forEach((dot, n) => dot.addEventListener("click", () => { show(n); play(); }));
 
-    // вкладку свернули — таймер не мотает кадры вхолостую
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) window.clearInterval(timer);
       else play();
@@ -585,7 +514,24 @@
     play();
   });
 
-  /* ── Партнёры: бегущая строка из двух одинаковых наборов ── */
+
+
+
+
+
+
+  (() => {
+
+    const here = location.pathname.replace(/\/$/, "/index.html");
+
+    document.querySelectorAll(".footer__link").forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+      if (new URL(href, location.href).pathname === here) link.classList.add("is-current");
+    });
+  })();
+
+
 
   document.querySelectorAll(".partners__row").forEach((row) => {
     const items = [...row.children].filter((el) => el.classList.contains("partners__item"));
@@ -611,38 +557,7 @@
     });
   });
 
-  /* ── Команда: карточка проявляется, входя в кадр ленты ── */
 
-  document.querySelectorAll(".team__row").forEach((row) => {
-    const cards = [...row.children];
-    if (!cards.length) return;
-
-    let raf = 0;
-
-    /* Доля карточки, попавшая в видимую часть ленты: 1 — целиком внутри,
-       0 — целиком за краем. Считаем на каждом кадре скролла, поэтому
-       переход получается непрерывным, без ступенек и без transition. */
-    const paint = () => {
-      raf = 0;
-      const box = row.getBoundingClientRect();
-
-      cards.forEach((card) => {
-        const r = card.getBoundingClientRect();
-        const seen = Math.min(r.right, box.right) - Math.max(r.left, box.left);
-        const ratio = r.width ? Math.max(0, Math.min(1, seen / r.width)) : 1;
-        card.style.setProperty("--card-in", ratio.toFixed(3));
-      });
-    };
-
-    const schedule = () => { if (!raf) raf = requestAnimationFrame(paint); };
-
-    row.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    window.addEventListener("load", schedule);
-    paint();
-  });
-
-  /* ── Горизонтальные ленты: тянем мышью ──────────────────── */
 
   document.querySelectorAll("[data-drag-scroll]").forEach((row) => {
     let startX = 0;
@@ -650,7 +565,7 @@
     let dragging = false;
 
     row.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "touch") return;   // тач листает сам
+      if (e.pointerType === "touch") return;
       dragging = true;
       startX = e.clientX;
       startLeft = row.scrollLeft;
@@ -678,7 +593,7 @@
     row.addEventListener("pointerleave", stop);
   });
 
-  /* ── Переключатель карты ────────────────────────────────── */
+
 
   document.querySelectorAll("[data-switch]").forEach((box) => {
     const buttons = [...box.querySelectorAll("button")];
@@ -693,10 +608,7 @@
     buttons.forEach((b, i) => b.addEventListener("click", () => set(i)));
   });
 
-  /* ── Глобус в блоке поставок (globe.gl) ───────────────────
-     Вид настраивается: текстура Земли, цвет атмосферы, дуги
-     экспорта, точки присутствия. Библиотека
-     подгружается только если на странице есть [data-globe]. */
+
 
   (() => {
     const el = document.querySelector("[data-globe]");
@@ -830,7 +742,7 @@
     }
   })();
 
-  /* ── Мобильное меню ─────────────────────────────────────── */
+
 
   const burger = document.querySelector("[data-menu-toggle]");
   const nav = document.querySelector("[data-nav]");
@@ -851,7 +763,7 @@
     );
   }
 
-  /* ── Выпадающие пункты меню ─────────────────────────────── */
+
 
   document.querySelectorAll("[data-nav-drop]").forEach((item) => {
     const btn = item.querySelector("[aria-haspopup]");
@@ -863,17 +775,13 @@
     };
 
     btn.addEventListener("click", (e) => {
-      // на десктопе список открывает наведение, клик по ссылке ведёт дальше
+
       if (mq("(hover: hover)").matches && btn.tagName === "A") return;
       e.preventDefault();
       set(!item.classList.contains("is-open"));
     });
 
-    /* На тач-экране касание сначала даёт фокус и наведение —
-       список открывается, — а следом приходит click и тут же
-       его закрывает: пункт приходилось жать дважды. Оба этих
-       способа вешаем только там, где есть настоящий указатель;
-       на телефоне список открывает само касание.             */
+
     if (mq("(hover: hover)").matches) {
       item.addEventListener("mouseenter", () => set(true));
       item.addEventListener("mouseleave", () => set(false));
@@ -887,7 +795,7 @@
     });
   });
 
-  /* ── Аккордеон (FAQ) ────────────────────────────────────── */
+
 
   document.querySelectorAll("[data-accordion]").forEach((list) => {
     const items = [...list.querySelectorAll(".faq-item")];
@@ -907,7 +815,7 @@
     });
   });
 
-  /* ── Кастомный select ───────────────────────────────────── */
+
 
   document.querySelectorAll("[data-select]").forEach((select) => {
     const toggle = select.querySelector(".select__toggle");
@@ -944,7 +852,7 @@
     });
   });
 
-  /* ── Блокировка скролла ─────────────────────────────────── */
+
 
   const scrollLock = { x: 0, y: 0, count: 0 };
 
@@ -964,7 +872,7 @@
     window.scrollTo(scrollLock.x, scrollLock.y);
   };
 
-  /* ── Fancybox: просмотр лицензий ────────────────────────── */
+
 
   (() => {
     const Fancybox = window.Fancybox;
@@ -980,7 +888,7 @@
     });
   })();
 
-  /* ── Модальные окна (<dialog>) ──────────────────────────── */
+
 
   const modalAnimMs = prefersReduced ? 0 : 280;
 
@@ -1063,7 +971,7 @@
     });
   });
 
-  /* ── Якорные ссылки с учётом высоты шапки ───────────────── */
+
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -1082,7 +990,7 @@
     });
   });
 
-  /* ── Появление секций при скролле ───────────────────────── */
+
 
   const revealUnique = [
     ...new Set(
@@ -1121,7 +1029,7 @@
 
     revealUnique.forEach((el) => io.observe(el));
 
-    // страховка: если что-то не попало в наблюдателя
+
     window.setTimeout(() => revealUnique.forEach((el) => showReveal(el)), 2500);
   }
 })();
