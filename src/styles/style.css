@@ -876,6 +876,15 @@
   pointer-events: none;
   transform: translate(-50%, -120%);
 }
+/* подписи областей — мельче и по центру пятна, чтобы не закрывать карту */
+.geo__label--sm {
+  padding: calc(2 * var(--wm)) calc(6 * var(--wm));
+  border-radius: calc(4 * var(--wm));
+  background: var(--color-white-70);
+  font-size: calc(10 * var(--wm));
+  font-weight: var(--weight-regular);
+  transform: translate(-50%, -50%);
+}
 
 .geo__switch {
   position: absolute;

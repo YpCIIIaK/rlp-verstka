@@ -681,6 +681,9 @@
     // Турция, Центральная Азия, из Европы только Франция, Германия, Польша,
     // Испания, Италия, Румыния и Великобритания; склеено и упрощено, 181 КБ.
     const REGIONS_SRC = "assets/geo/regions.js";
+    // Контуры четырёх областей Казахстана, которые подсвечиваем в режиме
+    // «География присутствия»; названия и оттенки лежат там же.
+    const AREAS_SRC = "assets/geo/kz-areas.js";
 
     const ORIGIN = { lat: 51.1694, lng: 71.4278, name: "Казахстан" };
     const MARKETS = [
@@ -728,10 +731,10 @@
       document.head.appendChild(s);
     });
 
-    const loadRegions = () => new Promise((resolve, reject) => {
-      if (window.RLP_REGIONS) { resolve(); return; }
+    const loadGeo = (src, flag) => new Promise((resolve, reject) => {
+      if (window[flag]) { resolve(); return; }
       const s = document.createElement("script");
-      s.src = REGIONS_SRC;
+      s.src = src;
       s.async = true;
       s.onload = resolve;
       s.onerror = reject;
@@ -757,13 +760,31 @@
       // разметки с диска, где fetch к локальному файлу режет CORS
       let regions = [];
       try {
-        await loadRegions();
+        await loadGeo(REGIONS_SRC, "RLP_REGIONS");
         regions = window.RLP_REGIONS || [];
       } catch { regions = []; }
 
+      let areas = [];
+      try {
+        await loadGeo(AREAS_SRC, "RLP_KZ_AREAS");
+        areas = window.RLP_KZ_AREAS || [];
+      } catch { areas = []; }
+
+      /* Области отдаём тем же слоем полигонов, что и страны: помечаем
+         своим свойством, по нему потом берём цвет и высоту. */
+      const areaPolys = areas.map((a) => ({
+        type: "Feature",
+        properties: { RLP_AREA: a.name, RLP_COLOR: a.color },
+        geometry: {
+          type: "MultiPolygon",
+          coordinates: a.rings.map((r) => [r.map((p) => [p[1], p[0]])])
+        }
+      }));
+      const AREA_PLACES = areas.map((a) => ({ lat: a.lat, lng: a.lng, name: a.name, small: true }));
+
       const makeLabel = (d) => {
         const node = document.createElement("div");
-        node.className = "geo__label";
+        node.className = d.small ? "geo__label geo__label--sm" : "geo__label";
         node.textContent = d.name;
         return node;
       };
@@ -784,6 +805,7 @@
       };
 
       const capColor = (feat) => {
+        if (feat.properties?.RLP_COLOR) return feat.properties.RLP_COLOR;
         const iso = isoOf(feat);
         if (iso === "KZ") return GREEN;
         if (PARTNER_ISO.has(iso)) return "rgba(94, 191, 102, 0.38)";
@@ -801,11 +823,10 @@
         .showAtmosphere(false)
         .showGraticules(false)
         .enablePointerInteraction(false)
-        .polygonsData(countries)
         .polygonCapColor(capColor)
         .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor(() => "#6f6f6f")
-        .polygonAltitude(0.001)
+        .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.005 : 0.001))
         .polygonCapCurvatureResolution(2)
         .polygonsTransitionDuration(0)
         .pathsData(regions)
@@ -867,9 +888,12 @@
       const apply = (index) => {
         const exportMode = index !== 1;
         globe
+          // в режиме географии поверх страны кладём подсвеченные области,
+          // а подпись «Казахстан» уступает место их названиям
+          .polygonsData(exportMode ? countries : countries.concat(areaPolys))
           .arcsData(exportMode ? ARCS : [])
-          .pointsData(exportMode ? PLACES : [ORIGIN])
-          .htmlElementsData(exportMode ? PLACES : [ORIGIN]);
+          .pointsData(exportMode ? PLACES : [])
+          .htmlElementsData(exportMode ? PLACES : AREA_PLACES);
         look(index);
       };
 
