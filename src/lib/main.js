@@ -424,10 +424,24 @@
       const count = el.querySelectorAll(".swiper-slide").length;
       const start = count > 2 ? 2 : 0;
 
+      const unit = () => {
+        const probe = document.createElement("div");
+        probe.style.cssText = "position:absolute;visibility:hidden;width:calc(1 * var(--wm))";
+        document.body.append(probe);
+        const px = probe.getBoundingClientRect().width || 1;
+        probe.remove();
+        return px;
+      };
+      const space = () => {
+        const mobile = window.matchMedia("(max-width: 767px)").matches;
+        const inset = mobile ? 20 : 130;
+        return (12 - inset) * unit();
+      };
+
       const swiper = new Swiper(el, {
         slidesPerView: "auto",
         centeredSlides: true,
-        spaceBetween: 12,
+        spaceBetween: space(),
         speed: 520,
         initialSlide: start,
         grabCursor: true,
@@ -438,7 +452,10 @@
         threshold: 8,
         navigation: prev && next ? { prevEl: prev, nextEl: next } : undefined,
         on: {
-          resize(s) { s.update(); },
+          resize(s) {
+            s.params.spaceBetween = space();
+            s.update();
+          },
           touchStart() { if (lenis) lenis.stop(); },
           touchEnd() { if (lenis) lenis.start(); },
         },

@@ -2413,7 +2413,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(380 * var(--wm));
+  width: calc(640 * var(--wm));
   height: calc(420 * var(--wm));
   overflow: visible;
   z-index: 1;
@@ -2423,6 +2423,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .gallery .swiper-slide-active { z-index: 3; }
 .gallery .swiper-slide img {
   flex: none;
+  max-width: none;
   width: calc(380 * var(--wm));
   height: calc(380 * var(--wm));
   border-radius: calc(20 * var(--wm));
@@ -2433,6 +2434,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
               opacity var(--g-time) var(--g-ease);
 }
 .gallery .swiper-slide-active img {
+  max-width: none;
   width: calc(640 * var(--wm));
   height: calc(420 * var(--wm));
   opacity: 1;
@@ -2561,7 +2563,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .crops-table__years { flex-wrap: wrap; }
   .crops-table__photo { height: calc(220 * var(--wm)); }
   .gallery__row { height: calc(300 * var(--wm)); }
-  .gallery .swiper-slide { width: calc(260 * var(--wm)); height: calc(300 * var(--wm)); }
-  .gallery .swiper-slide img { width: calc(260 * var(--wm)); height: calc(260 * var(--wm)); }
-  .gallery .swiper-slide-active img { width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
+  .gallery .swiper-slide { width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
+  .gallery .swiper-slide img { max-width: none; width: calc(260 * var(--wm)); height: calc(260 * var(--wm)); }
+  .gallery .swiper-slide-active img { max-width: none; width: calc(300 * var(--wm)); height: calc(300 * var(--wm)); }
 }
