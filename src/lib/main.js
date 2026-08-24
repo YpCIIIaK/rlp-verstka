@@ -653,7 +653,7 @@
       lng: (ORIGIN.lng + MARKETS.reduce((s, m) => s + m.lng, 0)) / PLACES.length,
       altitude: 2.15
     };
-    const VIEW_KZ = { lat: 51.1694, lng: 71.4278, altitude: 1.15 };
+    const VIEW_KZ = { lat: 51.1694, lng: 71.4278, altitude: 0.62 };
     const GREEN = "#5ebf66";
     const ORANGE = "#e1a623";
     const PARTNER_ISO = new Set(["CN", "IR", "TR", "UZ", "KG", "TJ", "TM", "DE", "FR", "IT", "PL", "ES", "NL", "GB", "AT", "BE", "CZ", "RO"]);
@@ -686,7 +686,10 @@
       let countries = [];
       try {
         const geo = await fetch(GEO_SRC).then((r) => r.json());
-        countries = (geo.features || []).filter((d) => d.properties?.ISO_A2 !== "AQ");
+        countries = (geo.features || []).filter((d) => {
+          const iso = d.properties?.ISO_A2;
+          return iso && iso !== "AQ" && iso !== "-99";
+        });
       } catch {
         countries = [];
       }
@@ -710,46 +713,65 @@
       const globe = new window.Globe(el, {
         animateIn: false,
         waitForGlobeReady: true,
-        rendererConfig: { antialias: true, alpha: true, powerPreference: "high-performance" }
+        rendererConfig: { antialias: false, alpha: false, powerPreference: "high-performance" }
       })
         .globeImageUrl(oceanTex())
         .bumpImageUrl(null)
         .backgroundColor("#ffffff")
         .showAtmosphere(false)
         .showGraticules(false)
+        .enablePointerInteraction(false)
         .polygonsData(countries)
         .polygonCapColor(capColor)
-        .polygonSideColor(() => "rgba(180, 180, 180, 0.25)")
+        .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor(() => "#6f6f6f")
-        .polygonAltitude(0.01)
-        .polygonCapCurvatureResolution(5)
+        .polygonAltitude(0.006)
+        .polygonCapCurvatureResolution(2)
         .polygonsTransitionDuration(0)
         .arcColor(() => [GREEN, ORANGE])
         .arcStroke(0.55)
-        .arcDashLength(0.4)
-        .arcDashGap(0.18)
-        .arcDashAnimateTime(prefersReduced ? 0 : 2800)
+        .arcDashLength(1)
+        .arcDashGap(0)
+        .arcDashAnimateTime(0)
         .arcAltitudeAutoScale(0.35)
-        .arcLabel("name")
+        .arcsTransitionDuration(0)
         .pointColor((d) => (d.name === ORIGIN.name ? GREEN : ORANGE))
-        .pointAltitude(0.02)
-        .pointRadius(0.38)
-        .pointLabel("name")
+        .pointAltitude(0.015)
+        .pointRadius(0.32)
+        .pointsTransitionDuration(0)
         .htmlLat("lat")
         .htmlLng("lng")
         .htmlAltitude(0.02)
+        .htmlTransitionDuration(0)
         .htmlElement(makeLabel)
-        .ringColor(() => GREEN)
-        .ringMaxRadius(2.2)
-        .ringPropagationSpeed(1.6)
-        .ringRepeatPeriod(prefersReduced ? 0 : 1800);
+        .htmlElementVisibilityModifier((node, on) => {
+          node.style.opacity = on ? "1" : "0";
+        });
 
       const renderer = globe.renderer?.();
-      if (renderer?.setPixelRatio) renderer.setPixelRatio(Math.min(1.25, window.devicePixelRatio || 1));
+      if (renderer?.setPixelRatio) renderer.setPixelRatio(1);
+
+      const controls = globe.controls();
+      controls.autoRotate = false;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.enableRotate = true;
+      controls.enableDamping = false;
+      controls.rotateSpeed = 0.55;
+
+      let visible = true;
+      let idle = 0;
+      const wake = (ms = 800) => {
+        if (!visible || document.hidden) return;
+        globe.resumeAnimation();
+        window.clearTimeout(idle);
+        idle = window.setTimeout(() => globe.pauseAnimation(), ms);
+      };
 
       const look = (index) => {
         const view = index === 1 ? VIEW_KZ : VIEW_EXPORT;
-        globe.pointOfView(view, prefersReduced ? 0 : 1100);
+        globe.pointOfView(view, prefersReduced ? 0 : 900);
+        wake(1000);
       };
 
       const apply = (index) => {
@@ -757,8 +779,7 @@
         globe
           .arcsData(exportMode ? ARCS : [])
           .pointsData(exportMode ? PLACES : [ORIGIN])
-          .htmlElementsData(exportMode ? PLACES : [ORIGIN])
-          .ringsData([ORIGIN]);
+          .htmlElementsData(exportMode ? PLACES : [ORIGIN]);
         look(index);
       };
 
@@ -768,24 +789,29 @@
       const size = () => globe.width(el.clientWidth).height(el.clientHeight);
       size();
 
-      const controls = globe.controls();
-      controls.autoRotate = false;
-      controls.enableZoom = false;
-      controls.enablePan = false;
-      controls.enableRotate = true;
-      controls.rotateSpeed = 0.55;
+      globe.onGlobeReady(() => {
+        map?.classList.add("is-globe");
+        wake(1200);
+      });
 
-      globe.onGlobeReady(() => map?.classList.add("is-globe"));
+      el.addEventListener("pointerdown", () => wake(4000));
+      controls.addEventListener("start", () => wake(4000));
+      controls.addEventListener("end", () => wake(600));
+      window.addEventListener("resize", () => { size(); wake(800); });
 
-      window.addEventListener("resize", size);
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) globe.pauseAnimation();
+        else if (visible) wake(800);
+      });
 
       if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver((entries) => {
           entries.forEach((en) => {
-            if (en.isIntersecting) globe.resumeAnimation();
+            visible = en.isIntersecting;
+            if (visible) wake(800);
             else globe.pauseAnimation();
           });
-        }, { threshold: 0.05 });
+        }, { threshold: 0.08 });
         io.observe(map || el);
       }
     };
