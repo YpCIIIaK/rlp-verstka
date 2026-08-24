@@ -1186,8 +1186,8 @@
   mask-image: linear-gradient(
     90deg,
     transparent 0,
-    #000 calc(32 * var(--wm)),
-    #000 calc(100% - 32 * var(--wm)),
+    #000 calc(80 * var(--wm)),
+    #000 calc(100% - 80 * var(--wm)),
     transparent
   );
 }
@@ -1209,7 +1209,7 @@
   padding-inline-end: calc(12 * var(--wm));
 }
 @keyframes partners-marquee {
-  to { transform: translateX(-50%); }
+  to { transform: translateX(var(--marquee-shift, -50%)); }
 }
 @media (prefers-reduced-motion: reduce) {
   .partners__track { animation: none; }
@@ -1217,7 +1217,6 @@
 
 
 .partners__item {
-  opacity: calc(0.5 + 0.5 * var(--card-in, 1));
   display: grid;
   place-items: center;
   flex: none;
@@ -1986,23 +1985,22 @@ a.contacts__item:hover { background: var(--color-white-15); }
   bottom: 0;
   width: 100%;
   height: calc(243 * var(--wm));
+  --plot-x: calc(35 * var(--wm));
+  --plot-w: calc(100% - 70 * var(--wm));
 }
-
-
-.chart-card__plot { --plot-x: calc(10 * var(--wm)); }
 
 .chart-card__line {
   position: absolute;
   left: var(--plot-x);
   top: 0;
-  width: calc(553 * var(--wm));
+  width: var(--plot-w);
   height: calc(205 * var(--wm));
 }
 
 
 .chart-card__dot,
 .chart-dot {
-  translate: calc(var(--plot-x) - 39 * var(--wm)) 0;
+  translate: -50% 0;
 }
 
 .chart-card__axis {
@@ -2015,23 +2013,23 @@ a.contacts__item:hover { background: var(--color-white-15); }
 
 
 .chart-card__dot { position: absolute; height: calc(43 * var(--wm)); width: auto; }
-.chart-card__dot--a { left: calc(30 * var(--wm));  bottom: calc(143 * var(--wm)); }
-.chart-card__dot--b { left: calc(212 * var(--wm)); bottom: calc(92 * var(--wm)); }
-.chart-card__dot--c { left: calc(391 * var(--wm)); bottom: calc(235 * var(--wm)); }
-.chart-card__dot--d { left: calc(572 * var(--wm)); bottom: calc(179 * var(--wm)); }
+.chart-card__dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w));  bottom: calc(143 * var(--wm)); }
+.chart-card__dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); bottom: calc(92 * var(--wm)); }
+.chart-card__dot--c { left: calc(var(--plot-x) + 0.6486 * var(--plot-w)); bottom: calc(235 * var(--wm)); }
+.chart-card__dot--d { left: calc(var(--plot-x) + 0.9982 * var(--plot-w)); bottom: calc(179 * var(--wm)); }
 
 
 .chart-card__guide { position: absolute; opacity: 1; }
 .chart-card__guide--v {
-  left: calc(226 * var(--wm));
+  left: calc(var(--plot-x) + 0.391 * var(--plot-w));
   bottom: calc(38 * var(--wm));
   width: 1px;
   height: calc(61 * var(--wm));
 }
 .chart-card__guide--h {
-  left: calc(306 * var(--wm));
+  left: calc(var(--plot-x) + 0.535 * var(--plot-w));
   bottom: calc(141 * var(--wm));
-  width: calc(205 * var(--wm));
+  width: calc(0.371 * var(--plot-w));
   height: 1px;
 }
 
@@ -2043,9 +2041,9 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(171 * var(--wm));
 }
 .chart-card--gross .chart-card__guide--h {
-  left: calc(324 * var(--wm));
+  left: calc(var(--plot-x) + 0.568 * var(--plot-w));
   bottom: calc(122 * var(--wm));
-  width: calc(168 * var(--wm));
+  width: calc(0.304 * var(--plot-w));
 }
 
 
@@ -2059,10 +2057,10 @@ a.contacts__item:hover { background: var(--color-white-15); }
   height: calc(43 * var(--wm));
   white-space: nowrap;
 }
-.chart-dot--a { left: calc(20 * var(--wm));  bottom: calc(145 * var(--wm)); }
-.chart-dot--b { left: calc(204 * var(--wm)); bottom: calc(92 * var(--wm)); }
-.chart-dot--c { left: calc(380 * var(--wm)); bottom: calc(198 * var(--wm)); }
-.chart-dot--d { left: calc(562 * var(--wm)); bottom: calc(177 * var(--wm)); }
+.chart-dot--a { left: calc(var(--plot-x) + 0.0018 * var(--plot-w));  bottom: calc(145 * var(--wm)); }
+.chart-dot--b { left: calc(var(--plot-x) + 0.3307 * var(--plot-w)); bottom: calc(92 * var(--wm)); }
+.chart-dot--c { left: calc(var(--plot-x) + 0.6685 * var(--plot-w)); bottom: calc(198 * var(--wm)); }
+.chart-dot--d { left: calc(var(--plot-x) + 0.9982 * var(--plot-w)); bottom: calc(177 * var(--wm)); }
 
 .chart-dot::after {
   content: "";

@@ -542,9 +542,22 @@
     const set = document.createElement("div");
     set.className = "partners__set";
     items.forEach((el) => set.append(el));
-    track.append(set, set.cloneNode(true));
+    track.append(set);
     row.append(track);
     row.removeAttribute("data-drag-scroll");
+
+    const fill = () => {
+      [...track.querySelectorAll(".partners__set")].forEach((el, i) => { if (i) el.remove(); });
+      const base = set.scrollWidth;
+      if (!base) return;
+      const copies = Math.max(2, Math.ceil((row.clientWidth * 2) / base) + 1);
+      for (let i = 1; i < copies; i++) track.append(set.cloneNode(true));
+      track.style.setProperty("--marquee-shift", `-${base}px`);
+    };
+
+    fill();
+    window.addEventListener("load", fill);
+    window.addEventListener("resize", fill);
 
     if (prefersReduced) return;
 
