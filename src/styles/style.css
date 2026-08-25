@@ -741,6 +741,11 @@
   flex: 1;
   padding: calc(24 * var(--wm));
 }
+.feed__text .btn--green {
+  width: 100%;
+  --_bg: #256535;
+}
+.feed__text .btn--green:hover { --_bg: #2e7a40; }
 
 .feed__mix {
   display: flex;
@@ -765,9 +770,9 @@
   border-radius: calc(8 * var(--wm));
 }
 .mix-item--wheat  { flex: 1; background: var(--surface-lime); }
-.mix-item--wheat .stats-value { color: var(--color-green-500); }
-.mix-item--barley { background: var(--surface-sand); color: var(--color-brown); }
-.mix-item--barley .stats-value { color: var(--color-brown); }
+.mix-item--wheat .stats-value { color: #4d8a52; }
+.mix-item--barley { background: #edece4; color: #64533e; }
+.mix-item--barley .stats-value { color: #64533e; }
 
 .feed__photo {
   width: calc(640 * var(--wm));
@@ -799,7 +804,7 @@
   border-right: 1px solid var(--color-black-15);
 }
 .feed__spec:last-child { border-right: none; }
-.feed__spec .stats-value { color: var(--color-green-500); }
+.feed__spec .stats-value { color: #4d8a52; }
 
 .feed__note {
   padding: calc(24 * var(--wm)) calc(10 * var(--wm));
@@ -1267,6 +1272,7 @@
   height: calc(260 * var(--wm));
   padding: calc(24 * var(--wm));
   border-radius: calc(20 * var(--wm));
+  background: var(--surface-card);
   overflow: hidden;
 }
 
@@ -1274,7 +1280,6 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply;
 }
 
 @media (max-width: 767px) {
@@ -1655,6 +1660,24 @@ a.contacts__item:hover { background: var(--color-white-15); }
   line-height: 1.2;
 }
 .lead__field input:focus { outline: none; }
+
+/* Автозаполнение: браузер красит поле своим фоном и цветом текста, причём
+   через внутренний стиль, который обычным background не перебить. Гасим
+   заливку огромной внутренней тенью цвета поля, а текст возвращаем себе.
+   Длинная задержка перехода не даёт подложке моргнуть при подстановке. */
+.lead__field input:-webkit-autofill,
+.lead__field input:-webkit-autofill:hover,
+.lead__field input:-webkit-autofill:focus,
+.lead__field input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-black);
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  box-shadow: 0 0 0 1000px transparent inset;
+  transition: background-color 100000s ease 0s, color 100000s ease 0s;
+  caret-color: var(--color-black);
+}
+.lead__field input:autofill {
+  background: none;
+}
 
 .lead .btn { margin-top: calc(6 * var(--wm)); }
 

@@ -683,7 +683,7 @@
     const REGIONS_SRC = "assets/geo/regions.js";
     // Контуры четырёх областей Казахстана, которые подсвечиваем в режиме
     // «География присутствия»; названия и оттенки лежат там же.
-    const AREAS_SRC = "assets/geo/kz-areas.js";
+    const AREAS_SRC = "assets/geo/kz-areas.js?v=6";
 
     const ORIGIN = { lat: 51.1694, lng: 71.4278, name: "Казахстан" };
     const MARKETS = [
@@ -779,7 +779,7 @@
 
       /* Области отдаём тем же слоем полигонов, что и страны: помечаем
          своим свойством, по нему потом берём цвет и высоту. */
-      const areaPolys = areas.map((a) => ({
+      const areaPolys = areas.filter((a) => Array.isArray(a.shape) && a.shape.length).map((a) => ({
         type: "Feature",
         properties: { RLP_AREA: a.name, RLP_COLOR: a.color },
         geometry: {
@@ -850,10 +850,13 @@
         });
       }
 
+      let presenceMode = false;
       const capColor = (feat) => {
         if (feat.properties?.RLP_COLOR) return feat.properties.RLP_COLOR;
         const iso = isoOf(feat);
-        if (iso === "KZ") return GREEN;
+        // Казахстан всегда зелёный; в «Географии присутствия» тон светлее,
+        // чтобы подсвеченные области не сливались со страной
+        if (iso === "KZ") return presenceMode ? "#b3e0b9" : GREEN;
         if (PARTNER_ISO.has(iso)) return "rgba(94, 191, 102, 0.38)";
         return "#c9c9c9";
       };
@@ -931,15 +934,16 @@
 
       const look = (index) => {
         const view = index === 1 ? VIEW_KZ : VIEW_EXPORT;
+        // сначала resume: иначе pointOfView при pauseAnimation не анимируется
+        wake(prefersReduced ? 400 : 1400);
         globe.pointOfView(view, prefersReduced ? 0 : 900);
-        wake(1000);
       };
 
       const apply = (index) => {
         const exportMode = index !== 1;
+        presenceMode = !exportMode;
         globe
-          // в режиме географии поверх страны кладём подсвеченные области,
-          // а подпись «Казахстан» уступает место их названиям
+          .polygonCapColor(capColor)
           .polygonsData(exportMode ? countries : countries.concat(areaPolys))
           .arcsData(exportMode ? ARCS : [])
           .pointsData(exportMode ? PLACES : [])
@@ -947,15 +951,18 @@
         look(index);
       };
 
-      apply(sw?.classList.contains("is-second") ? 1 : 0);
-      sw?.addEventListener("switch-change", (e) => apply(e.detail.index));
+      let startIndex = sw?.classList.contains("is-second") ? 1 : 0;
+      sw?.addEventListener("switch-change", (e) => {
+        startIndex = e.detail.index;
+        apply(startIndex);
+      });
 
       const size = () => globe.width(el.clientWidth).height(el.clientHeight);
       size();
 
       globe.onGlobeReady(() => {
         map?.classList.add("is-globe");
-        wake(1200);
+        apply(startIndex);
       });
 
       el.addEventListener("pointerdown", () => wake(4000));
