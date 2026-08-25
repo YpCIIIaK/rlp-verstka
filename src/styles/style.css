@@ -405,8 +405,8 @@
   align-items: flex-end;
   gap: calc(8 * var(--wm));
 }
-.stat-card__value .stats-value  { color: var(--color-green-500); }
-.stat-card__value .stats-prefix { color: var(--color-green-500); }
+.stat-card__value .stats-value  { color: var(--color-green-number); }
+.stat-card__value .stats-prefix { color: var(--color-green-number); }
 .stat-card__value .stats-unit   { color: var(--color-black); }
 
 .stat-card .stats-description { color: var(--color-black-50); }
@@ -752,7 +752,7 @@
   border-radius: calc(8 * var(--wm));
 }
 .mix-item--wheat  { flex: 1; background: var(--surface-lime); }
-.mix-item--wheat .stats-value { color: #4d8a52; }
+.mix-item--wheat .stats-value { color: var(--color-green-number); }
 .mix-item--barley { background: #edece4; color: #64533e; }
 .mix-item--barley .stats-value { color: #64533e; }
 
@@ -786,7 +786,7 @@
   border-right: 1px solid var(--color-black-15);
 }
 .feed__spec:last-child { border-right: none; }
-.feed__spec .stats-value { color: #4d8a52; }
+.feed__spec .stats-value { color: var(--color-green-number); }
 
 .feed__note {
   padding: calc(24 * var(--wm)) calc(10 * var(--wm));
@@ -2010,7 +2010,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   align-items: flex-end;
   gap: calc(8 * var(--wm));
 }
-.chart-card__value .stats-value { color: var(--color-green-500); }
+.chart-card__value .stats-value { color: var(--color-green-number); }
 
 
 .chart-card__plot {
@@ -2177,7 +2177,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
   background: var(--surface-lime);
 }
 .crops-table__total > span:first-child { opacity: 0.8; }
-.crops-table__total .card-heading-m { color: var(--color-green-brand); }
+.crops-table__total .card-heading-m { color: var(--color-green-number); }
 
 
 .raw-card {
