@@ -43,7 +43,6 @@ ul, ol { list-style: none; }
 }
 
 
-
 h1, h2, h3, h4, h5, h6 { color: var(--color-heading); }
 
 h1 {
@@ -87,7 +86,6 @@ p { line-height: var(--leading-normal); }
   font-weight: var(--weight-numbers-l);
   line-height: var(--leading-numbers-l);
 }
-
 
 
 .hero-heading {
@@ -196,7 +194,6 @@ p { line-height: var(--leading-normal); }
 }
 
 
-
 .container { width: 100%; padding-inline: var(--container-pad); }
 
 .section { padding-block: calc(var(--space-section) / 2); }
@@ -216,7 +213,6 @@ p { line-height: var(--leading-normal); }
 }
 
 
-
 .text-accent, .u-accent { color: var(--color-accent); }
 
 .visually-hidden {
@@ -233,8 +229,6 @@ p { line-height: var(--leading-normal); }
   .u-br-d { display: none; }
   .u-br-m { display: inline; }
 }
-
-
 
 
 html:not(.is-ready) .hero,
@@ -348,9 +342,7 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 
 
 @media (max-width: 767px) {
-  /* На мобилке ширина модалки считалась как max-content, а .lead внутри
-     задан в процентах — процент брался от той же ширины, коробка выходила
-     шире содержимого, и окно вставало не по центру. Фиксируем ширину. */
+
   .modal {
     width: calc(100vw - 32 * var(--wm));
     max-width: calc(100vw - 32 * var(--wm));

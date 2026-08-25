@@ -1,7 +1,5 @@
 
 
-
-
 .header {
   position: fixed;
   inset-inline: 0;
@@ -50,7 +48,6 @@
 }
 
 
-
 .header__logo {
   position: relative;
   flex: none;
@@ -72,7 +69,6 @@
 
 .header.is-scrolled .header__logo-light { opacity: 0; }
 .header.is-scrolled .header__logo-dark  { opacity: 1; }
-
 
 
 .header__right {
@@ -122,7 +118,6 @@
   transition: transform var(--duration-base) var(--ease-out);
 }
 .nav__item.is-open .nav__chevron { transform: rotate(180deg); }
-
 
 
 .nav__drop {
@@ -176,7 +171,6 @@
 .nav__drop-inner a.is-current { background: var(--color-black-03); }
 
 
-
 .header__lang {
   justify-content: center;
   height: calc(40 * var(--wm));
@@ -200,7 +194,6 @@
   overflow: visible;
   border-radius: 50%;
 }
-
 
 
 .header__burger {

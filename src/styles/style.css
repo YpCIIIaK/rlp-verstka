@@ -1,7 +1,5 @@
 
 
-
-
 .btn {
   --_bg: var(--color-white);
   --_fg: var(--color-black);
@@ -81,7 +79,6 @@
 }
 
 
-
 .page {
   display: flex;
   flex-direction: column;
@@ -122,7 +119,6 @@
 }
 
 
-
 .hero {
   position: relative;
   isolation: isolate;
@@ -135,8 +131,6 @@
   background: var(--gradient-diamond), var(--grad-dark-to);
   overflow: hidden;
 }
-
-
 
 
 .hero::after {
@@ -217,7 +211,6 @@
 .hero__dot.is-active { background: var(--color-white); }
 
 
-
 .hero,
 .hero__panel,
 .hero__content,
@@ -252,7 +245,6 @@
 }
 
 
-
 .has-hero-intro .hero .hero__content {
   width: calc(833 * var(--wm));
   max-width: 100%;
@@ -263,10 +255,6 @@
 .has-hero-intro .hero .hero__dots { transform: none; }
 
 
-/* Заставка идёт по шагам, каждый следующий класс снимается в main.js.
-   Шаг 1: картинка ещё во весь экран, но вокруг уже проступает тёмно-зелёный
-   обод. Шаг 2 (снятие has-hero-intro): картинка сжимается в панель.
-   Шаги 3 и 4: сначала хедер, потом текст с кнопками. */
 .has-hero-intro.hero-intro-frame .hero {
   padding: calc(16 * var(--wm)) calc(16 * var(--wm)) calc(21 * var(--wm));
   transition-duration: var(--duration-intro-frame);
@@ -344,7 +332,6 @@
 }
 
 
-
 .about {
   display: flex;
   flex-direction: column;
@@ -381,7 +368,6 @@
   background: var(--surface-card);
   overflow: hidden;
 }
-
 
 
 .about__cards--wide {
@@ -462,7 +448,6 @@
   }
   .about__cards--wide .stats-description { white-space: normal; }
 }
-
 
 
 .directions {
@@ -597,8 +582,6 @@
 }
 
 
-
-
 .bg-video {
   position: absolute;
   inset: 0;
@@ -704,7 +687,6 @@
     max-height: 100%;
   }
 }
-
 
 
 .feed {
@@ -828,7 +810,6 @@
 }
 
 
-
 .geo {
   display: flex;
   flex-direction: column;
@@ -860,7 +841,7 @@
   z-index: 0;
   width: 100%;
   height: 100%;
-  /* кадр шире контейнера — вписываем целиком, иначе срезает глобус */
+
   object-fit: contain;
   transition: opacity var(--duration-slow) var(--ease-out);
 }
@@ -881,7 +862,7 @@
   pointer-events: none;
   transform: translate(-50%, -120%);
 }
-/* подписи областей — мельче и по центру пятна, чтобы не закрывать карту */
+
 .geo__label--sm {
   padding: calc(2 * var(--wm)) calc(6 * var(--wm));
   border-radius: calc(4 * var(--wm));
@@ -944,7 +925,6 @@
 }
 
 
-
 .licenses {
   display: flex;
   flex-direction: column;
@@ -1000,7 +980,6 @@
 }
 
 
-
 .partner {
   display: flex;
   align-items: center;
@@ -1038,7 +1017,6 @@
   .partner__text { width: 100%; }
   .partner__photo { width: 100%; }
 }
-
 
 
 .news {
@@ -1153,7 +1131,6 @@
 }
 
 
-
 .team {
   display: flex;
   flex-direction: column;
@@ -1215,7 +1192,6 @@
     width: 100%;
   }
 }
-
 
 
 .partners {
@@ -1291,7 +1267,6 @@
 [data-drag-scroll] { cursor: grab; }
 [data-drag-scroll].is-dragging { cursor: grabbing; scroll-snap-type: none; }
 [data-drag-scroll].is-dragging * { pointer-events: none; }
-
 
 
 .hero-about-track {
@@ -1456,7 +1431,6 @@
   .hero-about__titles-track { transform: none; }
   .hero-about__para { height: auto; opacity: 1; margin-top: calc(42 * var(--wm)); }
 }
-
 
 
 .page--contacts {
@@ -1661,10 +1635,7 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 .lead__field input:focus { outline: none; }
 
-/* Автозаполнение: браузер красит поле своим фоном и цветом текста, причём
-   через внутренний стиль, который обычным background не перебить. Гасим
-   заливку огромной внутренней тенью цвета поля, а текст возвращаем себе.
-   Длинная задержка перехода не даёт подложке моргнуть при подстановке. */
+
 .lead__field input:-webkit-autofill,
 .lead__field input:-webkit-autofill:hover,
 .lead__field input:-webkit-autofill:focus,
@@ -1702,9 +1673,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 
 
-
-
-
 .page--inner {
   padding-top: calc(120 * var(--wm));
   padding-bottom: calc(120 * var(--wm));
@@ -1735,7 +1703,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
     padding-bottom: calc(64 * var(--wm));
   }
 }
-
 
 
 .article {
@@ -1822,8 +1789,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .article { --article-gap: calc(20 * var(--wm)); }
   .article__cover { height: calc(240 * var(--wm)); }
 }
-
-
 
 
 .hero-dir {
@@ -1955,7 +1920,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .feed__main--soft     { background: var(--surface-soft-2); }
 
 
-
 .charts {
   display: flex;
   flex-direction: column;
@@ -1967,7 +1931,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
   grid-template-columns: 1fr 1fr;
   gap: calc(12 * var(--wm));
 }
-
 
 
 .chart-card {
@@ -2105,7 +2068,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 
 
-
 .chart-card--gross .chart-card__plot { height: calc(220 * var(--wm)); }
 .chart-card--gross .chart-card__line {
   top: calc(11 * var(--wm));
@@ -2147,7 +2109,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-card { height: calc(360 * var(--wm)); }
   .chart-card__hint::after { left: 0; top: calc(40 * var(--wm)); width: calc(280 * var(--wm)); }
 }
-
 
 
 .crops-table {
@@ -2219,7 +2180,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .crops-table__total .card-heading-m { color: var(--color-green-brand); }
 
 
-
 .raw-card {
   display: flex;
   flex-direction: column;
@@ -2242,8 +2202,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
   border-bottom: 1px solid var(--color-black-20);
 }
 .specs-list li > span:first-child { opacity: 0.5; }
-
-
 
 
 .chart-line__fill {
@@ -2287,8 +2245,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
   .chart-card__guide,
   .chart-wide__guide { transition: none; }
 }
-
-
 
 
 .chart-wide {
@@ -2375,7 +2331,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 .chart-wide__axis span { opacity: 0.6; }
 
 
-
 .chart-wide__guide {
   position: absolute;
   bottom: calc(38 * var(--wm));
@@ -2458,7 +2413,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 }
 
 
-
 .gallery {
   --g-ease: var(--ease-out-expo);
   --g-time: var(--duration-slow);
@@ -2538,7 +2492,6 @@ a.contacts__item:hover { background: var(--color-white-15); }
 @media (max-width: 1024px) {
   .charts__row { grid-template-columns: 1fr; }
 }
-
 
 
 @media (max-width: 767px) {

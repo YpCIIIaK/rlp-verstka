@@ -5,8 +5,6 @@
   const prefersReduced = mq("(prefers-reduced-motion: reduce)").matches;
 
 
-
-
   const reveal = () => {
     if (document.documentElement.classList.contains("is-ready")) return;
     requestAnimationFrame(() => {
@@ -18,11 +16,8 @@
   window.setTimeout(reveal, 4000);
 
 
-
-
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   window.addEventListener("beforeunload", () => window.scrollTo(0, 0));
-
 
 
   let lenis = null;
@@ -31,7 +26,6 @@
     const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
   }
-
 
 
   const initPhoneMask = () => {
@@ -94,7 +88,6 @@
   initPhoneMask();
 
 
-
   const syncFieldFilled = (input) => {
     const field = input.closest(".field");
     if (!field) return;
@@ -115,7 +108,6 @@
   }, 300);
 
 
-
   document.querySelectorAll(".hero-dir__img").forEach((img) => {
     const show = () => img.classList.add("is-loaded");
 
@@ -134,17 +126,10 @@
   });
 
 
-
-
-
-
   const INTRO_MAIN_MS = 1500;
   const INTRO_DIR_MS  = 1000;
 
-  /* Шаги заставки на главной, миллисекунды от предыдущего шага:
-     hold — картинка во весь экран, frame — проступает тёмно-зелёный обод,
-     shrink — картинка сжимается в панель, header — появляется хедер,
-     дальше текст с кнопками. Правится здесь, менять CSS не нужно. */
+
   const INTRO_STEPS = { hold: 1500, frame: 550, shrink: 850, header: 300 };
 
   const root = document.documentElement;
@@ -162,26 +147,25 @@
     } else if (isDirection) {
       after(INTRO_DIR_MS, drop);
     } else {
-      // хедер и тексты держим скрытыми и после того, как картинка сожмётся
+
       root.classList.add("hero-intro-head", "hero-intro-text");
 
       after(INTRO_STEPS.hold, () => {
-        root.classList.add("hero-intro-frame");                       // обод
+        root.classList.add("hero-intro-frame");
 
         after(INTRO_STEPS.frame, () => {
-          root.classList.remove("has-hero-intro", "hero-intro-frame"); // сжатие
+          root.classList.remove("has-hero-intro", "hero-intro-frame");
 
           after(INTRO_STEPS.shrink, () => {
-            root.classList.remove("hero-intro-head");                 // хедер
+            root.classList.remove("hero-intro-head");
 
             after(INTRO_STEPS.header, () =>
-              root.classList.remove("hero-intro-text"));              // тексты
+              root.classList.remove("hero-intro-text"));
           });
         });
       });
     }
   }
-
 
 
   const header = document.querySelector("[data-header]");
@@ -226,7 +210,6 @@
   }
 
 
-
   const newsMore = document.querySelector("[data-news-more]");
   const newsList = document.querySelector("[data-news-list]");
   if (newsMore && newsList) {
@@ -246,7 +229,6 @@
       if (!newsList.querySelector(".news-card.is-hidden")) newsMore.hidden = true;
     });
   }
-
 
 
   const heroTrack = document.querySelector("[data-hero-scroll]");
@@ -322,7 +304,6 @@
   }
 
 
-
   document.querySelectorAll("[data-years]").forEach((box) => {
 
     const DATA = {
@@ -352,7 +333,6 @@
     const active = box.querySelector("[data-year].is-active") || buttons[buttons.length - 1];
     if (active) show(active.dataset.year);
   });
-
 
 
   document.querySelectorAll(".chart-card, .chart-wide").forEach((chart) => {
@@ -444,7 +424,6 @@
   });
 
 
-
   if (typeof Swiper !== "undefined") {
     document.querySelectorAll("[data-gallery]").forEach((el) => {
       const root = el.closest(".gallery") || el.parentElement;
@@ -524,7 +503,6 @@
   }
 
 
-
   document.querySelectorAll("[data-hero-slides]").forEach((box) => {
     const slides = [...box.querySelectorAll(".hero__slide")];
     const dots = [...document.querySelectorAll(".hero__dot")];
@@ -561,11 +539,6 @@
   });
 
 
-
-
-
-
-
   (() => {
 
     const here = location.pathname.replace(/\/$/, "/index.html");
@@ -576,7 +549,6 @@
       if (new URL(href, location.href).pathname === here) link.classList.add("is-current");
     });
   })();
-
 
 
   document.querySelectorAll(".partners__row").forEach((row) => {
@@ -617,7 +589,6 @@
   });
 
 
-
   document.querySelectorAll("[data-drag-scroll]").forEach((row) => {
     let startX = 0;
     let startLeft = 0;
@@ -653,7 +624,6 @@
   });
 
 
-
   document.querySelectorAll("[data-switch]").forEach((box) => {
     const buttons = [...box.querySelectorAll("button")];
     if (buttons.length !== 2) return;
@@ -668,7 +638,6 @@
   });
 
 
-
   (() => {
     const el = document.querySelector("[data-globe]");
     if (!el) return;
@@ -677,12 +646,11 @@
     const sw = map?.querySelector("[data-switch]");
     const GLOBE_SRC = "https://cdn.jsdelivr.net/npm/globe.gl@2.46.1";
     const GEO_SRC = "https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson";
-    // Границы регионов: Natural Earth admin-1 — Казахстан, Китай, Иран,
-    // Турция, из Европы только Франция, Германия, Польша,
-    // Испания, Италия, Румыния и Великобритания; склеено и упрощено, 181 КБ.
+
+
     const REGIONS_SRC = "assets/geo/regions.js";
-    // Контуры четырёх областей Казахстана, которые подсвечиваем в режиме
-    // «География присутствия»; названия и оттенки лежат там же.
+
+
     const AREAS_SRC = "assets/geo/kz-areas.js?v=6";
 
     const ORIGIN = { lat: 51.1694, lng: 71.4278, name: "Казахстан" };
@@ -709,8 +677,7 @@
     const VIEW_KZ = { lat: 51.1694, lng: 71.4278, altitude: 0.62 };
     const GREEN = "#5ebf66";
     const ORANGE = "#e1a623";
-    /* В Африке и Южной Америке границы стран приглушаем, но не убираем:
-       без них материк выглядит пустым пятном. */
+
     const QUIET_CONTINENTS = new Set(["Africa", "South America"]);
     const DROP_A3 = new Set(["FLK", "SGS", "ATF", "CPV", "STP", "COM", "MUS", "SYC"]);
     const PARTNER_ISO = new Set(["CN", "IR", "TR", "UZ", "KG", "TJ", "TM", "DE", "FR", "IT", "PL", "ES", "NL", "GB", "AT", "BE", "CZ", "RO"]);
@@ -756,15 +723,14 @@
         countries = (geo.features || []).filter((d) => {
           const pr = d.properties || {};
           if (!pr.ADM0_A3 || pr.ADM0_A3 === "ATA") return false;
-          // мелкие островные территории вдали от наших рынков только сорят
+
           return !DROP_A3.has(pr.ADM0_A3);
         });
       } catch {
         countries = [];
       }
 
-      // подключаем скриптом, а не fetch: так набор виден и при открытии
-      // разметки с диска, где fetch к локальному файлу режет CORS
+
       let regions = [];
       try {
         await loadGeo(REGIONS_SRC, "RLP_REGIONS");
@@ -777,14 +743,13 @@
         areas = window.RLP_KZ_AREAS || [];
       } catch { areas = []; }
 
-      /* Области отдаём тем же слоем полигонов, что и страны: помечаем
-         своим свойством, по нему потом берём цвет и высоту. */
+
       const areaPolys = areas.filter((a) => Array.isArray(a.shape) && a.shape.length).map((a) => ({
         type: "Feature",
         properties: { RLP_AREA: a.name, RLP_COLOR: a.color },
         geometry: {
           type: "MultiPolygon",
-          // shape: [полигон][кольцо][точка], первое кольцо внешнее, дальше дырки
+
           coordinates: a.shape.map((poly) => poly.map((ring) => ring.map((p) => [p[1], p[0]])))
         }
       }));
@@ -797,8 +762,7 @@
         return node;
       };
 
-      /* У Франции и Норвегии в наборе ISO_A2 стоит «-99» — из-за него
-         они раньше вылетали из выборки и не рисовались вовсе. */
+
       const A3_TO_A2 = { FRA: "FR", NOR: "NO" };
 
       const isoOf = (feat) => {
@@ -854,8 +818,8 @@
       const capColor = (feat) => {
         if (feat.properties?.RLP_COLOR) return feat.properties.RLP_COLOR;
         const iso = isoOf(feat);
-        // Казахстан всегда зелёный; в «Географии присутствия» тон светлее,
-        // чтобы подсвеченные области не сливались со страной
+
+
         if (iso === "KZ") return presenceMode ? "#b3e0b9" : GREEN;
         if (PARTNER_ISO.has(iso)) return "rgba(94, 191, 102, 0.38)";
         return "#c9c9c9";
@@ -876,10 +840,10 @@
         .polygonSideColor(() => "rgba(0,0,0,0)")
         .polygonStrokeColor((feat) =>
           QUIET_CONTINENTS.has(feat.properties?.CONTINENT) ? "#a8a8a8" : "#6f6f6f")
-        // страна 0.001, подсвеченные области 0.002, линии границ 0.003 —
-        // минимальные зазоры, при которых слои не мерцают, но и не парят
+
+
         .polygonAltitude((feat) => (feat.properties?.RLP_COLOR ? 0.002 : 0.001))
-        // области дробим мельче стран — иначе на краях видны изломы
+
         .polygonCapCurvatureResolution((feat) => (feat.properties?.RLP_COLOR ? 0.4 : 2))
         .polygonsTransitionDuration(0)
         .pathsData(regions)
@@ -934,7 +898,7 @@
 
       const look = (index) => {
         const view = index === 1 ? VIEW_KZ : VIEW_EXPORT;
-        // сначала resume: иначе pointOfView при pauseAnimation не анимируется
+
         wake(prefersReduced ? 400 : 1400);
         globe.pointOfView(view, prefersReduced ? 0 : 900);
       };
@@ -1000,7 +964,6 @@
   })();
 
 
-
   const burger = document.querySelector("[data-menu-toggle]");
   const nav = document.querySelector("[data-nav]");
   if (burger && nav) {
@@ -1019,7 +982,6 @@
       })
     );
   }
-
 
 
   document.querySelectorAll("[data-nav-drop]").forEach((item) => {
@@ -1053,7 +1015,6 @@
   });
 
 
-
   document.querySelectorAll("[data-accordion]").forEach((list) => {
     const items = [...list.querySelectorAll(".faq-item")];
 
@@ -1071,7 +1032,6 @@
       items.forEach((i) => set(i, i === item && open));
     });
   });
-
 
 
   document.querySelectorAll("[data-select]").forEach((select) => {
@@ -1110,7 +1070,6 @@
   });
 
 
-
   const scrollLock = { x: 0, y: 0, count: 0 };
 
   const lockScroll = () => {
@@ -1130,7 +1089,6 @@
   };
 
 
-
   (() => {
     const Fancybox = window.Fancybox;
     if (!Fancybox?.bind || !document.querySelector("[data-fancybox]")) return;
@@ -1144,7 +1102,6 @@
       }
     });
   })();
-
 
 
   const modalAnimMs = prefersReduced ? 0 : 280;
@@ -1229,7 +1186,6 @@
   });
 
 
-
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (e) => {
       const id = link.getAttribute("href");
@@ -1246,7 +1202,6 @@
       });
     });
   });
-
 
 
   const revealUnique = [

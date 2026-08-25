@@ -3,7 +3,6 @@
 .footer { margin-top: auto; }
 
 
-
 .footer__main {
   position: relative;
   isolation: isolate;
@@ -73,7 +72,6 @@
   text-decoration: underline;
 }
 .footer__link.is-current:hover { color: var(--color-white); }
-
 
 
 .footer__bottom {
